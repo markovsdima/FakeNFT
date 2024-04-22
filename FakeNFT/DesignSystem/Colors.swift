@@ -24,6 +24,22 @@ extension UIColor {
             alpha: CGFloat(alpha) / 255
         )
     }
+    
+    // MARK: - Цвета
+    /// Динамические
+    static let ypBlack = UIColor(named: "colors/ypBlack")
+    static let ypWhite = UIColor(named: "colors/ypWhite")
+    static let ypLightGrey = UIColor(named: "colors/ypLightGrey")
+    
+    /// Независимые от темы
+    static let ypBlackUniversal = UIColor(named: "colors/ypBlackUniversal")
+    static let ypWhiteUniversal = UIColor(named: "colors/ypWhiteUniversal")
+    static let ypGreyUniversal = UIColor(named: "colors/ypGreyUniversal")
+    static let ypBackgroundUniversal = UIColor(named: "colors/ypBackgroundUniversal")
+    static let ypBlueUniversal = UIColor(named: "colors/ypBlueUniversal")
+    static let ypGreenUniversal = UIColor(named: "colors/ypGreenUniversal")
+    static let ypRedUniversal = UIColor(named: "colors/ypRedUniversal")
+    static let ypYellowUniversal = UIColor(named: "colors/ypYellowUniversal")
 
     // Ниже приведены примеры цветов, настоящие цвета надо взять из фигмы
 
