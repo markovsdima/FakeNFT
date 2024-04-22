@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1430"
+   LastUpgradeVersion = "1500"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -70,9 +70,18 @@
             BlueprintIdentifier = "3F68069229CBBAF100B4F915"
             BuildableName = "FakeNFT.app"
             BlueprintName = "FakeNFT"
-            ReferencedContainer = "container:FakeNFT.xcodeproj">
+            ReferencedContainer = "container:NFT_TEST.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "3F68069229CBBAF100B4F915"
+            BuildableName = "FakeNFT.app"
+            BlueprintName = "FakeNFT"
+            ReferencedContainer = "container:FakeNFT.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -90,6 +99,15 @@
             ReferencedContainer = "container:FakeNFT.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "3F68069229CBBAF100B4F915"
+            BuildableName = "FakeNFT.app"
+            BlueprintName = "FakeNFT"
+            ReferencedContainer = "container:FakeNFT.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
