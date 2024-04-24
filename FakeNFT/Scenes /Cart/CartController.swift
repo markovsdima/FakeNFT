@@ -13,6 +13,7 @@ final class CartViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(imageButton, for: .normal)
+        button.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -136,6 +137,39 @@ final class CartViewController: UIViewController {
         ])
     }
     
+    private func showActionSheet() {
+        let alertController = UIAlertController(title: "Сортировка", message: nil, preferredStyle: .actionSheet)
+        
+        let action1 = UIAlertAction(title: "По цене", style: .default) { _ in
+    
+        }
+        alertController.addAction(action1)
+        
+        let action2 = UIAlertAction(title: "По рейтингу", style: .default) { _ in
+            
+        }
+        alertController.addAction(action2)
+        
+        let action3 = UIAlertAction(title: "По названию", style: .default) { _ in
+            
+        }
+        alertController.addAction(action3)
+        
+        
+        let cancelAction = UIAlertAction(title: "Закрыть", style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        
+        
+        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+            let viewController = scene.windows.first?.rootViewController {
+            viewController.present(alertController, animated: true, completion: nil)
+        }
+    }
+    
+    @objc private func filterButtonTapped() {
+        showActionSheet()
+    }
+    
     @objc private func payButtonDidTapped() {
         paymentViewController.modalPresentationStyle = .fullScreen
         present(paymentViewController, animated: true)
@@ -146,7 +180,7 @@ final class CartViewController: UIViewController {
 
 extension CartViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        1
+        2
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
