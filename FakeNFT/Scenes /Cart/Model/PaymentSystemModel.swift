@@ -1,8 +1,7 @@
-//
-//  PaymentSystemModel.swift
-//  FakeNFT
-//
-//  Created by Алексей Гвоздков on 24.04.2024.
-//
-
 import Foundation
+
+struct PaymentSystemModel {
+    let image: String
+    let paymentSystem: String
+    let currency: String
+}
