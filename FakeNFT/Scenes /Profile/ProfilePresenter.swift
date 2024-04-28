@@ -8,7 +8,15 @@ public protocol ProfilePresenterProtocol {
 final class ProfilePresenter: ProfilePresenterProtocol {
     var profileView: ProfileViewControllerProtocol?
     
-    //TODO
+    
+    private func fetchProfile() {
+        //todo
+    }
+    
+    private func convertToProfileModel() {
+        //todo
+    }
+    
 }
 
 

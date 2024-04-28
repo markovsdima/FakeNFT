@@ -35,6 +35,8 @@ final class TabBarController: UITabBarController {
             servicesAssembly: servicesAssembly
         )
         
+        let profileNavigationController = UINavigationController(rootViewController: profileController)
+        
         profileController.tabBarItem = profileTabBarItem
         
         let catalogController = CatalogViewController(
@@ -55,7 +57,7 @@ final class TabBarController: UITabBarController {
         
         statisticsController.tabBarItem = statisticsTabBarItem
         
-        viewControllers = [profileController, catalogController, cartController, statisticsController]
+        viewControllers = [profileNavigationController, catalogController, cartController, statisticsController]
         
         view.backgroundColor = .systemBackground
     }

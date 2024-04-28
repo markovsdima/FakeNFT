@@ -14,27 +14,47 @@ final class ProfileTableCell: UITableViewCell {
         return profileTableTitle
     }()
     
-    // MARK: - Init
+    private lazy var profileTableCustomImage: UIImageView = {
+        let profileTableCustomImage = UIImageView()
+        profileTableCustomImage.translatesAutoresizingMaskIntoConstraints = false
+        let boldConfig = UIImage.SymbolConfiguration(weight: .bold)
+        profileTableCustomImage.image = UIImage(systemName: "chevron.right", withConfiguration: boldConfig)
+        profileTableCustomImage.contentMode = .scaleAspectFit
+        profileTableCustomImage.tintColor = UIColor.ypBlack
+        return profileTableCustomImage
+    }()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupView()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+//    // MARK: - Init
+//    
+//    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+//        super.init(style: style, reuseIdentifier: reuseIdentifier)
+//        configureCell(title: String)
+//    }
+//    
+//    required init?(coder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
     
     // MARK: - Private Methods
     
-    private func setupView() {
-        contentView.addSubview(profileTableTitle)
+    func configureCell(title: String) {
+        [profileTableTitle,
+         profileTableCustomImage].forEach { contentView.addSubview($0) }
+        selectionStyle = .none
+        profileTableTitle.text = title
         
         NSLayoutConstraint.activate([
             profileTableTitle.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
             profileTableTitle.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             profileTableTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            
+            profileTableCustomImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            profileTableCustomImage.widthAnchor.constraint(equalToConstant: 7.98),
+            profileTableCustomImage.heightAnchor.constraint(equalToConstant: 13.86),
+            profileTableCustomImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+
         ])
         profileTableTitle.setContentCompressionResistancePriority(.required, for: .vertical)
     }
+    
 }

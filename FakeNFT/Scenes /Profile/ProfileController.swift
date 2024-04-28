@@ -8,83 +8,106 @@ public protocol ProfileViewControllerProtocol: AnyObject {
 protocol ProfileViewControllerDelegate {
     //todo
 }
-                                            
+
 final class ProfileViewController: UIViewController & ProfileViewControllerProtocol & ProfileViewControllerDelegate {
     
     //MARK: - Properties
     var presenter: ProfilePresenterProtocol?
     let servicesAssembly: ServicesAssembly
     var delegate: ProfileViewControllerDelegate?
-
     
-  //MARK: - Private properties
+    
+    //MARK: - Private properties
     
     private lazy var profileEditButton: UIBarButtonItem = {
-        let profileEditButton = UIBarButtonItem ()
-    } ()
+        let boldConfig = UIImage.SymbolConfiguration(weight: .bold)
+        let button = UIBarButtonItem()
+        button.image = UIImage(systemName: "square.and.pencil", withConfiguration: boldConfig)
+        button.action = #selector(profileEditTapped)
+        button.target = self
+        return button
+    }()
     
     private lazy var profileStackView: UIStackView = {
-        let profileStackView = UIStackView()
-        profileStackView.translatesAutoresizingMaskIntoConstraints = false
-        profileStackView.axis = .horizontal
-        profileStackView.heightAnchor.constraint(equalToConstant: 70).isActive = true
-        profileStackView.spacing = 16
-        return profileStackView
+        let stack = UIStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .horizontal
+        stack.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        stack.spacing = 16
+        return stack
     } ()
     
     private lazy var profileAvatar: UIImageView = {
-        let profileAvatar = UIImageView()
-        profileAvatar.image = UIImage(named: "profileImages/profileAvatarMock")
-        profileAvatar.contentMode = .scaleAspectFill
-        profileAvatar.translatesAutoresizingMaskIntoConstraints = false
-        profileAvatar.heightAnchor.constraint(equalToConstant: 70).isActive = true
-        profileAvatar.widthAnchor.constraint(equalToConstant: 70).isActive = true
-        profileAvatar.layer.cornerRadius = 70/2
-        profileAvatar.layer.masksToBounds = true
-        return profileAvatar
+        let avatar = UIImageView()
+        avatar.image = UIImage(named: "profileImages/profileAvatarMock")
+        avatar.contentMode = .scaleAspectFill
+        avatar.translatesAutoresizingMaskIntoConstraints = false
+        avatar.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        avatar.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        avatar.layer.cornerRadius = 35
+        avatar.layer.masksToBounds = true
+        return avatar
     }()
     
     private lazy var profileNameLabel: UILabel = {
-        let profileNameLabel = UILabel()
-        profileNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        profileNameLabel.textColor = .ypBlack
-        profileNameLabel.font = UIFont.systemFont(ofSize: 28, weight: .bold)
-        profileNameLabel.textAlignment = NSTextAlignment.left
-        profileNameLabel.heightAnchor.constraint(equalToConstant: 28).isActive = true
-        return profileNameLabel
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .ypBlack
+        label.font = .headline2
+        label.textAlignment = NSTextAlignment.left
+        label.heightAnchor.constraint(equalToConstant: 28).isActive = true
+        return label
     }()
     
-    private lazy var profileBioLabel: UILabel = {
-        let profileBioLabel = UILabel()
-        profileBioLabel.translatesAutoresizingMaskIntoConstraints = false
-        profileBioLabel.textColor = .ypBlack
-        profileBioLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        profileBioLabel.textAlignment = NSTextAlignment.left
-        profileBioLabel.numberOfLines = 4
-        return profileBioLabel
+//    private lazy var profileBioLabel: UILabel = {
+//        let label = UILabel()
+//        label.translatesAutoresizingMaskIntoConstraints = false
+//        label.textColor = .ypBlack
+//        label.font = .caption2
+//        label.textAlignment = NSTextAlignment.left
+//        label.numberOfLines = 4
+//        return label
+//    }()
+    
+    private lazy var profileBioTextView: UITextView = {
+        let textView = UITextView()
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.font = .caption2
+        textView.textContainer.maximumNumberOfLines = 4
+        textView.isEditable = false
+        textView.textColor = .ypBlack
+        textView.heightAnchor.constraint(equalToConstant: 72).isActive = true
+        return textView
     }()
     
-    private lazy var profileWebLinkLabel: UILabel = {
-        let profileWebLinkLabel = UILabel()
-        profileWebLinkLabel.translatesAutoresizingMaskIntoConstraints = false
-        profileWebLinkLabel.textColor = .ypBlueUniversal
-        profileWebLinkLabel.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-        profileWebLinkLabel.textAlignment = NSTextAlignment.left
-        profileWebLinkLabel.heightAnchor.constraint(equalToConstant: 28).isActive = true
-        return profileWebLinkLabel
+    private lazy var profileLinkTextView: UITextView =  {
+        let link = UITextView()
+        link.translatesAutoresizingMaskIntoConstraints = false
+        link.dataDetectorTypes = .link
+        link.textColor = .ypBlueUniversal
+        link.font = .caption1
+        link.textAlignment = NSTextAlignment.left
+        link.heightAnchor.constraint(equalToConstant: 28).isActive = true
+        link.isScrollEnabled = false
+        link.isEditable = false
+        //        link.delegate = self
+        return link
     }()
     
     private lazy var profileTableView: UITableView = {
-        let profileTableView = UITableView()
-        profileTableView.translatesAutoresizingMaskIntoConstraints = false
-        profileTableView.heightAnchor.constraint(equalToConstant: 150).isActive = true
-        profileTableView.register(
+        let table = UITableView()
+        table.translatesAutoresizingMaskIntoConstraints = false
+        table.heightAnchor.constraint(equalToConstant: 150).isActive = true
+        table.separatorStyle = .none
+        table.register(
             ProfileTableCell.self,
             forCellReuseIdentifier: ProfileTableCell.reuseIdentifier
         )
-        return profileTableView
+        table.delegate = self
+        table.dataSource = self
+        return table
     }()
-
+    
     
     
     //MARK: - Init
@@ -101,51 +124,48 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupNavBar()
+        
         view.backgroundColor = .systemBackground
         
         profileAddElements()
         profileSetupLayout()
         profileSetText()
-        
-        setupNavBar()
-        
-        profileTableView.delegate = self
-        profileTableView.dataSource = self
+      
+        //        presenter?.delegate = self
         
     }
     
     
-        //MARK: - Private Methods
+    //MARK: - Private Methods
     private func setupNavBar() {
-        if let navBar = navigationController?.navigationBar {
-            let rightButton = UIBarButtonItem(
-                image: UIImage(systemName: "square.and.pencil"),
-                style: .plain,
-                target: self,
-                action: #selector(profileEditTapped)
-            )
-            navBar.topItem?.setRightBarButton(rightButton, animated: false)
-        }
-    }//TODO
+        navigationItem.rightBarButtonItem = profileEditButton
+        navigationItem.rightBarButtonItem?.tintColor = .ypBlack
+    }
+   
     
     @objc
     private func profileEditTapped(){
         print("profile edit button tapped")
+        let editingVC = ProfileEditingViewController()
+//        editingVC.delegate = self
+        let navVC = UINavigationController(rootViewController: editingVC)
+        present(navVC, animated: true)
     }
     
     private func profileAddElements() {
-        view.addSubview(profileStackView)
-        view.addSubview(profileBioLabel)
-        view.addSubview(profileWebLinkLabel)
-        view.addSubview(profileTableView)
-
-        profileStackView.addArrangedSubview(profileAvatar)
-        profileStackView.addArrangedSubview(profileNameLabel)
+        [profileStackView,
+         profileBioTextView,
+         profileLinkTextView,
+         profileTableView].forEach { view.addSubview($0) }
+        
+        [profileAvatar,
+         profileNameLabel].forEach { profileStackView.addSubview($0) }
     }
     
     private func profileSetupLayout() {
         NSLayoutConstraint.activate([
-            profileStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 62), //need change
+            profileStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             profileStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             profileStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             
@@ -155,14 +175,14 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
             profileNameLabel.centerYAnchor.constraint(equalTo: profileAvatar.centerYAnchor),
             profileNameLabel.trailingAnchor.constraint(equalTo: profileStackView.trailingAnchor),
             
-            profileBioLabel.topAnchor.constraint(equalTo: profileStackView.bottomAnchor, constant: 20),
-            profileBioLabel.leadingAnchor.constraint(equalTo: profileStackView.leadingAnchor),
-            profileBioLabel.trailingAnchor.constraint(equalTo: profileStackView.trailingAnchor),
+            profileBioTextView.topAnchor.constraint(equalTo: profileStackView.bottomAnchor, constant: 20),
+            profileBioTextView.leadingAnchor.constraint(equalTo: profileStackView.leadingAnchor),
+            profileBioTextView.trailingAnchor.constraint(equalTo: profileStackView.trailingAnchor),
             
-            profileWebLinkLabel.topAnchor.constraint(equalTo: profileBioLabel.bottomAnchor, constant: 8),
-            profileWebLinkLabel.leadingAnchor.constraint(equalTo: profileStackView.leadingAnchor),
+            profileLinkTextView.topAnchor.constraint(equalTo: profileBioTextView.bottomAnchor, constant: 8),
+            profileLinkTextView.leadingAnchor.constraint(equalTo: profileStackView.leadingAnchor),
             
-            profileTableView.topAnchor.constraint(equalTo: profileWebLinkLabel.bottomAnchor, constant: 40),
+            profileTableView.topAnchor.constraint(equalTo: profileLinkTextView.bottomAnchor, constant: 40),
             profileTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             profileTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
         ])
@@ -173,29 +193,32 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         profileNameLabel.text = profileName
         
         let profileBio = profileConstants.profileBioString
-        profileBioLabel.text = profileBio
+        profileBioTextView.text = profileBio
         
         let profileWebLink = profileConstants.profileWebLinkString
-        profileWebLinkLabel.text = profileWebLink
+        profileLinkTextView.text = profileWebLink
     }
     
-}//end of class
+}
 
 // MARK: - UITableViewDataSource
 
 extension ProfileViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-       return 2
+        return 3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ProfileTableCell.reuseIdentifier, for: indexPath) as? ProfileTableCell else { return UITableViewCell() }
-        cell.accessoryType = .disclosureIndicator
-        if indexPath.row == 0 {
-            cell.profileTableTitle.text = "Мои NFT (112)"
-        } else {
-            cell.profileTableTitle.text = "Избранные NFT (11)"
-            }
+        var title = ""
+        switch indexPath.row {
+        case 0: title = "Мои NFT (112)"
+        case 1: title = "Избранные NFT (11)"
+        case 2: title = "О разработчике"
+        default:
+            break
+        }
+        cell.configureCell(title: title)
         return cell
     }
     
@@ -209,17 +232,36 @@ extension ProfileViewController: UITableViewDataSource {
 extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if indexPath.row == 0 {
-            let myNFTViewController = MyNFTViewController()//need change
-            myNFTViewController.delegate = self
-            navigationController?.pushViewController(myNFTViewController, animated: true)
-            
-        } else if indexPath.row == 1 {
-            let favouritesNFTViewController = MyNFTViewController()
-            favouritesNFTViewController.delegate = self
-            navigationController?.pushViewController(favouritesNFTViewController, animated: true)
+       
+        let index = indexPath.row
+        switch index {
+        case 0:
+            showMyNFT()
+        case 1:
+            showFavouritesNFT()
+        case 2:
+            print("about developer")
+//            if let url = URL(string: profileLinkTextView.text) {
+//                let webVC = ProfileWebViewController(url: url)
+//                navigationController?.pushViewController(webVC, animated: true)
+//            }
+        default:
+            break
         }
     }
+    
+    private func showMyNFT() {
+        let myNFTVC = MyNFTViewController()
+//        myNFTViewController.delegate = self
+        navigationController?.pushViewController(myNFTVC, animated: true)
+    }
+    
+    private func showFavouritesNFT() {
+        let favouritesNFTVС = FavoriteNFTController()
+//        favouritesNFTViewController.delegate = self
+        navigationController?.pushViewController(favouritesNFTVС, animated: true)
+    }
+    
 }
 
 //MARK: - MyNFTViewControllerDelegate
