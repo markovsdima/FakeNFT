@@ -3,6 +3,7 @@ import UIKit
 public protocol ProfileViewControllerProtocol: AnyObject {
     var presenter: ProfilePresenterProtocol? { get set }
     
+    func openWebView(url: String)
 }
 
 protocol ProfileViewControllerDelegate {
@@ -58,17 +59,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         label.heightAnchor.constraint(equalToConstant: 28).isActive = true
         return label
     }()
-    
-//    private lazy var profileBioLabel: UILabel = {
-//        let label = UILabel()
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        label.textColor = .ypBlack
-//        label.font = .caption2
-//        label.textAlignment = NSTextAlignment.left
-//        label.numberOfLines = 4
-//        return label
-//    }()
-    
+        
     private lazy var profileBioTextView: UITextView = {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
@@ -90,7 +81,6 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         link.heightAnchor.constraint(equalToConstant: 28).isActive = true
         link.isScrollEnabled = false
         link.isEditable = false
-        //        link.delegate = self
         return link
     }()
     
@@ -131,11 +121,15 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         profileAddElements()
         profileSetupLayout()
         profileSetText()
-      
-        //        presenter?.delegate = self
         
     }
     
+    func openWebView(url: String) {
+        if let url = URL(string: url) {
+            let webVC = ProfileWebViewController(url: url)
+            navigationController?.pushViewController(webVC, animated: true)
+        }
+    }
     
     //MARK: - Private Methods
     private func setupNavBar() {
@@ -148,7 +142,8 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
     private func profileEditTapped(){
         print("profile edit button tapped")
         let editingVC = ProfileEditingViewController()
-//        editingVC.delegate = self
+        //presenter
+        
         let navVC = UINavigationController(rootViewController: editingVC)
         present(navVC, animated: true)
     }
@@ -173,7 +168,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
             profileAvatar.leadingAnchor.constraint(equalTo: profileStackView.leadingAnchor),
             
             profileNameLabel.centerYAnchor.constraint(equalTo: profileAvatar.centerYAnchor),
-            profileNameLabel.trailingAnchor.constraint(equalTo: profileStackView.trailingAnchor),
+            profileNameLabel.leadingAnchor.constraint(equalTo: profileAvatar.trailingAnchor, constant: 16),
             
             profileBioTextView.topAnchor.constraint(equalTo: profileStackView.bottomAnchor, constant: 20),
             profileBioTextView.leadingAnchor.constraint(equalTo: profileStackView.leadingAnchor),
@@ -240,11 +235,7 @@ extension ProfileViewController: UITableViewDelegate {
         case 1:
             showFavouritesNFT()
         case 2:
-            print("about developer")
-//            if let url = URL(string: profileLinkTextView.text) {
-//                let webVC = ProfileWebViewController(url: url)
-//                navigationController?.pushViewController(webVC, animated: true)
-//            }
+            presenter?.openAboutDeveloper()
         default:
             break
         }
@@ -257,17 +248,21 @@ extension ProfileViewController: UITableViewDelegate {
     }
     
     private func showFavouritesNFT() {
-        let favouritesNFTVС = FavoriteNFTController()
-//        favouritesNFTViewController.delegate = self
-        navigationController?.pushViewController(favouritesNFTVС, animated: true)
+        let viewController = FavoriteNFTViewController()
+        let presenter = FavoriteNFTPresenter()
+        
+        viewController.presenter = presenter
+        presenter.view = viewController
+
+        navigationController?.pushViewController(viewController, animated: true)
     }
     
 }
 
-//MARK: - MyNFTViewControllerDelegate
-
-extension ProfileViewController: MyNFTViewControllerDelegate {
-    func didSelectCategory() {
-        print("ButtonTapped")
-    }
-}
+////MARK: - MyNFTViewControllerDelegate
+//
+//extension ProfileViewController: MyNFTViewControllerDelegate {
+//    func didSelectCategory() {
+//        print("ButtonTapped")
+//    }
+//}

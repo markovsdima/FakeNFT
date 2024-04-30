@@ -3,20 +3,16 @@ import Foundation
 public protocol ProfilePresenterProtocol {
     var profileView: ProfileViewControllerProtocol? { get set }
     
+    func openAboutDeveloper()
 }
 
 final class ProfilePresenter: ProfilePresenterProtocol {
+    
     var profileView: ProfileViewControllerProtocol?
     
-    
-    private func fetchProfile() {
-        //todo
+    func openAboutDeveloper() {
+        profileView?.openWebView(url: profileConstants.developerLink)
     }
-    
-    private func convertToProfileModel() {
-        //todo
-    }
-    
 }
 
 

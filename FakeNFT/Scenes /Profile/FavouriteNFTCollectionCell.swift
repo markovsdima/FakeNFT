@@ -1,8 +1,11 @@
 import UIKit
+import Kingfisher
 
-class FavoriteNFTCollectionCell: UICollectionViewCell {
+class ProfileFavoriteNFTCollectionCell: UICollectionViewCell {
     
     static let reuseIdentifier: String = "FavoriteNFTCollectionCell"
+    
+    private static let totalStars = 5
     
     private lazy var likeButton: UIButton = {
         let button: UIButton = UIButton()
@@ -39,10 +42,11 @@ class FavoriteNFTCollectionCell: UICollectionViewCell {
     }()
     
     private lazy var stackRating: UIStackView = {
-        let stack: UIStackView = UIStackView()
+        let stack = UIStackView()
         stack.axis = .horizontal
-        stack.distribution = .fillEqually
-        stack.alignment = .center
+        stack.distribution = .equalSpacing
+        stack.alignment = .leading
+        stack.spacing = 2
         return stack
     }()
     
@@ -57,6 +61,41 @@ class FavoriteNFTCollectionCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configCell(_ model: FavoriteNFT) {
+        labelName.text = model.name
+        labelPriceValue.text = "\(model.price) ETH"
+        
+        if let urlString = model.imageUrl, let url = URL(string: urlString) {
+            imageViewNFT.kf.setImage(with: url)
+        }
+        
+        // Поменять иконки
+        if model.isLiked {
+            likeButton.setImage(UIImage(named: "TabBar/profile"), for: .normal)
+        } else {
+            likeButton.setImage(UIImage(named: "TabBar/profile"), for: .normal)
+        }
+        
+        stackRating.arrangedSubviews.forEach {
+            $0.removeFromSuperview()
+        }
+
+        let activeStarImage = UIImage(systemName: "star.fill")?
+                .withTintColor(.ypYellowUniversal ?? UIColor(hexString: "#FEEF0D"), renderingMode: .alwaysOriginal)
+        let inactiveStarImage = UIImage(systemName: "star.fill")?
+                .withTintColor(.ypGreyUniversal ?? UIColor(hexString: "#625C5C"), renderingMode: .alwaysOriginal)
+
+        for index in 1...ProfileFavoriteNFTCollectionCell.totalStars {
+            let starImageView = UIImageView()
+            starImageView.contentMode = .scaleAspectFit
+            starImageView.image = index <= model.rating ? activeStarImage : inactiveStarImage
+            stackRating.addArrangedSubview(starImageView)
+
+            starImageView.widthAnchor.constraint(equalToConstant: 12).isActive = true
+            starImageView.heightAnchor.constraint(equalToConstant: 12).isActive = true
+        }
     }
     
     override func prepareForReuse() {

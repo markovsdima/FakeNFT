@@ -1,84 +1,88 @@
 import Foundation
 
+struct MyNFT {
+    let imageUrl: String?
+    let isLiked: Bool
+    let name: String
+    let rating: Int
+    let price: Float
+    let author: String
+}
+
+let mockMyNfts = [
+    MyNFT(
+        imageUrl: "https://printstorm.ru/wp-content/uploads/2021/08/pokemon-07-1024x1024.jpg",
+        isLiked: false,
+        name: "Lilo",
+        rating: 3,
+        price: 1.78,
+        author: "John Doe"
+    ),
+    MyNFT(
+        imageUrl: "https://klike.net/uploads/posts/2022-09/1662642301_d-45.jpg",
+        isLiked: false,
+        name: "Spring",
+        rating: 3,
+        price: 1.78,
+        author: "John Doe"
+    ),
+    MyNFT(
+        imageUrl: "https://yobte.ru/uploads/posts/2019-11/pokemony-42-foto-35.png",
+        isLiked: false,
+        name: "April",
+        rating: 3,
+        price: 1.78,
+        author: "John Doe"
+    ),
+]
+
+struct FavoriteNFT {
+    let imageUrl: String?
+    let isLiked: Bool
+    let name: String
+    let rating: Int
+    let price: Float
+}
+
+//let mockFavoriteNfts: [FavoriteNFT] = []
+
+let mockFavoriteNfts = [
+    FavoriteNFT(
+        imageUrl: "https://printstorm.ru/wp-content/uploads/2021/08/pokemon-07-1024x1024.jpg",
+        isLiked: true,
+        name: "Archie",
+        rating: 1,
+        price: 1.78
+    ),
+    FavoriteNFT(
+        imageUrl: "https://staticg.sportskeeda.com/wp-content/uploads/2016/09/eevee-1474440362-800.jpg",
+        isLiked: true,
+        name: "Pixi",
+        rating: 3,
+        price: 1.78
+    ),
+    FavoriteNFT(
+        imageUrl: "https://yobte.ru/uploads/posts/2019-11/pokemony-42-foto-35.png",
+        isLiked: true,
+        name: "Melissa",
+        rating: 5,
+        price: 1.78
+    ),
+    FavoriteNFT(
+        imageUrl: "https://i.pinimg.com/originals/cd/8a/13/cd8a13b918337e918973242208084ebf.jpg",
+        isLiked: true,
+        name: "April",
+        rating: 2,
+        price: 1.78
+    ),
+]
+
+//MARK: - Strings for labels
+
 enum profileConstants {
-    
-    //MARK: - Strings for labels
     static let profileNameString = "Joaquin Phoenix"
     static let profileBioString = "Дизайнер из Казани, люблю цифровое искусство и бейглы. В моей коллекции уже 100+ NFT, и еще больше — на моём сайте. Открыт к коллаборациям."
     static let profileWebLinkString = "Joaquin Phoenix.com"
+    static let developerLink = "https://phoenix.com"
 }
 
-//class DataManager {
-//    static let shared = DataManager()
-//    
-//    var categories: [TrackerCategory] = [
-//        
-//        TrackerCategory(title: "Обучение",
-//                    trackers: [
-//                        Tracker(
-//                            id: UUID(),
-//                            title: "Прочитать 1 урок",
-//                            color: .green,
-//                            emoji: "📕",
-//                            schedule: [Weekday.monday, Weekday.wednesday]
-//                        ),
-//                        Tracker(
-//                            id: UUID(),
-//                            title: "Выполнить 3 задачи из практикума",
-//                            color: . purple,
-//                            emoji: "👩‍💻",
-//                            schedule: [Weekday.tuesday, Weekday.friday]
-//                        ),
-//                    ]
-//                ),
-//        
-//        TrackerCategory(title: "Спорт",
-//                    trackers: [
-//                        Tracker(
-//                            id: UUID(),
-//                            title: "Сходить на тренировку",
-//                            color: .red,
-//                            emoji: "💪",
-//                            schedule: [Weekday.monday, Weekday.saturday]
-//                        ),
-//                        Tracker(
-//                            id: UUID(),
-//                            title: "Позаниматься йогой",
-//                            color: .blue,
-//                            emoji: "🧘‍♀️",
-//                            schedule: [Weekday.saturday, Weekday.friday]
-//                        ),
-//                    ]
-//                ),
-//    
-//        TrackerCategory(title: "Уборка",
-//                    trackers: [
-//                        Tracker(
-//                            id: UUID(),
-//                            title: "Помыть посуду",
-//                            color: .magenta,
-//                            emoji: "🍴",
-//                            schedule: [Weekday.thursday, Weekday.saturday]
-//                        ),
-//                        Tracker(
-//                            id: UUID(),
-//                            title: "Вынести мусор",
-//                            color: .yellow,
-//                            emoji: "🗑",
-//                            schedule: [Weekday.sunday, Weekday.friday, Weekday.tuesday]
-//                        ),
-//                        Tracker(
-//                            id: UUID(),
-//                            title: "Постирать",
-//                            color: .blue,
-//                            emoji: "👕",
-//                            schedule: [Weekday.saturday]
-//                        )
-//                    ]
-//                )
-//        
-//    ]
-//    
-//    private init() {}
-//}
-//

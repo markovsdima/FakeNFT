@@ -34,6 +34,9 @@ final class TabBarController: UITabBarController {
         let profileController = ProfileViewController(
             servicesAssembly: servicesAssembly
         )
+        let profilePresenter = ProfilePresenter()
+        profileController.presenter = profilePresenter
+        profilePresenter.profileView = profileController
         
         let profileNavigationController = UINavigationController(rootViewController: profileController)
         

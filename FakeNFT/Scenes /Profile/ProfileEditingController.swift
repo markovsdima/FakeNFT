@@ -1,21 +1,12 @@
 import UIKit
 
 final class ProfileEditingViewController: UIViewController {
-    
-//    private lazy var profileCloseButton: UIButton = {
-//        let button = UIButton(type: UIButton.ButtonType.custom)
-//        let boldConfig = UIImage.SymbolConfiguration(weight: .bold)
-//        button.translatesAutoresizingMaskIntoConstraints = false
-//        button.setImage(UIImage(systemName: "xmark", withConfiguration: boldConfig), for: .normal)
-//        button.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
-//        button.tintColor = .ypBlack
-//        return button
-//    }()
-    
+        
     private lazy var profileCloseButton: UIBarButtonItem = {
-        let boldConfig = UIImage.SymbolConfiguration(weight: .bold)
         let button = UIBarButtonItem()
-        button.image = UIImage(systemName: "xmark", withConfiguration: boldConfig)
+        let config = UIImage.SymbolConfiguration(pointSize: 10, weight: .bold
+        )
+        button.image = UIImage(systemName: "xmark", withConfiguration: config)
         button.action = #selector(closeButtonTapped)
         button.target = self
         return button
@@ -120,28 +111,17 @@ final class ProfileEditingViewController: UIViewController {
         textField.textColor = .ypBlack
         return textField
     }()
-    
-    //    private var presenter: EditingProfilePresenterProtocol?
-    
-    //    init(presenter: EditingProfilePresenterProtocol) {
-    //        self.presenter = presenter
-    //        super.init(nibName: nil, bundle: nil)
-    //    }
-    //
-    //    required init?(coder: NSCoder) {
-    //        fatalError("init(coder:) has not been implemented")
-    //    }
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
-        //        presenter?.view = self
+        
         view.backgroundColor = .ypWhite
         setupNavBar()
         addElements()
         setupConstraints()
         
         profileSetText()
-        //        presenter?.viewDidLoad()
+       
     }
     
     //MARK: - Private Methods
@@ -151,8 +131,6 @@ final class ProfileEditingViewController: UIViewController {
     }
     
     private func addElements() {
-       
-//        [profileCloseButton,
         [profileAvatar, nameLabel, profileNameTextField,
          profileBioTextView, descriptionLabel, siteLabel, profileLinkTextField].forEach { view.addSubview($0) }
         
@@ -162,11 +140,6 @@ final class ProfileEditingViewController: UIViewController {
     }
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-//            profileCloseButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-//            profileCloseButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 24),
-//            profileCloseButton.heightAnchor.constraint(equalToConstant: 42),
-//            profileCloseButton.widthAnchor.constraint(equalToConstant: 42),
-            
             profileAvatar.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             profileAvatar.topAnchor.constraint(equalTo: view.topAnchor, constant: 88),
             profileAvatar.heightAnchor.constraint(equalToConstant: 70),

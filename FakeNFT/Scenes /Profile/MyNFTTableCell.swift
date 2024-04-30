@@ -4,9 +4,10 @@ final class ProfileMyNFTTableCell: UITableViewCell {
     
     static let reuseIdentifier = "MyNFTTableCell"
     
-    
     private lazy var likeButton: UIButton = {
         let button: UIButton = UIButton()
+        button.setImage(UIImage(named: "TabBar/profile"), for: .normal)
+        button.backgroundColor = .ypWhite
         button.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -15,6 +16,7 @@ final class ProfileMyNFTTableCell: UITableViewCell {
         let image: UIImageView = UIImageView()
         image.layer.cornerRadius = 12
         image.clipsToBounds = true
+        image.backgroundColor = .gray//delete
         return image
     }()
     
@@ -30,6 +32,7 @@ final class ProfileMyNFTTableCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .caption2
         label.textColor = .ypBlack
+        label.text = "от John Doe"//delete
         return label
     }()
     
@@ -39,8 +42,6 @@ final class ProfileMyNFTTableCell: UITableViewCell {
         label.font = .caption1
         return label
     }()
-    
-    
     
     private lazy var labelPrice: UILabel = {
         let label: UILabel = UILabel()
@@ -52,6 +53,7 @@ final class ProfileMyNFTTableCell: UITableViewCell {
     private lazy var labelPriceValue: UILabel = {
         let label: UILabel = UILabel()
         label.font = .bodyBold
+        label.text = "1,78 ETH" //delete
         return label
     }()
     
@@ -95,17 +97,6 @@ final class ProfileMyNFTTableCell: UITableViewCell {
     
     private lazy var viewNFTContent: UIView = UIView()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        addElements()
-        setupLayout()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func prepareForReuse() {
         for view in stackRating.arrangedSubviews {
             stackRating.removeArrangedSubview(view)
@@ -115,6 +106,15 @@ final class ProfileMyNFTTableCell: UITableViewCell {
     @objc
     private func likeButtonTapped(){
         print("like button tapped")
+    }
+    
+    func configureCell(name: String) {
+        backgroundColor = .ypWhite
+        selectionStyle = .none
+        labelName.text = name
+        
+        addElements()
+        setupConstraints()
     }
     
     private func addElements(){
@@ -140,7 +140,7 @@ final class ProfileMyNFTTableCell: UITableViewCell {
         stackNFTRight.addArrangedSubview(labelPriceValue)
     }
     
-    private func setupLayout(){
+    private func setupConstraints(){
         [likeButton, imageViewNFT, stackNFT,
          stackNFTLeft, labelName, stackRating, viewAuthor, labelFrom, labelAuthor,
          stackNFTRight, labelPrice, labelPriceValue, viewNFTContent].forEach {
