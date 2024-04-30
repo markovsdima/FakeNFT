@@ -9,17 +9,19 @@ struct MyNFT {
     let author: String
 }
 
+//let mockMyNfts: [MyNFT] = []
+
 let mockMyNfts = [
     MyNFT(
         imageUrl: "https://printstorm.ru/wp-content/uploads/2021/08/pokemon-07-1024x1024.jpg",
-        isLiked: false,
+        isLiked: true,
         name: "Lilo",
         rating: 3,
         price: 1.78,
         author: "John Doe"
     ),
     MyNFT(
-        imageUrl: "https://klike.net/uploads/posts/2022-09/1662642301_d-45.jpg",
+        imageUrl: "https://staticg.sportskeeda.com/wp-content/uploads/2016/09/eevee-1474440362-800.jpg",
         isLiked: false,
         name: "Spring",
         rating: 3,
@@ -36,7 +38,7 @@ let mockMyNfts = [
     ),
 ]
 
-struct FavoriteNFT {
+struct FavouriteNFT {
     let imageUrl: String?
     let isLiked: Bool
     let name: String
@@ -44,31 +46,31 @@ struct FavoriteNFT {
     let price: Float
 }
 
-//let mockFavoriteNfts: [FavoriteNFT] = []
+//let mockFavouriteNfts: [FavouriteNFT] = []
 
-let mockFavoriteNfts = [
-    FavoriteNFT(
+let mockFavouriteNfts = [
+    FavouriteNFT(
         imageUrl: "https://printstorm.ru/wp-content/uploads/2021/08/pokemon-07-1024x1024.jpg",
         isLiked: true,
         name: "Archie",
         rating: 1,
         price: 1.78
     ),
-    FavoriteNFT(
+    FavouriteNFT(
         imageUrl: "https://staticg.sportskeeda.com/wp-content/uploads/2016/09/eevee-1474440362-800.jpg",
         isLiked: true,
         name: "Pixi",
         rating: 3,
         price: 1.78
     ),
-    FavoriteNFT(
+    FavouriteNFT(
         imageUrl: "https://yobte.ru/uploads/posts/2019-11/pokemony-42-foto-35.png",
         isLiked: true,
         name: "Melissa",
         rating: 5,
         price: 1.78
     ),
-    FavoriteNFT(
+    FavouriteNFT(
         imageUrl: "https://i.pinimg.com/originals/cd/8a/13/cd8a13b918337e918973242208084ebf.jpg",
         isLiked: true,
         name: "April",

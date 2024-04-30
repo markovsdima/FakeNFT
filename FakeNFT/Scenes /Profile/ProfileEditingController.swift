@@ -1,7 +1,13 @@
 import UIKit
 
+protocol ProfileEditingViewControllerProtocol {
+    func updateTitles(profileName:String, profileBio: String, profileWebLink: String)
+}
+
 final class ProfileEditingViewController: UIViewController {
-        
+    
+    var presenter: ProfileEditingPresenterProtocol?
+    
     private lazy var profileCloseButton: UIBarButtonItem = {
         let button = UIBarButtonItem()
         let config = UIImage.SymbolConfiguration(pointSize: 10, weight: .bold
@@ -11,7 +17,7 @@ final class ProfileEditingViewController: UIViewController {
         button.target = self
         return button
     }()
-
+    
     private lazy var profileAvatar: UIImageView = {
         let avatar = UIImageView()
         avatar.image = UIImage(named: "profileImages/profileAvatarMock")
@@ -111,7 +117,7 @@ final class ProfileEditingViewController: UIViewController {
         textField.textColor = .ypBlack
         return textField
     }()
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -120,8 +126,8 @@ final class ProfileEditingViewController: UIViewController {
         addElements()
         setupConstraints()
         
-        profileSetText()
-       
+        presenter?.udateProfile()
+        
     }
     
     //MARK: - Private Methods
@@ -187,17 +193,6 @@ final class ProfileEditingViewController: UIViewController {
         ])
     }
     
-    private func profileSetText() {
-        let profileName = profileConstants.profileNameString
-        profileNameTextField.text = profileName
-        
-        let profileBio = profileConstants.profileBioString
-        profileBioTextView.text = profileBio
-        
-        let profileWebLink = profileConstants.profileWebLinkString
-        profileLinkTextField.text = profileWebLink
-    }
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
@@ -210,5 +205,15 @@ final class ProfileEditingViewController: UIViewController {
     @objc private func changePhotoTapped() {
         print("change photo")
         
+    }
+}
+
+//MARK: - FavoriteNFTControllerProtocol
+extension ProfileEditingViewController: ProfileEditingViewControllerProtocol {
+    
+    func updateTitles(profileName: String, profileBio: String, profileWebLink: String) {
+        profileNameTextField.text = profileName
+        profileBioTextView.text = profileBio
+        profileLinkTextField.text = profileWebLink
     }
 }

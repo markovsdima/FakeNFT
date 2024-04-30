@@ -6,16 +6,11 @@ public protocol ProfileViewControllerProtocol: AnyObject {
     func openWebView(url: String)
 }
 
-protocol ProfileViewControllerDelegate {
-    //todo
-}
-
-final class ProfileViewController: UIViewController & ProfileViewControllerProtocol & ProfileViewControllerDelegate {
+final class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
     
     //MARK: - Properties
     var presenter: ProfilePresenterProtocol?
     let servicesAssembly: ServicesAssembly
-    var delegate: ProfileViewControllerDelegate?
     
     
     //MARK: - Private properties
@@ -59,7 +54,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         label.heightAnchor.constraint(equalToConstant: 28).isActive = true
         return label
     }()
-        
+    
     private lazy var profileBioTextView: UITextView = {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
@@ -68,6 +63,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         textView.isEditable = false
         textView.textColor = .ypBlack
         textView.heightAnchor.constraint(equalToConstant: 72).isActive = true
+        textView.backgroundColor = .ypWhite
         return textView
     }()
     
@@ -81,6 +77,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         link.heightAnchor.constraint(equalToConstant: 28).isActive = true
         link.isScrollEnabled = false
         link.isEditable = false
+        link.backgroundColor = .ypWhite
         return link
     }()
     
@@ -95,6 +92,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         )
         table.delegate = self
         table.dataSource = self
+        table.backgroundColor = .ypWhite
         return table
     }()
     
@@ -116,7 +114,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         
         setupNavBar()
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .ypWhite
         
         profileAddElements()
         profileSetupLayout()
@@ -136,13 +134,16 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         navigationItem.rightBarButtonItem = profileEditButton
         navigationItem.rightBarButtonItem?.tintColor = .ypBlack
     }
-   
+    
     
     @objc
     private func profileEditTapped(){
         print("profile edit button tapped")
         let editingVC = ProfileEditingViewController()
-        //presenter
+        let presenter = ProfileEditingPresenter()
+        
+        editingVC.presenter = presenter
+        presenter.view = editingVC
         
         let navVC = UINavigationController(rootViewController: editingVC)
         present(navVC, animated: true)
@@ -227,7 +228,7 @@ extension ProfileViewController: UITableViewDataSource {
 extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-       
+        
         let index = indexPath.row
         switch index {
         case 0:
@@ -243,26 +244,22 @@ extension ProfileViewController: UITableViewDelegate {
     
     private func showMyNFT() {
         let myNFTVC = MyNFTViewController()
-//        myNFTViewController.delegate = self
+        let presenter = MyNFTPresenter()
+        
+        myNFTVC.presenter = presenter
+        presenter.view = myNFTVC
+        
         navigationController?.pushViewController(myNFTVC, animated: true)
     }
     
     private func showFavouritesNFT() {
-        let viewController = FavoriteNFTViewController()
-        let presenter = FavoriteNFTPresenter()
+        let favouriteVC = FavouriteNFTViewController()
+        let presenter = FavouriteNFTPresenter()
         
-        viewController.presenter = presenter
-        presenter.view = viewController
-
-        navigationController?.pushViewController(viewController, animated: true)
+        favouriteVC.presenter = presenter
+        presenter.view = favouriteVC
+        
+        navigationController?.pushViewController(favouriteVC, animated: true)
     }
     
 }
-
-////MARK: - MyNFTViewControllerDelegate
-//
-//extension ProfileViewController: MyNFTViewControllerDelegate {
-//    func didSelectCategory() {
-//        print("ButtonTapped")
-//    }
-//}

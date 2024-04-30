@@ -1,7 +1,7 @@
 import UIKit
 import Kingfisher
 
-class ProfileFavoriteNFTCollectionCell: UICollectionViewCell {
+class ProfileFavouriteNFTCollectionCell: UICollectionViewCell {
     
     static let reuseIdentifier: String = "FavoriteNFTCollectionCell"
     
@@ -14,10 +14,11 @@ class ProfileFavoriteNFTCollectionCell: UICollectionViewCell {
     }()
     
     private lazy var imageViewNFT: UIImageView = {
-        let imageView: UIImageView = UIImageView()
-        imageView.layer.cornerRadius = 12
-        imageView.clipsToBounds = true
-        return imageView
+        let image: UIImageView = UIImageView()
+        image.layer.cornerRadius = 12
+        image.clipsToBounds = true
+        image.contentMode = .scaleAspectFill
+        return image
     }()
     
     private lazy var labelName: UILabel = {
@@ -56,14 +57,14 @@ class ProfileFavoriteNFTCollectionCell: UICollectionViewCell {
         super.init(frame: frame)
         
         addElements()
-        setupLayout()
+        setupConstraints()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configCell(_ model: FavoriteNFT) {
+    func configCell(_ model: FavouriteNFT) {
         labelName.text = model.name
         labelPriceValue.text = "\(model.price) ETH"
         
@@ -71,28 +72,27 @@ class ProfileFavoriteNFTCollectionCell: UICollectionViewCell {
             imageViewNFT.kf.setImage(with: url)
         }
         
-        // Поменять иконки
         if model.isLiked {
-            likeButton.setImage(UIImage(named: "TabBar/profile"), for: .normal)
+            likeButton.setImage(UIImage(named: "profileImages/likeActive"), for: .normal)
         } else {
-            likeButton.setImage(UIImage(named: "TabBar/profile"), for: .normal)
+            likeButton.setImage(UIImage(named: "profileImages/likeNoActive"), for: .normal)
         }
         
         stackRating.arrangedSubviews.forEach {
             $0.removeFromSuperview()
         }
-
+        
         let activeStarImage = UIImage(systemName: "star.fill")?
-                .withTintColor(.ypYellowUniversal ?? UIColor(hexString: "#FEEF0D"), renderingMode: .alwaysOriginal)
+            .withTintColor(.ypYellowUniversal ?? UIColor(hexString: "#FEEF0D"), renderingMode: .alwaysOriginal)
         let inactiveStarImage = UIImage(systemName: "star.fill")?
-                .withTintColor(.ypGreyUniversal ?? UIColor(hexString: "#625C5C"), renderingMode: .alwaysOriginal)
-
-        for index in 1...ProfileFavoriteNFTCollectionCell.totalStars {
+            .withTintColor(.ypLightGrey ?? UIColor(hexString: "#F7F7F8"), renderingMode: .alwaysOriginal)
+        
+        for index in 1...ProfileFavouriteNFTCollectionCell.totalStars {
             let starImageView = UIImageView()
             starImageView.contentMode = .scaleAspectFit
             starImageView.image = index <= model.rating ? activeStarImage : inactiveStarImage
             stackRating.addArrangedSubview(starImageView)
-
+            
             starImageView.widthAnchor.constraint(equalToConstant: 12).isActive = true
             starImageView.heightAnchor.constraint(equalToConstant: 12).isActive = true
         }
@@ -117,7 +117,7 @@ class ProfileFavoriteNFTCollectionCell: UICollectionViewCell {
         
     }
     
-    private func setupLayout(){
+    private func setupConstraints(){
         [imageViewNFT, likeButton,
          stackNFT, labelName, stackRating,
          labelPriceValue, viewNFTContent].forEach {

@@ -4,10 +4,11 @@ final class ProfileMyNFTTableCell: UITableViewCell {
     
     static let reuseIdentifier = "MyNFTTableCell"
     
+    private static let totalStars = 5
+    
     private lazy var likeButton: UIButton = {
         let button: UIButton = UIButton()
         button.setImage(UIImage(named: "TabBar/profile"), for: .normal)
-        button.backgroundColor = .ypWhite
         button.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -16,7 +17,7 @@ final class ProfileMyNFTTableCell: UITableViewCell {
         let image: UIImageView = UIImageView()
         image.layer.cornerRadius = 12
         image.clipsToBounds = true
-        image.backgroundColor = .gray//delete
+        image.contentMode = .scaleAspectFill
         return image
     }()
     
@@ -32,7 +33,6 @@ final class ProfileMyNFTTableCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .caption2
         label.textColor = .ypBlack
-        label.text = "от John Doe"//delete
         return label
     }()
     
@@ -53,7 +53,6 @@ final class ProfileMyNFTTableCell: UITableViewCell {
     private lazy var labelPriceValue: UILabel = {
         let label: UILabel = UILabel()
         label.font = .bodyBold
-        label.text = "1,78 ETH" //delete
         return label
     }()
     
@@ -96,30 +95,61 @@ final class ProfileMyNFTTableCell: UITableViewCell {
     }()
     
     private lazy var viewNFTContent: UIView = UIView()
+
+            
+    @objc
+    private func likeButtonTapped(){
+        print("like button tapped")
+    }
     
+    
+    func configCell(_ model: MyNFT) {
+        backgroundColor = .ypWhite
+        selectionStyle = .none
+        addElements()
+        setupConstraints()
+        
+        labelName.text = model.name
+        labelAuthor.text = model.author
+        labelPriceValue.text = "\(model.price) ETH"
+        
+        if let urlString = model.imageUrl, let url = URL(string: urlString) {
+            imageViewNFT.kf.setImage(with: url)
+        }
+        
+        if model.isLiked {
+            likeButton.setImage(UIImage(named: "profileImages/likeActive"), for: .normal)
+        } else {
+            likeButton.setImage(UIImage(named: "profileImages/likeNoActive"), for: .normal)
+        }
+        
+        stackRating.arrangedSubviews.forEach {
+            $0.removeFromSuperview()
+        }
+
+        let activeStarImage = UIImage(systemName: "star.fill")?
+                .withTintColor(.ypYellowUniversal ?? UIColor(hexString: "#FEEF0D"), renderingMode: .alwaysOriginal)
+        let inactiveStarImage = UIImage(systemName: "star.fill")?
+                .withTintColor(.ypLightGrey ?? UIColor(hexString: "#F7F7F8"), renderingMode: .alwaysOriginal)
+
+        for index in 1...ProfileMyNFTTableCell.totalStars {
+            let starImageView = UIImageView()
+            starImageView.contentMode = .scaleAspectFit
+            starImageView.image = index <= model.rating ? activeStarImage : inactiveStarImage
+            stackRating.addArrangedSubview(starImageView)
+
+            starImageView.widthAnchor.constraint(equalToConstant: 12).isActive = true
+            starImageView.heightAnchor.constraint(equalToConstant: 12).isActive = true
+        }
+    }
+
     override func prepareForReuse() {
         for view in stackRating.arrangedSubviews {
             stackRating.removeArrangedSubview(view)
         }
     }
     
-    @objc
-    private func likeButtonTapped(){
-        print("like button tapped")
-    }
-    
-    func configureCell(name: String) {
-        backgroundColor = .ypWhite
-        selectionStyle = .none
-        labelName.text = name
-        
-        addElements()
-        setupConstraints()
-    }
-    
     private func addElements(){
-        //        self.accessoryType = .none
-        contentView.backgroundColor = .ypWhite
         contentView.addSubview(viewNFTContent)
         
         viewNFTContent.addSubview(imageViewNFT)

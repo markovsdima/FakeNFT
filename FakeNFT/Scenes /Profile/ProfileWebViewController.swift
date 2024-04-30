@@ -28,7 +28,7 @@ class  ProfileWebViewController: UIViewController, UIWebViewDelegate, WKUIDelega
         super.viewDidLoad()
         
         navigationItem.leftBarButtonItem = backButton
-        navigationItem.leftBarButtonItem?.tintColor = UIColor.ypBlack
+        navigationItem.leftBarButtonItem?.tintColor = .ypBlackUniversal
  
         let request = URLRequest(url: url)
         webView.load(request)

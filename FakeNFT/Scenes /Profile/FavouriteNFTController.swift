@@ -1,15 +1,15 @@
 import UIKit
 
-protocol FavoriteNFTViewControllerProtocol {
+protocol FavouriteNFTViewControllerProtocol {
     
-    func refreshNfts(nfts: [FavoriteNFT])
+    func refreshNfts(nfts: [FavouriteNFT])
 }
 
-class FavoriteNFTViewController: UIViewController {
+class FavouriteNFTViewController: UIViewController {
     
-    var presenter: FavoriteNFTPresenterProtocol?
+    var presenter: FavouriteNFTPresenterProtocol?
     
-    private var visibleNfts: [FavoriteNFT] = []
+    private var visibleNfts: [FavouriteNFT] = []
     
     private lazy var backButton: UIBarButtonItem = {
         let button = UIBarButtonItem()
@@ -26,8 +26,8 @@ class FavoriteNFTViewController: UIViewController {
         colView.dataSource = self
         colView.delegate = self
         colView.register(
-            ProfileFavoriteNFTCollectionCell.self,
-            forCellWithReuseIdentifier: ProfileFavoriteNFTCollectionCell.reuseIdentifier
+            ProfileFavouriteNFTCollectionCell.self,
+            forCellWithReuseIdentifier: ProfileFavouriteNFTCollectionCell.reuseIdentifier
         )
         colView.translatesAutoresizingMaskIntoConstraints = false
         return colView
@@ -84,7 +84,7 @@ class FavoriteNFTViewController: UIViewController {
 }
 
 //MARK: - UICollectionViewDataSource
-extension FavoriteNFTViewController: UICollectionViewDataSource {
+extension FavouriteNFTViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         visibleNfts.count
@@ -92,9 +92,9 @@ extension FavoriteNFTViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: ProfileFavoriteNFTCollectionCell.reuseIdentifier,
+            withReuseIdentifier: ProfileFavouriteNFTCollectionCell.reuseIdentifier,
             for: indexPath
-        ) as? ProfileFavoriteNFTCollectionCell ?? ProfileFavoriteNFTCollectionCell()
+        ) as? ProfileFavouriteNFTCollectionCell ?? ProfileFavouriteNFTCollectionCell()
 
         cell.configCell(visibleNfts[indexPath.row])
 
@@ -102,10 +102,24 @@ extension FavoriteNFTViewController: UICollectionViewDataSource {
     }
 }
 
-//MARK: - FavoriteNFTControllerProtocol
-extension FavoriteNFTViewController: FavoriteNFTViewControllerProtocol {
+//MARK: - UICollectionViewDelegate
+extension FavouriteNFTViewController: UICollectionViewDelegateFlowLayout {
     
-    func refreshNfts(nfts: [FavoriteNFT]) {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let cellWidth = (collectionView.bounds.width - 48) / 2
+        return CGSize(width: cellWidth, height: 80)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        let inset = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
+        return inset
+    }
+}
+
+//MARK: - FavoriteNFTControllerProtocol
+extension FavouriteNFTViewController: FavouriteNFTViewControllerProtocol {
+    
+    func refreshNfts(nfts: [FavouriteNFT]) {
         visibleNfts = nfts
         
         collectionView.reloadData()
@@ -125,16 +139,4 @@ extension FavoriteNFTViewController: FavoriteNFTViewControllerProtocol {
     }
 }
 
-extension FavoriteNFTViewController: UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cellWidth = (collectionView.bounds.width - 48) / 2
-        return CGSize(width: cellWidth, height: 80)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        let inset = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
-        return inset
-    }
-}
 

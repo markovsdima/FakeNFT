@@ -6,27 +6,28 @@ final class ProfileTableCell: UITableViewCell {
     static let reuseIdentifier = "ProfileTableCell"
    
     let profileTableTitle: UILabel = {
-        let profileTableTitle = UILabel()
-        profileTableTitle.translatesAutoresizingMaskIntoConstraints = false
-        profileTableTitle.font = UIFont.systemFont(ofSize: 17, weight: .bold)
-        profileTableTitle.numberOfLines = 0
-        profileTableTitle.textAlignment = .left
-        return profileTableTitle
+        let table = UILabel()
+        table.translatesAutoresizingMaskIntoConstraints = false
+        table.font = UIFont.systemFont(ofSize: 17, weight: .bold)
+        table.numberOfLines = 0
+        table.textAlignment = .left
+        return table
     }()
     
     private lazy var profileTableCustomImage: UIImageView = {
-        let profileTableCustomImage = UIImageView()
-        profileTableCustomImage.translatesAutoresizingMaskIntoConstraints = false
+        let image = UIImageView()
+        image.translatesAutoresizingMaskIntoConstraints = false
         let boldConfig = UIImage.SymbolConfiguration(weight: .bold)
-        profileTableCustomImage.image = UIImage(systemName: "chevron.right", withConfiguration: boldConfig)
-        profileTableCustomImage.contentMode = .scaleAspectFit
-        profileTableCustomImage.tintColor = UIColor.ypBlack
-        return profileTableCustomImage
+        image.image = UIImage(systemName: "chevron.right", withConfiguration: boldConfig)
+        image.contentMode = .scaleAspectFit
+        image.tintColor = UIColor.ypBlack
+        return image
     }()
     
     // MARK: - Private Methods
     
     func configureCell(title: String) {
+        contentView.backgroundColor = .ypWhite
         [profileTableTitle,
          profileTableCustomImage].forEach { contentView.addSubview($0) }
         selectionStyle = .none

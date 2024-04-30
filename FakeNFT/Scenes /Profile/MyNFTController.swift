@@ -5,18 +5,11 @@ protocol MyNFTViewControllerProtocol {
     func refreshNfts(nfts: [MyNFT])
 }
 
-protocol MyNFTViewControllerDelegate {
-    func didSelectCategory()
-}
-
 final class MyNFTViewController: UIViewController {
     
-    var delegate: MyNFTViewControllerDelegate?
-    var presenter: FavoriteNFTPresenterProtocol?
+    var presenter: MyNFTVPresenterProtocol?
     
     private var visibleNfts: [MyNFT] = []
-
-    private let nfts: [String] = ["Lilo", "Spring", "April"]
     
     private lazy var backButton: UIBarButtonItem = {
         let button = UIBarButtonItem()
@@ -72,6 +65,8 @@ final class MyNFTViewController: UIViewController {
         setupNavBar()
         addElements()
         setupConstraints()
+        
+        presenter?.loadNfts()
     }
     
     //MARK: - Private Methods
@@ -89,7 +84,7 @@ final class MyNFTViewController: UIViewController {
     }
     
     func selectCell(cellIndex: Int) {
-
+        
     }
     
     private func setupNavBar(){
@@ -146,15 +141,7 @@ final class MyNFTViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    private func setupPaceholder() {
-        let nftsEmpty = nfts.isEmpty
-        if nftsEmpty == true {
-            emptyNFTsLabel.isHidden = false
-//            sortButton.isHidden = true
-            navigationItem.title = ""
-//            tableView.isHidden = true
-        }
-    }
+    
 }
 
 //MARK: - UITableViewDataSource
@@ -163,7 +150,7 @@ extension MyNFTViewController: UITableViewDataSource {
         _ tableView: UITableView,
         numberOfRowsInSection section: Int
     ) -> Int {
-        return nfts.count
+        return visibleNfts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -174,7 +161,7 @@ extension MyNFTViewController: UITableViewDataSource {
             return ProfileMyNFTTableCell()
         }
         
-        cell.configureCell(name: nfts[indexPath.row])
+        cell.configCell(visibleNfts[indexPath.row])
         
         return cell
     }
@@ -191,3 +178,28 @@ extension MyNFTViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
+
+//MARK: - MyNFTControllerProtocol
+extension MyNFTViewController: MyNFTViewControllerProtocol {
+    
+    func refreshNfts(nfts: [MyNFT]) {
+        visibleNfts = nfts
+        
+        myNFTTableView.reloadData()
+        
+        if visibleNfts.isEmpty {
+            emptyNFTsLabel.isHidden = false
+            myNFTTableView.isHidden = true
+            
+            navigationItem.title = ""
+            
+        } else {
+            emptyNFTsLabel.isHidden = true
+            myNFTTableView.isHidden = false
+            
+            navigationItem.title = "Мои NFT"
+        }
+    }
+}
+
+
