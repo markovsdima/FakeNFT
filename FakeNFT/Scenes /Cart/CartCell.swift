@@ -1,12 +1,16 @@
-import Foundation
-
 import UIKit
+
+protocol CartCellDelete: AnyObject {
+    func deleteNFT(_ isTapped: Bool, _ imageName: String)
+}
 
 final class CartCell: UICollectionViewCell {
     static let cartCellIdentifier = "CartCell"
     
+    weak var delegate: CartCellDelete?
+    
     private lazy var imageNFT: UIImageView = {
-        var image = UIImageView(image: UIImage(named: "AppIcon"))
+        var image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         image.layer.cornerRadius = 12
         image.clipsToBounds = true
@@ -18,7 +22,6 @@ final class CartCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
-        label.text = "April"
         return label
     }()
     
@@ -70,7 +73,7 @@ final class CartCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
-        label.text = "1,78 ETH"
+//        label.text = "1,78 ETH"
         return label
     }()
     
@@ -104,11 +107,13 @@ final class CartCell: UICollectionViewCell {
     
     private lazy var deleteButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "CartDelete"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(named: "CartDelete"), for: .normal)
+        button.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
         return button
     }()
     
+    private var imageName = ""
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -147,5 +152,18 @@ final class CartCell: UICollectionViewCell {
             deleteButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             deleteButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
         ])
+    }
+    
+    func configure(with: NFTCartModel?) {
+        guard let with = with else { return }
+        imageNFT.image = UIImage(named: with.image)
+        imageName = with.image
+        nameLabel.text = with.name
+        amountLabel.text = "\(with.price) ETH"
+
+    }
+    
+    @objc func deleteButtonTapped() {
+        delegate?.deleteNFT(true, imageName)
     }
 }

@@ -54,6 +54,8 @@
 		E736B6442BD8E85900CA5513 /* PaymentSystemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E736B6432BD8E85900CA5513 /* PaymentSystemModel.swift */; };
 		E736B6462BD8E88500CA5513 /* PaymentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E736B6452BD8E88500CA5513 /* PaymentCell.swift */; };
 		E736B6492BD8F2A400CA5513 /* PaymentEndViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E736B6482BD8F2A400CA5513 /* PaymentEndViewController.swift */; };
+		E7D01F0F2BE41F12004AE2CA /* NFTCartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D01F0E2BE41F12004AE2CA /* NFTCartModel.swift */; };
+		E7D01F112BE41F3F004AE2CA /* CartPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D01F102BE41F3F004AE2CA /* CartPresenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -125,6 +127,8 @@
 		E736B6432BD8E85900CA5513 /* PaymentSystemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSystemModel.swift; sourceTree = "<group>"; };
 		E736B6452BD8E88500CA5513 /* PaymentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentCell.swift; sourceTree = "<group>"; };
 		E736B6482BD8F2A400CA5513 /* PaymentEndViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentEndViewController.swift; sourceTree = "<group>"; };
+		E7D01F0E2BE41F12004AE2CA /* NFTCartModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTCartModel.swift; sourceTree = "<group>"; };
+		E7D01F102BE41F3F004AE2CA /* CartPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartPresenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -222,6 +226,7 @@
 			children = (
 				E736B6422BD8E84600CA5513 /* Model */,
 				32A1B1632BCAE813007C2AE7 /* CartController.swift */,
+				E7D01F102BE41F3F004AE2CA /* CartPresenter.swift */,
 				E736B63D2BD5B70200CA5513 /* CartCell.swift */,
 				E736B63F2BD8E7F400CA5513 /* Payment */,
 			);
@@ -421,6 +426,7 @@
 			isa = PBXGroup;
 			children = (
 				E736B6432BD8E85900CA5513 /* PaymentSystemModel.swift */,
+				E7D01F0E2BE41F12004AE2CA /* NFTCartModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -604,6 +610,7 @@
 				3FC8C39329D246BA0081F015 /* DateFormatters+Presets.swift in Sources */,
 				0CFCB7422A78013E0009A829 /* Nft.swift in Sources */,
 				0CF2C2DD2A783CE600FDC837 /* ErrorView.swift in Sources */,
+				E7D01F0F2BE41F12004AE2CA /* NFTCartModel.swift in Sources */,
 				0C79EE682A76DE0900EE90EA /* NftDetailPresenter.swift in Sources */,
 				3F68069B29CBBAF100B4F915 /* ProductDetailsTableViewController.swift in Sources */,
 				0CFCB7402A78002A0009A829 /* NftService.swift in Sources */,
@@ -627,6 +634,7 @@
 				32A1B1642BCAE813007C2AE7 /* CartController.swift in Sources */,
 				0CFCB7442A7802440009A829 /* NftDetailInput.swift in Sources */,
 				0C79EE632A76DD1900EE90EA /* RequestConstants.swift in Sources */,
+				E7D01F112BE41F3F004AE2CA /* CartPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

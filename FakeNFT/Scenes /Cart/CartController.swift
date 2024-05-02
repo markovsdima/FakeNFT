@@ -7,6 +7,7 @@ final class CartViewController: UIViewController {
     
     private let paymentViewController = PaymentViewController()
     private var cartPresenter: CartPresenter?
+    private var isTapped = false
     
     private lazy var filterButton: UIButton = {
         let imageButton = UIImage(named: "SortButton")?.withTintColor(
@@ -310,7 +311,6 @@ extension CartViewController: UICollectionViewDataSource {
 
 // MARK: - CartCellDelete
 extension CartViewController: CartCellDelete {
-    
     func deleteNFT(_ isTapped: Bool, _ imageName: String) {
         nftImageView.image = UIImage(named: imageName)
         cartPresenter?.confirmationOfDeletion(isTapped, nftImageView, blurView, deleteButton, returnButton, warningsLabel)
