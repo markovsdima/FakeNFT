@@ -4,7 +4,9 @@ final class CartViewController: UIViewController {
     
     // MARK: - Properties
     let servicesAssembly: ServicesAssembly
+    
     private let paymentViewController = PaymentViewController()
+    private var cartPresenter: CartPresenter?
     
     private lazy var filterButton: UIButton = {
         let imageButton = UIImage(named: "SortButton")?.withTintColor(
@@ -30,7 +32,7 @@ final class CartViewController: UIViewController {
         collection.backgroundColor = .ypWhite
         collection.register(CartCell.self, forCellWithReuseIdentifier: CartCell.cartCellIdentifier)
         collection.dataSource = self
-//        collection.delegate = self
+        //        collection.delegate = self
         return collection
     }()
     
@@ -38,7 +40,7 @@ final class CartViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-        label.text = "3 NFT"
+        //        label.text = "3 NFT"
         return label
     }()
     
@@ -47,7 +49,7 @@ final class CartViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
         label.textColor = .ypGreenUniversal
-        label.text = "5,34 ETH"
+        //        label.text = "5,34 ETH"
         return label
     }()
     
@@ -87,6 +89,84 @@ final class CartViewController: UIViewController {
         return view
     }()
     
+    private let blurView: UIVisualEffectView = {
+        let view = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
+        view.frame = UIScreen.main.bounds
+        view.isHidden = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private let nftImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.layer.cornerRadius = 12
+        imageView.isHidden = true
+        imageView.clipsToBounds = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    private lazy var warningsLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+        label.textAlignment = .center
+        label.numberOfLines = 2
+        label.text = "Вы уверены, что хотите \nудалить объект из корзины?"
+        label.isHidden = true
+        return label
+    }()
+    
+    private lazy var nftStack: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [nftImageView, warningsLabel])
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .vertical
+        stack.spacing = 12
+        stack.alignment = .center
+        return stack
+    }()
+    
+    private lazy var deleteButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .ypBlack
+        button.layer.cornerRadius = 12
+        button.setTitle("Удалить", for: .normal)
+        button.setTitleColor(.ypRedUniversal, for: .normal)
+        button.addTarget(self, action: #selector(deleteButtonDidTapped), for: .touchUpInside)
+        button.isHidden = true
+        return button
+    }()
+    
+    private lazy var returnButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .ypBlack
+        button.layer.cornerRadius = 12
+        button.setTitle("Вернуться", for: .normal)
+        button.addTarget(self, action: #selector(returnButtonDidTapped), for: .touchUpInside)
+        button.isHidden = true
+        return button
+    }()
+    
+    private lazy var buttonStack: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [deleteButton, returnButton])
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .horizontal
+        stack.spacing = 8
+        stack.alignment = .center
+        return stack
+    }()
+    
+    private lazy var deleteStack: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [nftStack, buttonStack])
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .vertical
+        stack.spacing = 20
+        stack.alignment = .center
+        return stack
+    }()
+    
     init(servicesAssembly: ServicesAssembly) {
         self.servicesAssembly = servicesAssembly
         super.init(nibName: nil, bundle: nil)
@@ -96,13 +176,39 @@ final class CartViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private lazy var cartIsEmpty: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        label.textAlignment = .center
+        label.text = "Корзина пуста"
+        label.isHidden = true
+        return label
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         viewConstraints()
+        cartPresenter = CartPresenter(view: self)
+        
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        cartPresenter?.nftCount()
+        cartPresenter?.sumNFT()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        cartPresenter?.ifIsEmptyNftData(filterButton, countNFTLabel, priceNFTLabel, paymentButton, payBackgroundColor, cartIsEmpty, cartCollection)
+        
+        countNFTLabel.text = "\(nftDataCount) ETH"
+        priceNFTLabel.text = "\(totalPrice) NFT"
     }
     
     // MARK: - Lifecycle
-
     private func viewConstraints() {
         view.backgroundColor = .ypWhite
         
@@ -110,7 +216,9 @@ final class CartViewController: UIViewController {
         view.addSubview(cartCollection)
         view.addSubview(payBackgroundColor)
         view.addSubview(payStack)
-        
+        view.addSubview(blurView)
+        view.addSubview(deleteStack)
+        view.addSubview(cartIsEmpty)
         
         NSLayoutConstraint.activate([
             filterButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 2),
@@ -134,40 +242,37 @@ final class CartViewController: UIViewController {
             
             paymentButton.widthAnchor.constraint(equalToConstant: 244),
             paymentButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            blurView.heightAnchor.constraint(equalTo: view.heightAnchor),
+            blurView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            
+            deleteStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            deleteStack.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            nftImageView.widthAnchor.constraint(equalToConstant: 108),
+            nftImageView.heightAnchor.constraint(equalToConstant: 108),
+            
+            deleteButton.heightAnchor.constraint(equalToConstant: 44),
+            deleteButton.widthAnchor.constraint(equalToConstant: 127),
+            
+            returnButton.heightAnchor.constraint(equalToConstant: 44),
+            returnButton.widthAnchor.constraint(equalToConstant: 127),
+            
+            cartIsEmpty.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            cartIsEmpty.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])
     }
     
-    private func showActionSheet() {
-        let alertController = UIAlertController(title: "Сортировка", message: nil, preferredStyle: .actionSheet)
-        
-        let action1 = UIAlertAction(title: "По цене", style: .default) { _ in
-    
-        }
-        alertController.addAction(action1)
-        
-        let action2 = UIAlertAction(title: "По рейтингу", style: .default) { _ in
-            
-        }
-        alertController.addAction(action2)
-        
-        let action3 = UIAlertAction(title: "По названию", style: .default) { _ in
-            
-        }
-        alertController.addAction(action3)
-        
-        
-        let cancelAction = UIAlertAction(title: "Закрыть", style: .cancel, handler: nil)
-        alertController.addAction(cancelAction)
-        
-        
-        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-            let viewController = scene.windows.first?.rootViewController {
-            viewController.present(alertController, animated: true, completion: nil)
-        }
+    @objc private func filterButtonTapped() {
+        cartPresenter?.showActionSheet()
     }
     
-    @objc private func filterButtonTapped() {
-        showActionSheet()
+    @objc private func deleteButtonDidTapped() {
+        cartPresenter?.deleteNFT()
+        cartPresenter?.confirmationOfDeletion(nftImageView, blurView, deleteButton, returnButton, warningsLabel, cartCollection)
+    }
+    
+    @objc private func returnButtonDidTapped() {
+        cartPresenter?.confirmationOfDeletion(nftImageView, blurView, deleteButton, returnButton, warningsLabel, cartCollection)
     }
     
     @objc private func payButtonDidTapped() {
@@ -177,15 +282,58 @@ final class CartViewController: UIViewController {
 }
 
 
-
+// MARK: - UICollectionViewDataSource
 extension CartViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        2
+        cartPresenter?.nftData.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CartCell.cartCellIdentifier, for: indexPath)
-        
-        return cell
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CartCell.cartCellIdentifier, for: indexPath) as? CartCell {
+            
+            guard let nftData = cartPresenter?.nftData else {
+                return UICollectionViewCell()
+            }
+            
+            guard indexPath.row < nftData.count else {
+                return UICollectionViewCell()
+            }
+            
+            let nftItem = cartPresenter?.nftData[indexPath.row]
+            cell.configure(with: nftItem)
+            cell.delegate = self
+            return cell
+        }
+        return UICollectionViewCell()
+    }
+}
+
+// MARK: - CartCellDelete
+extension CartViewController: CartCellDelete {
+    
+    func deleteNFT(_ isTapped: Bool, _ imageName: String) {
+        nftImageView.image = UIImage(named: imageName)
+        cartPresenter?.confirmationOfDeletion(isTapped, nftImageView, blurView, deleteButton, returnButton, warningsLabel)
+    }
+}
+
+// MARK: - CartPreseterView
+extension CartViewController: CartPreseterView {
+    var nftDataCount: Int {
+        get {
+            return (cartPresenter?.nftDataCount ?? 0)
+        }
+        set {
+
+        }
+    }
+    
+    var totalPrice: String {
+        get {
+            return "\(cartPresenter?.totalPrice ?? 0)"
+        }
+        set {
+            
+        }
     }
 }
