@@ -1,12 +1,11 @@
 import UIKit
 
-struct ProfileModelUI {
-    let id: String
-    let name: String
-    let description: String?
-    let website: String?
-    let nfts: [String]
-    var likes: [String]
-//    let avatar: Data?
-//    let urlAvatar: String? //TODO
+struct ProfileUIModel {
+var name: String
+var avatar: URL
+var description: String
+var website: URL
+var nfts: [String]
+var likes: [String]
+var id: String
 }
