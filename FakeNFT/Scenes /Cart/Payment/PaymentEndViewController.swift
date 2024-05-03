@@ -1,6 +1,7 @@
 import UIKit
 
 final class PaymentEndViewController: UIViewController {
+    // MARK: - Properties
     private lazy var imageEnd: UIImageView = {
         var image = UIImageView(image: UIImage(named: "imageEndCart"))
         image.translatesAutoresizingMaskIntoConstraints = false
@@ -47,7 +48,7 @@ final class PaymentEndViewController: UIViewController {
         viewConstraints()
     }
     
-    
+    // MARK: - Lifecycle
     private func viewConstraints() {
         view.backgroundColor = .ypWhite
        
@@ -66,6 +67,6 @@ final class PaymentEndViewController: UIViewController {
     }
     
     @objc private func endButtonDidTapped() {
-        
+        print("endButtonDidTapped")
     }
 }

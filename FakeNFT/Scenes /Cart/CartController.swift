@@ -33,7 +33,6 @@ final class CartViewController: UIViewController {
         collection.backgroundColor = .ypWhite
         collection.register(CartCell.self, forCellWithReuseIdentifier: CartCell.cartCellIdentifier)
         collection.dataSource = self
-        //        collection.delegate = self
         return collection
     }()
     
@@ -41,7 +40,6 @@ final class CartViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-        //        label.text = "3 NFT"
         return label
     }()
     
@@ -50,7 +48,6 @@ final class CartViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
         label.textColor = .ypGreenUniversal
-        //        label.text = "5,34 ETH"
         return label
     }()
     
@@ -283,7 +280,7 @@ final class CartViewController: UIViewController {
 }
 
 
-// MARK: - UICollectionViewDataSource
+// MARK: - extension UICollectionViewDataSource
 extension CartViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         cartPresenter?.nftData.count ?? 0
@@ -309,7 +306,7 @@ extension CartViewController: UICollectionViewDataSource {
     }
 }
 
-// MARK: - CartCellDelete
+// MARK: - extension CartCellDelete
 extension CartViewController: CartCellDelete {
     func deleteNFT(_ isTapped: Bool, _ imageName: String) {
         nftImageView.image = UIImage(named: imageName)
@@ -317,7 +314,7 @@ extension CartViewController: CartCellDelete {
     }
 }
 
-// MARK: - CartPreseterView
+// MARK: - extension CartPreseterView
 extension CartViewController: CartPreseterView {
     var nftDataCount: Int {
         get {

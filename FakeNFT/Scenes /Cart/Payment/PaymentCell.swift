@@ -1,6 +1,7 @@
 import UIKit
 
 final class PaymentCell: UICollectionViewCell {
+    // MARK: - Properties
     static let PaymentCellIdentifier = "PaymentCell"
     
     private lazy var paymentImage: UIImageView = {
@@ -57,7 +58,8 @@ final class PaymentCell: UICollectionViewCell {
         super.prepareForReuse()
         
     }
-
+    
+    // MARK: - Lifecycle
     private func viewConstraints() {
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.backgroundColor = .ypLightGrey

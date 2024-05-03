@@ -8,18 +8,19 @@ protocol CartPreseterView: AnyObject {
 }
 
 final class CartPresenter {
+    // MARK: - Properties
     weak var view: CartPreseterView?
     
     var nftData: [NFTCartModel] = [NFTCartModel(name: "Apec",
                                                 image: "ApecoinCart",
-                                                rating: 4,
+                                                rating: 1,
                                                 paymentSystem: "Apecoin",
                                                 currency: "APE",
                                                 price: 7,
                                                 id: UUID()),
                                    NFTCartModel(name: "Bit",
                                                 image: "BitcoinCart",
-                                                rating: 4,
+                                                rating: 3,
                                                 paymentSystem: "Bitcoin",
                                                 currency: "ВТС",
                                                 price: 2,
@@ -32,6 +33,7 @@ final class CartPresenter {
         self.view = view
     }
     
+    // MARK: - Lifecycle
     func nftCount() {
         nftDataCount = 0
         nftDataCount = nftData.count

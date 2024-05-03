@@ -1,6 +1,7 @@
 import UIKit
 
 final class PaymentViewController: UIViewController {
+    // MARK: - Properties
     private let paymentEndViewController = PaymentEndViewController()
     private var paymentPresenter: PaymentPresenter?
     
@@ -76,7 +77,7 @@ final class PaymentViewController: UIViewController {
         paymentPresenter = PaymentPresenter()
     }
     
-    
+    // MARK: - Lifecycle
     private func viewConstraints() {
         view.backgroundColor = .ypWhite
        
@@ -138,6 +139,7 @@ final class PaymentViewController: UIViewController {
     }
 }
 
+// MARK: - extension UICollectionViewDelegateFlowLayout
 extension PaymentViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let paddingSpace = 16
@@ -147,6 +149,7 @@ extension PaymentViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
+// MARK: - extension UICollectionViewDataSource
 extension PaymentViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         paymentPresenter?.paymentSystem.count ?? 0
@@ -163,6 +166,7 @@ extension PaymentViewController: UICollectionViewDataSource {
     }
 }
 
+// MARK: - extension UICollectionViewDelegate
 extension PaymentViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == paymentSystemCollection {

@@ -5,6 +5,7 @@ protocol CartCellDelete: AnyObject {
 }
 
 final class CartCell: UICollectionViewCell {
+    // MARK: - Properties
     static let cartCellIdentifier = "CartCell"
     
     weak var delegate: CartCellDelete?
@@ -25,11 +26,11 @@ final class CartCell: UICollectionViewCell {
         return label
     }()
     
-    private var starRatingImage1 = UIImage(named: "StarsYesCart")
-    private var starRatingImage2 = UIImage(named: "StarsYesCart")
-    private var starRatingImage3 = UIImage(named: "StarsYesCart")
-    private var starRatingImage4 = UIImage(named: "StarsYesCart")
-    private var starRatingImage5 = UIImage(named: "StarsYesCart")
+    private var starRatingImage1 = UIImage(named: "StarsNoCart")
+    private var starRatingImage2 = UIImage(named: "StarsNoCart")
+    private var starRatingImage3 = UIImage(named: "StarsNoCart")
+    private var starRatingImage4 = UIImage(named: "StarsNoCart")
+    private var starRatingImage5 = UIImage(named: "StarsNoCart")
     
     private lazy var starStack: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [
@@ -73,7 +74,6 @@ final class CartCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
-//        label.text = "1,78 ETH"
         return label
     }()
     
@@ -130,6 +130,7 @@ final class CartCell: UICollectionViewCell {
         
     }
     
+    // MARK: - Lifecycle
     private func viewConstraints() {
         contentView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -160,7 +161,14 @@ final class CartCell: UICollectionViewCell {
         imageName = with.image
         nameLabel.text = with.name
         amountLabel.text = "\(with.price) ETH"
+        
+        let starRatingImage = UIImage(named: "StarsYesCart")
 
+        if with.rating <= 5 {
+            for i in 0..<with.rating {
+                (starStack.arrangedSubviews[i] as? UIImageView)?.image = starRatingImage
+            }
+        }
     }
     
     @objc func deleteButtonTapped() {

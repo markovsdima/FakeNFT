@@ -1,6 +1,7 @@
 import UIKit
 
 final class PaymentPresenter {
+    // MARK: - Properties
     let urlUserAgreement = "https://yandex.ru/legal/practicum_termsofuse/"
     
     let paymentSystem: [PaymentSystemModel] = [
@@ -14,6 +15,7 @@ final class PaymentPresenter {
         PaymentSystemModel(image: "ShibaInuCart", paymentSystem: "Shiba Inu", currency: "SHIB")
     ]
     
+    // MARK: - Lifecycle
     func showAlert(from viewController: UIViewController) {
         let alertController = UIAlertController(title: "Не удалось произвести оплату", message: "", preferredStyle: .alert)
         
