@@ -67,8 +67,8 @@ final class PaymentCell: UICollectionViewCell {
         contentView.addSubview(paymentSystemStack)
         
         NSLayoutConstraint.activate([
-            contentView.heightAnchor.constraint(equalToConstant: 46),
-            contentView.widthAnchor.constraint(equalToConstant: 168),
+            contentView.heightAnchor.constraint(equalTo: heightAnchor),
+            contentView.widthAnchor.constraint(equalTo: widthAnchor),
 
             paymentImage.heightAnchor.constraint(equalToConstant: 36),
             paymentImage.widthAnchor.constraint(equalToConstant: 36),
