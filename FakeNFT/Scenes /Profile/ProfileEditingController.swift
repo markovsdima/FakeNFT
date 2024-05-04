@@ -127,7 +127,7 @@ final class ProfileEditingViewController: UIViewController {
         addElements()
         setupConstraints()
         
-        presenter?.udateProfile()
+        presenter?.updateProfile()
         
     }
     

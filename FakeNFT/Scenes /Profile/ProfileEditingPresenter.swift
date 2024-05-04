@@ -4,14 +4,14 @@ protocol ProfileEditingPresenterProtocol {
     
     var view: ProfileEditingViewControllerProtocol? { get set }
     
-    func udateProfile()
+    func updateProfile()
 }
 
 final class ProfileEditingPresenter: ProfileEditingPresenterProtocol {
     
     weak var view: ProfileEditingViewControllerProtocol?
     
-    func udateProfile() {
+    func updateProfile() {
         let profileName = ProfileConstants.profileNameString
         let profileBio = ProfileConstants.profileBioString
         let profileWebLink = ProfileConstants.profileWebLinkString

@@ -2,15 +2,21 @@ import UIKit
 
 protocol ProfileViewControllerProtocol: AnyObject {
     var presenter: ProfilePresenterProtocol? { get set }
+    var profileAvatar: UIImageView { get }
+    
     
     func openWebView(url: String)
+    func updateProfileDetails(profile: ProfileUIModel)
+    func updateProfileAvatar(avatar: URL?)
+    func showError(_ model: ErrorModel)
 }
 
-final class ProfileViewController: UIViewController & ProfileViewControllerProtocol {
+final class ProfileViewController: UIViewController {
     
     //MARK: - Properties
     var presenter: ProfilePresenterProtocol?
     let servicesAssembly: ServicesAssembly
+    
     
     
     //MARK: - Private properties
@@ -33,7 +39,7 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         return stack
     } ()
     
-    private lazy var profileAvatar: UIImageView = {
+    var profileAvatar: UIImageView = {
         let avatar = UIImageView()
         avatar.image = UIImage(named: "profileImages/profileAvatarMock")
         avatar.contentMode = .scaleAspectFill
@@ -120,10 +126,14 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         profileSetupLayout()
         profileSetText()
         
+        presenter?.viewDidLoad()
+        
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         tabBarController?.tabBar.isHidden = false
+        
+        profileAvatar.kf.indicatorType = .activity
     }
     
     func openWebView(url: String) {
@@ -265,5 +275,41 @@ extension ProfileViewController: UITableViewDelegate {
         
         navigationController?.pushViewController(favouriteVC, animated: true)
     }
+}
+
+// MARK: - ProfileViewControllerProtocol
+extension ProfileViewController: ProfileViewControllerProtocol {
+    
+    func updateProfileDetails(profile: ProfileUIModel) {
+        profileNameLabel.text = profile.name
+        profileBioTextView.text = profile.description
+        
+        if let url = profile.website {
+            let attributes: [NSAttributedString.Key: Any] = [
+                .link: url,
+                .font: UIFont.caption1
+            ]
+
+            let attributedString = NSMutableAttributedString(string: url.absoluteString,
+                                                             attributes: attributes)
+            profileLinkTextView.attributedText = attributedString
+        }
+    }
+    
+    func updateProfileAvatar(avatar: URL?) {
+        guard let avatar else { return }
+        
+        profileAvatar.kf.setImage(with: avatar)
+        
+        profileAvatar.kf.setImage(
+            with: avatar,
+            placeholder: UIImage(named: "TabBar/profile")
+        )
+    }
+    
+}
+
+// MARK: ErrorView
+extension ProfileViewController: ErrorView {
     
 }

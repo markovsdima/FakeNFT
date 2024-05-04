@@ -82,6 +82,7 @@ let mockFavouriteNfts = [
 //MARK: - Strings for labels
 
 enum ProfileConstants {
+    static let profileId = "1"
     static let profileNameString = "Joaquin Phoenix"
     static let profileBioString = "Дизайнер из Казани, люблю цифровое искусство и бейглы. В моей коллекции уже 100+ NFT, и еще больше — на моём сайте. Открыт к коллаборациям."
     static let profileWebLinkString = "Joaquin Phoenix.com"
