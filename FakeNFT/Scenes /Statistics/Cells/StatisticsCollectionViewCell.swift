@@ -84,11 +84,11 @@ final class StatisticsCollectionViewCell: UICollectionViewCell, ReuseIdentifying
     }
     
     // MARK: - Public Methods
-    func configureStatisticsCollectionCell(price: Float, name: String, rating: Int, id: String) {
-        priceLabel.text = "\(price) ETH"
-        nameLabel.text = name
-        self.rating = rating
-        self.id = id
+    func configureStatisticsCollectionCell(nft: StatisticsNFTCell) {
+        priceLabel.text = "\(nft.price) ETH"
+        nameLabel.text = nft.name
+        self.rating = nft.rating
+        self.id = nft.id
         updateStars()
     }
     

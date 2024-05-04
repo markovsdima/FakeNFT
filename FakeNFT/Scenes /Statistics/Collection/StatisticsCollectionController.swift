@@ -4,10 +4,9 @@ import Kingfisher
 final class StatisticsCollectionViewController: UIViewController, StatisticsCollectionViewDelegate {
     
     // MARK: - Private properties
-    private let statisticsCollectionPresenter = StatisticsCollectionPresenter(networkManager: StatisticsNetworkManager.shared)
+    private let statisticsCollectionPresenter: StatisticsCollectionPresenterProtocol?
     private var dataSource: UICollectionViewDiffableDataSource<Int, StatisticsNFTCell>?
     private var snapshot: NSDiffableDataSourceSnapshot<Int, StatisticsNFTCell>?
-    private var nfts: [String] = []
     
     // MARK: - UI Properties
     private lazy var topBarView: UIView = {
@@ -71,9 +70,13 @@ final class StatisticsCollectionViewController: UIViewController, StatisticsColl
     }()
     
     // MARK: - Initializers
-    convenience init(nfts: [String]) {
-        self.init()
-        self.nfts = nfts
+    init(presenter: StatisticsCollectionPresenterProtocol, nfts: [String]) {
+        self.statisticsCollectionPresenter = presenter
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Override methods
@@ -88,8 +91,8 @@ final class StatisticsCollectionViewController: UIViewController, StatisticsColl
             StatisticsCollectionViewCell.self,
             forCellWithReuseIdentifier: StatisticsCollectionViewCell.defaultReuseIdentifier
         )
-        statisticsCollectionPresenter.setViewDelegate(statisticsCollectionViewDelegate: self)
-        statisticsCollectionPresenter.statisticsCollectionViewOpened(nfts: nfts)
+        
+        statisticsCollectionPresenter?.statisticsCollectionViewOpened()
     }
     
     // MARK: - Public Methods
@@ -99,7 +102,7 @@ final class StatisticsCollectionViewController: UIViewController, StatisticsColl
     
     @MainActor
     func showLoadingIndicator(_ show: Bool) {
-        if show == true {
+        if show {
             StatisticsUIBlockingProgressHud.show()
         } else {
             StatisticsUIBlockingProgressHud.dismiss()
@@ -142,10 +145,7 @@ final class StatisticsCollectionViewController: UIViewController, StatisticsColl
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StatisticsCollectionViewCell.defaultReuseIdentifier, for: IndexPath) as? StatisticsCollectionViewCell
             
             cell?.configureStatisticsCollectionCell(
-                price: ItemIdentifier.price,
-                name: ItemIdentifier.name,
-                rating: ItemIdentifier.rating,
-                id: ItemIdentifier.id
+                nft: ItemIdentifier
             )
             
             // Load cell image from url

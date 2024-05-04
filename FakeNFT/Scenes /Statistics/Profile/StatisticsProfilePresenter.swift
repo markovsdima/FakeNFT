@@ -3,39 +3,62 @@ import Foundation
 protocol StatisticsProfileViewDelegate: NSObjectProtocol {
     func displayProfileInfo(user: (StatisticsUserAdvanced))
     func showLoadingIndicator(_: Bool)
+    func openWebView(website: String)
+    func openNftCollection(nfts: [String])
 }
 
-final class StatisticsProfilePresenter {
+protocol StatisticsProfilePresenterProtocol: AnyObject {
+    func statisticsProfileViewOpened()
+    func didTapSiteButton()
+    func didTapNftCollectionButton()
+}
+
+final class StatisticsProfilePresenter: StatisticsProfilePresenterProtocol {
     private let networkManager: StatisticsNetworkManager
-    private var servicesAssembly: ServicesAssembly!
-    weak private var statisticsProfileViewDelegate: StatisticsProfileViewDelegate?
+    private var user: StatisticsUserAdvanced?
+    private let userId: String?
+    weak private var view: StatisticsProfileViewDelegate?
     
-    init(networkManager: StatisticsNetworkManager) {
+    init(networkManager: StatisticsNetworkManager, userId: String) {
         self.networkManager = networkManager
+        self.userId = userId
     }
     
     func setViewDelegate(statisticsProfileViewDelegate: StatisticsProfileViewDelegate?) {
-        self.statisticsProfileViewDelegate = statisticsProfileViewDelegate
+        self.view = statisticsProfileViewDelegate
     }
     
     @MainActor
-    func statisticsProfileViewOpened(userId: String?) {
+    func statisticsProfileViewOpened() {
         guard let userId else {
             return
         }
         
         Task {
             do {
-                self.statisticsProfileViewDelegate?.showLoadingIndicator(true)
+                self.view?.showLoadingIndicator(true)
                 
                 let userInfo = try await networkManager.getUserInfoFromResponse(id: userId)
-                self.statisticsProfileViewDelegate?.displayProfileInfo(user: userInfo)
+                self.user = userInfo
+                guard let user else { return }
                 
-                self.statisticsProfileViewDelegate?.showLoadingIndicator(false)
+                self.view?.displayProfileInfo(user: user)
+                
+                self.view?.showLoadingIndicator(false)
             } catch {
                 print("statisticsProfileViewOpened method error. Error: \(error.localizedDescription)")
             }
         }
         
+    }
+    
+    func didTapSiteButton() {
+        guard let website = user?.website else { return }
+        view?.openWebView(website: website)
+    }
+    
+    func didTapNftCollectionButton() {
+        guard let nfts = user?.nfts else { return }
+        view?.openNftCollection(nfts: nfts)
     }
 }

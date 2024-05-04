@@ -6,11 +6,7 @@ final class StatisticsViewController: UIViewController, StatisticsViewDelegate {
     
     // MARK: - Private Properties
     private let loadingIndicator = StatisticsUIBlockingProgressHud()
-    private let statisticsPresenter = StatisticsPresenter()
-    private var users: [StatisticsUser] = []
-    private var page: Int = 0
-    private var isLoading = false
-    private var pagesOut = false
+    private let statisticsPresenter: StatisticsPresenterProtocol?
     
     // MARK: - UI Properties
     private lazy var topBarView: UIView = {
@@ -42,6 +38,16 @@ final class StatisticsViewController: UIViewController, StatisticsViewDelegate {
         return table
     }()
     
+    // MARK: - Initializers
+    init(presenter: StatisticsPresenterProtocol) {
+        self.statisticsPresenter = presenter
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,13 +55,7 @@ final class StatisticsViewController: UIViewController, StatisticsViewDelegate {
         view.backgroundColor = .ypWhite
         self.tabBarController?.tabBar.isTranslucent = false
         
-        statisticsPresenter.setViewDelegate(statisticsViewDelegate: self)
-        statisticsPresenter.statisticsViewOpened()
-    }
-    
-    // MARK: Public Methods
-    func stopLoadingPages() {
-        pagesOut = true
+        statisticsPresenter?.statisticsViewOpened()
     }
     
     @MainActor
@@ -93,59 +93,51 @@ final class StatisticsViewController: UIViewController, StatisticsViewDelegate {
         tableView.dataSource = self
         tableView.delegate = self
         
-        self.users += users
         tableView.reloadData()
     }
     
     func loadNextPage(users: [StatisticsUser]) {
-        self.users += users
         tableView.reloadData()
     }
     
     // MARK: - Private Methods
-    private func showSortActionSheet() {
+    func showSortActionSheet(alertModel: StatisticsAlertViewModel) {
         let alert = UIAlertController(
-            title: nil,
-            message: NSLocalizedString("Statistics.sort", comment: ""),
+            title: alertModel.title,
+            message: alertModel.message,
             preferredStyle: .actionSheet
         )
         
-        let sortByNameAction = UIAlertAction(
-            title: NSLocalizedString("Statistics.sort.byName", comment: ""),
-            style: .default
-        ) { _ in
-            
-            alert.dismiss(animated: true)
+        for action in alertModel.actions {
+            let action = UIAlertAction(title: action.title, style: .default) { _ in
+                action.action()
+                alert.dismiss(animated: true)
+            }
+            alert.addAction(action)
         }
         
-        let sortByRatingAction = UIAlertAction(
-            title: NSLocalizedString("Statistics.sort.byRating", comment: ""),
-            style: .default
-        ) { _ in
-            alert.dismiss(animated: true)
+        if alertModel.cancelAction {
+            let cancelAction = UIAlertAction(
+                title: NSLocalizedString("Statistics.sort.close", comment: ""),
+                style: .cancel
+            ) { _ in
+                alert.dismiss(animated: true)
+            }
+            alert.addAction(cancelAction)
         }
         
-        let cancelAction = UIAlertAction(
-            title: NSLocalizedString("Statistics.sort.close", comment: ""),
-            style: .cancel
-        ) { _ in
-            alert.dismiss(animated: true)
-        }
-        
-        alert.addAction(sortByNameAction)
-        alert.addAction(sortByRatingAction)
-        alert.addAction(cancelAction)
         self.present(alert, animated: true)
     }
     
     @objc private func didTapSortButton() {
-        showSortActionSheet()
+        statisticsPresenter?.didTapSortButton()
     }
 }
 
 extension StatisticsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        users.count
+        guard let count = statisticsPresenter?.getUsersCount() else { return 0 }
+        return count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -156,6 +148,8 @@ extension StatisticsViewController: UITableViewDataSource {
         guard let cell = cell as? StatisticsTableViewCell else { return UITableViewCell() }
         
         // Load cell image from url
+        guard let users = statisticsPresenter?.getUsers() else { return UITableViewCell() }
+        
         if let url = URL(string: users[indexPath.row].avatar) {
             
             let processor = RoundCornerImageProcessor(cornerRadius: 100, backgroundColor: .clear)
@@ -168,10 +162,7 @@ extension StatisticsViewController: UITableViewDataSource {
         }
         
         cell.configureCell(
-            position: users[indexPath.row].rating,
-            name: users[indexPath.row].name,
-            nft: "\(users[indexPath.row].score)",
-            url: users[indexPath.row].avatar
+            user: users[indexPath.row]
         )
         
         return cell
@@ -182,13 +173,12 @@ extension StatisticsViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 extension StatisticsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        guard pagesOut == false else { return }
+        guard statisticsPresenter?.checkPagesOut() == false else { return }
         
-        if indexPath.row + 1 == users.count {
-            
-            let nextPage: Double = (Double(users.count) / 15).rounded(.up)
-            
-            statisticsPresenter.loadNextPage(page: Int(nextPage))
+        guard let usersCount = statisticsPresenter?.getUsersCount() else { return }
+        
+        if indexPath.row + 1 == usersCount {
+            statisticsPresenter?.loadNextPage()
         }
     }
     
@@ -197,7 +187,17 @@ extension StatisticsViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let view = StatisticsProfileViewController(userId: users[indexPath.row].id)
+        guard let users = statisticsPresenter?.getUsers() else { return }
+        
+        let presenter = StatisticsProfilePresenter(
+            networkManager: StatisticsNetworkManager.shared,
+            userId: users[indexPath.row].id
+        )
+        
+        let view = StatisticsProfileViewController(
+            presenter: presenter
+        )
+        presenter.setViewDelegate(statisticsProfileViewDelegate: view)
         view.modalPresentationStyle = .currentContext
         view.modalTransitionStyle = .crossDissolve
         present(view, animated: true)

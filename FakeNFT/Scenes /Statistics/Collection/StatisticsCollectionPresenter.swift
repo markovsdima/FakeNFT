@@ -5,29 +5,35 @@ protocol StatisticsCollectionViewDelegate: NSObjectProtocol {
     func showLoadingIndicator(_: Bool)
 }
 
-final class StatisticsCollectionPresenter {
-    private var servicesAssembly: ServicesAssembly!
+protocol StatisticsCollectionPresenterProtocol: AnyObject {
+    func statisticsCollectionViewOpened()
+}
+
+final class StatisticsCollectionPresenter: StatisticsCollectionPresenterProtocol {
     private let networkManager: StatisticsNetworkManager
+    private let nfts: [String]?
     
-    weak private var statisticsCollectionViewDelegate: StatisticsCollectionViewDelegate?
+    weak private var view: StatisticsCollectionViewDelegate?
     
-    init(networkManager: StatisticsNetworkManager) {
+    init(networkManager: StatisticsNetworkManager, nfts: [String]) {
         self.networkManager = networkManager
+        self.nfts = nfts
     }
     
     func setViewDelegate(statisticsCollectionViewDelegate: StatisticsCollectionViewDelegate?) {
-        self.statisticsCollectionViewDelegate = statisticsCollectionViewDelegate
+        self.view = statisticsCollectionViewDelegate
     }
     
-    func statisticsCollectionViewOpened(nfts: [String]) {
+    func statisticsCollectionViewOpened() {
         Task {
             do {
-                self.statisticsCollectionViewDelegate?.showLoadingIndicator(true)
+                guard let nfts else { return }
+                self.view?.showLoadingIndicator(true)
                 
                 let result = try await networkManager.getNftsFromResponses(nftsIds: nfts)
-                self.statisticsCollectionViewDelegate?.displayCollection(collection: result)
+                self.view?.displayCollection(collection: result)
                 
-                self.statisticsCollectionViewDelegate?.showLoadingIndicator(false)
+                self.view?.showLoadingIndicator(false)
             } catch {
                 print("statisticsCollectionViewOpened method error. Error: \(error.localizedDescription)")
             }

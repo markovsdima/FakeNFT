@@ -69,10 +69,10 @@ final class StatisticsTableViewCell: UITableViewCell, ReuseIdentifying {
     }
     
     // MARK: - Public Methods
-    func configureCell(position: String, name: String, nft: String, url: String) {
-        positionLabel.text = String(position)
-        nameLabel.text = name
-        nftAmountLabel.text = nft
+    func configureCell(user: StatisticsUser) {
+        positionLabel.text = String(user.rating)
+        nameLabel.text = user.name
+        nftAmountLabel.text = String(user.score)
     }
     
     // MARK: - Private Methods

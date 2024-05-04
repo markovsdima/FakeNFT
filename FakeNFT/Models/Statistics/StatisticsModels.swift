@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 // MARK: - View Models
 struct StatisticsUser {
@@ -25,6 +25,18 @@ struct StatisticsNFTCell: Hashable {
     let isLiked: Bool
     let id: String
     let images: [String]
+}
+
+struct StatisticsAlertViewModel {
+    let title: String?
+    let message: String?
+    let cancelAction: Bool
+    let actions: [StatisticsAlertActionViewModel]
+}
+
+struct StatisticsAlertActionViewModel {
+    let title: String
+    let action: () -> Void
 }
 
 // MARK: - Network Models

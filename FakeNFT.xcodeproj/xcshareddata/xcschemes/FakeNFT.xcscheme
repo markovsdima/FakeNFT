@@ -70,7 +70,7 @@
             BlueprintIdentifier = "3F68069229CBBAF100B4F915"
             BuildableName = "FakeNFT.app"
             BlueprintName = "FakeNFT"
-            ReferencedContainer = "container:NFT_TEST.xcodeproj">
+            ReferencedContainer = "container:FakeNFT3.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <MacroExpansion>
@@ -99,15 +99,6 @@
             ReferencedContainer = "container:FakeNFT.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3F68069229CBBAF100B4F915"
-            BuildableName = "FakeNFT.app"
-            BlueprintName = "FakeNFT"
-            ReferencedContainer = "container:FakeNFT.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

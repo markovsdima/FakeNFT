@@ -50,7 +50,7 @@ final class StatisticsNetworkManager {
             from: response.0
         )
         
-        guard decodedResponse != [] else {
+        guard decodedResponse != [] && decodedResponse != nil else {
             throw StatisticsNetworkManagerError.emptyResponse
         }
         guard let usersList = convertUsersList(response: decodedResponse) else { return [] }
@@ -249,5 +249,4 @@ final class StatisticsNetworkManager {
     }
     
 }
-
 

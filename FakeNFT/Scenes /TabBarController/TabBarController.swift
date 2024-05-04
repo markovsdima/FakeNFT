@@ -49,7 +49,9 @@ final class TabBarController: UITabBarController {
         
         cartController.tabBarItem = cartTabBarItem
         
-        let statisticsController = StatisticsViewController()
+        let statistisPresenter = StatisticsPresenter()
+        let statisticsController = StatisticsViewController(presenter: statistisPresenter)
+        statistisPresenter.setViewDelegate(statisticsViewDelegate: statisticsController)
         
         statisticsController.tabBarItem = statisticsTabBarItem
         

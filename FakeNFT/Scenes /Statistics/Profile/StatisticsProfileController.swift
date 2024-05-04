@@ -4,10 +4,7 @@ import Kingfisher
 final class StatisticsProfileViewController: UIViewController, StatisticsProfileViewDelegate {
     
     // MARK: - Private Properties
-    private let statisticsProfilePresenter = StatisticsProfilePresenter(networkManager: StatisticsNetworkManager.shared)
-    private var userId: String?
-    private var website: String?
-    private var nfts: [String] = []
+    private let statisticsProfilePresenter: StatisticsProfilePresenterProtocol?
     
     // MARK: - UI Properties
     private lazy var topBarView: UIView = {
@@ -110,18 +107,22 @@ final class StatisticsProfileViewController: UIViewController, StatisticsProfile
         return imageView
     }()
     
-    // MARK: - Init
-    convenience init(userId: String) {
-        self.init()
-        self.userId = userId
+    // MARK: - Initializers
+    init(presenter: StatisticsProfilePresenterProtocol) {
+        self.statisticsProfilePresenter = presenter
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypWhite
-        statisticsProfilePresenter.setViewDelegate(statisticsProfileViewDelegate: self)
-        statisticsProfilePresenter.statisticsProfileViewOpened(userId: userId)
+        
+        statisticsProfilePresenter?.statisticsProfileViewOpened()
     }
     
     // MARK: - Overrides
@@ -208,10 +209,29 @@ final class StatisticsProfileViewController: UIViewController, StatisticsProfile
             )
         }
         
-        website = user.website
-        nfts = user.nfts
         nftCollectionButton.setTitle("Коллекция NFT (\(user.nftsCount))", for: .normal)
+    }
+    
+    func openWebView(website: String) {
+        let view = WebViewViewController(urlString: website)
         
+        view.modalPresentationStyle = .currentContext
+        view.modalTransitionStyle = .crossDissolve
+        present(view, animated: true)
+    }
+    
+    func openNftCollection(nfts: [String]) {
+        let presenter = StatisticsCollectionPresenter(networkManager: StatisticsNetworkManager.shared, nfts: nfts)
+        
+        let view = StatisticsCollectionViewController(
+            presenter: presenter,
+            nfts: nfts
+        )
+        presenter.setViewDelegate(statisticsCollectionViewDelegate: view)
+        
+        view.modalPresentationStyle = .currentContext
+        view.modalTransitionStyle = .crossDissolve
+        present(view, animated: true)
     }
     
     @objc private func didTapBackButton() {
@@ -219,17 +239,10 @@ final class StatisticsProfileViewController: UIViewController, StatisticsProfile
     }
     
     @objc private func didTapSiteButton() {
-        guard let website else { return }
-        let view = WebViewViewController(urlString: website)
-        view.modalPresentationStyle = .currentContext
-        view.modalTransitionStyle = .crossDissolve
-        present(view, animated: true)
+        statisticsProfilePresenter?.didTapSiteButton()
     }
     
     @objc private func didTapNftCollectionButton() {
-        let view = StatisticsCollectionViewController(nfts: nfts)
-        view.modalPresentationStyle = .currentContext
-        view.modalTransitionStyle = .crossDissolve
-        present(view, animated: true)
+        statisticsProfilePresenter?.didTapNftCollectionButton()
     }
 }
