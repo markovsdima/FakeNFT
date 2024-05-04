@@ -4,7 +4,7 @@ import Kingfisher
 final class StatisticsCollectionViewController: UIViewController, StatisticsCollectionViewDelegate {
     
     // MARK: - Private properties
-    private let statisticsCollectionPresenter: StatisticsCollectionPresenterProtocol?
+    private let statisticsCollectionPresenter: StatisticsCollectionPresenterProtocol
     private var dataSource: UICollectionViewDiffableDataSource<Int, StatisticsNFTCell>?
     private var snapshot: NSDiffableDataSourceSnapshot<Int, StatisticsNFTCell>?
     
@@ -92,7 +92,7 @@ final class StatisticsCollectionViewController: UIViewController, StatisticsColl
             forCellWithReuseIdentifier: StatisticsCollectionViewCell.defaultReuseIdentifier
         )
         
-        statisticsCollectionPresenter?.statisticsCollectionViewOpened()
+        statisticsCollectionPresenter.statisticsCollectionViewOpened()
     }
     
     // MARK: - Public Methods

@@ -6,7 +6,7 @@ final class StatisticsViewController: UIViewController, StatisticsViewDelegate {
     
     // MARK: - Private Properties
     private let loadingIndicator = StatisticsUIBlockingProgressHud()
-    private let statisticsPresenter: StatisticsPresenterProtocol?
+    private let statisticsPresenter: StatisticsPresenterProtocol
     
     // MARK: - UI Properties
     private lazy var topBarView: UIView = {
@@ -55,7 +55,7 @@ final class StatisticsViewController: UIViewController, StatisticsViewDelegate {
         view.backgroundColor = .ypWhite
         self.tabBarController?.tabBar.isTranslucent = false
         
-        statisticsPresenter?.statisticsViewOpened()
+        statisticsPresenter.statisticsViewOpened()
     }
     
     @MainActor
@@ -130,13 +130,13 @@ final class StatisticsViewController: UIViewController, StatisticsViewDelegate {
     }
     
     @objc private func didTapSortButton() {
-        statisticsPresenter?.didTapSortButton()
+        statisticsPresenter.didTapSortButton()
     }
 }
 
 extension StatisticsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let count = statisticsPresenter?.getUsersCount() else { return 0 }
+        let count = statisticsPresenter.getUsersCount()
         return count
     }
     
@@ -148,7 +148,7 @@ extension StatisticsViewController: UITableViewDataSource {
         guard let cell = cell as? StatisticsTableViewCell else { return UITableViewCell() }
         
         // Load cell image from url
-        guard let users = statisticsPresenter?.getUsers() else { return UITableViewCell() }
+        let users = statisticsPresenter.getUsers()
         
         if let url = URL(string: users[indexPath.row].avatar) {
             
@@ -173,12 +173,12 @@ extension StatisticsViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 extension StatisticsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        guard statisticsPresenter?.checkPagesOut() == false else { return }
+        guard statisticsPresenter.checkPagesOut() == false else { return }
         
-        guard let usersCount = statisticsPresenter?.getUsersCount() else { return }
+        let usersCount = statisticsPresenter.getUsersCount()
         
         if indexPath.row + 1 == usersCount {
-            statisticsPresenter?.loadNextPage()
+            statisticsPresenter.loadNextPage()
         }
     }
     
@@ -187,7 +187,7 @@ extension StatisticsViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let users = statisticsPresenter?.getUsers() else { return }
+        let users = statisticsPresenter.getUsers()
         
         let presenter = StatisticsProfilePresenter(
             networkManager: StatisticsNetworkManager.shared,

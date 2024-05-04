@@ -4,7 +4,7 @@ import Kingfisher
 final class StatisticsProfileViewController: UIViewController, StatisticsProfileViewDelegate {
     
     // MARK: - Private Properties
-    private let statisticsProfilePresenter: StatisticsProfilePresenterProtocol?
+    private let statisticsProfilePresenter: StatisticsProfilePresenterProtocol
     
     // MARK: - UI Properties
     private lazy var topBarView: UIView = {
@@ -122,7 +122,7 @@ final class StatisticsProfileViewController: UIViewController, StatisticsProfile
         super.viewDidLoad()
         view.backgroundColor = .ypWhite
         
-        statisticsProfilePresenter?.statisticsProfileViewOpened()
+        statisticsProfilePresenter.statisticsProfileViewOpened()
     }
     
     // MARK: - Overrides
@@ -239,10 +239,10 @@ final class StatisticsProfileViewController: UIViewController, StatisticsProfile
     }
     
     @objc private func didTapSiteButton() {
-        statisticsProfilePresenter?.didTapSiteButton()
+        statisticsProfilePresenter.didTapSiteButton()
     }
     
     @objc private func didTapNftCollectionButton() {
-        statisticsProfilePresenter?.didTapNftCollectionButton()
+        statisticsProfilePresenter.didTapNftCollectionButton()
     }
 }
