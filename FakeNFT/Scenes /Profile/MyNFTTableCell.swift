@@ -8,7 +8,6 @@ final class ProfileMyNFTTableCell: UITableViewCell {
     
     private lazy var likeButton: UIButton = {
         let button: UIButton = UIButton()
-        button.setImage(UIImage(named: "TabBar/profile"), for: .normal)
         button.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -117,12 +116,10 @@ final class ProfileMyNFTTableCell: UITableViewCell {
             imageViewNFT.kf.setImage(with: url)
         }
         
-        if model.isLiked {
-            likeButton.setImage(UIImage(named: "profileImages/likeActive"), for: .normal)
-        } else {
-            likeButton.setImage(UIImage(named: "profileImages/likeNoActive"), for: .normal)
-        }
+        model.isLiked ? likeButton.setImage(UIImage(named: "profileImages/likeActive"), for: .normal) :
+        likeButton.setImage(UIImage(named: "profileImages/likeNoActive"), for: .normal)
         
+
         stackRating.arrangedSubviews.forEach {
             $0.removeFromSuperview()
         }
