@@ -7,10 +7,10 @@ protocol MyNFTVPresenterProtocol {
     func loadNfts()
 }
 
-class MyNFTPresenter: MyNFTVPresenterProtocol {
+final class MyNFTPresenter: MyNFTVPresenterProtocol {
     
-    var view: MyNFTViewControllerProtocol?
-
+    weak var view: MyNFTViewControllerProtocol?
+    
     func loadNfts() {
         view?.refreshNfts(nfts: mockMyNfts)
     }

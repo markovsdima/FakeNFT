@@ -8,7 +8,6 @@ final class ProfileMyNFTTableCell: UITableViewCell {
     
     private lazy var likeButton: UIButton = {
         let button: UIButton = UIButton()
-        button.setImage(UIImage(named: "TabBar/profile"), for: .normal)
         button.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -95,8 +94,8 @@ final class ProfileMyNFTTableCell: UITableViewCell {
     }()
     
     private lazy var viewNFTContent: UIView = UIView()
-
-            
+    
+    
     @objc
     private func likeButtonTapped(){
         print("like button tapped")
@@ -117,32 +116,30 @@ final class ProfileMyNFTTableCell: UITableViewCell {
             imageViewNFT.kf.setImage(with: url)
         }
         
-        if model.isLiked {
-            likeButton.setImage(UIImage(named: "profileImages/likeActive"), for: .normal)
-        } else {
-            likeButton.setImage(UIImage(named: "profileImages/likeNoActive"), for: .normal)
-        }
+        model.isLiked ? likeButton.setImage(UIImage(named: "profileImages/likeActive"), for: .normal) :
+        likeButton.setImage(UIImage(named: "profileImages/likeNoActive"), for: .normal)
         
+
         stackRating.arrangedSubviews.forEach {
             $0.removeFromSuperview()
         }
-
+        
         let activeStarImage = UIImage(systemName: "star.fill")?
-                .withTintColor(.ypYellowUniversal ?? UIColor(hexString: "#FEEF0D"), renderingMode: .alwaysOriginal)
+            .withTintColor(.ypYellowUniversal ?? UIColor(hexString: "#FEEF0D"), renderingMode: .alwaysOriginal)
         let inactiveStarImage = UIImage(systemName: "star.fill")?
-                .withTintColor(.ypLightGrey ?? UIColor(hexString: "#F7F7F8"), renderingMode: .alwaysOriginal)
-
+            .withTintColor(.ypLightGrey ?? UIColor(hexString: "#F7F7F8"), renderingMode: .alwaysOriginal)
+        
         for index in 1...ProfileMyNFTTableCell.totalStars {
             let starImageView = UIImageView()
             starImageView.contentMode = .scaleAspectFit
             starImageView.image = index <= model.rating ? activeStarImage : inactiveStarImage
             stackRating.addArrangedSubview(starImageView)
-
+            
             starImageView.widthAnchor.constraint(equalToConstant: 12).isActive = true
             starImageView.heightAnchor.constraint(equalToConstant: 12).isActive = true
         }
     }
-
+    
     override func prepareForReuse() {
         for view in stackRating.arrangedSubviews {
             stackRating.removeArrangedSubview(view)

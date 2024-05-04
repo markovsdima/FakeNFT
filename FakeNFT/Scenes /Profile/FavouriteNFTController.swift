@@ -1,11 +1,11 @@
 import UIKit
 
-protocol FavouriteNFTViewControllerProtocol {
+protocol FavouriteNFTViewControllerProtocol: AnyObject {
     
     func refreshNfts(nfts: [FavouriteNFT])
 }
 
-class FavouriteNFTViewController: UIViewController {
+final class FavouriteNFTViewController: UIViewController {
     
     var presenter: FavouriteNFTPresenterProtocol?
     
@@ -46,13 +46,14 @@ class FavouriteNFTViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypWhite
+        tabBarController?.tabBar.isHidden = true
         setupNavBar()
         addElements()
         setupConstraints()
         
         presenter?.loadNfts()
     }
-        
+    
     
     @objc private func close() {
         print("closed")
@@ -89,15 +90,15 @@ extension FavouriteNFTViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         visibleNfts.count
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: ProfileFavouriteNFTCollectionCell.reuseIdentifier,
             for: indexPath
         ) as? ProfileFavouriteNFTCollectionCell ?? ProfileFavouriteNFTCollectionCell()
-
+        
         cell.configCell(visibleNfts[indexPath.row])
-
+        
         return cell
     }
 }
@@ -109,7 +110,7 @@ extension FavouriteNFTViewController: UICollectionViewDelegateFlowLayout {
         let cellWidth = (collectionView.bounds.width - 48) / 2
         return CGSize(width: cellWidth, height: 80)
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         let inset = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
         return inset

@@ -7,13 +7,14 @@ protocol ProfileEditingPresenterProtocol {
     func udateProfile()
 }
 
-class ProfileEditingPresenter: ProfileEditingPresenterProtocol {
-    var view: ProfileEditingViewControllerProtocol?
-
+final class ProfileEditingPresenter: ProfileEditingPresenterProtocol {
+    
+    weak var view: ProfileEditingViewControllerProtocol?
+    
     func udateProfile() {
-        let profileName = profileConstants.profileNameString
-        let profileBio = profileConstants.profileBioString
-        let profileWebLink = profileConstants.profileWebLinkString
+        let profileName = ProfileConstants.profileNameString
+        let profileBio = ProfileConstants.profileBioString
+        let profileWebLink = ProfileConstants.profileWebLinkString
         
         view?.updateTitles(profileName: profileName, profileBio: profileBio, profileWebLink: profileWebLink)
     }

@@ -4,7 +4,7 @@ final class ProfileTableCell: UITableViewCell {
     
     // MARK: - Properties
     static let reuseIdentifier = "ProfileTableCell"
-   
+    
     let profileTableTitle: UILabel = {
         let table = UILabel()
         table.translatesAutoresizingMaskIntoConstraints = false
@@ -42,7 +42,7 @@ final class ProfileTableCell: UITableViewCell {
             profileTableCustomImage.widthAnchor.constraint(equalToConstant: 7.98),
             profileTableCustomImage.heightAnchor.constraint(equalToConstant: 13.86),
             profileTableCustomImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-
+            
         ])
         profileTableTitle.setContentCompressionResistancePriority(.required, for: .vertical)
     }

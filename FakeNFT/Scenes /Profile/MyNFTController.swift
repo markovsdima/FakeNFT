@@ -1,6 +1,6 @@
 import UIKit
 
-protocol MyNFTViewControllerProtocol {
+protocol MyNFTViewControllerProtocol: AnyObject {
     
     func refreshNfts(nfts: [MyNFT])
 }
@@ -62,6 +62,7 @@ final class MyNFTViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypWhite
+        tabBarController?.tabBar.isHidden = true
         setupNavBar()
         addElements()
         setupConstraints()

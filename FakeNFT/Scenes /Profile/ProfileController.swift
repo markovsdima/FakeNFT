@@ -1,6 +1,6 @@
 import UIKit
 
-public protocol ProfileViewControllerProtocol: AnyObject {
+protocol ProfileViewControllerProtocol: AnyObject {
     var presenter: ProfilePresenterProtocol? { get set }
     
     func openWebView(url: String)
@@ -121,6 +121,10 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
         profileSetText()
         
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        tabBarController?.tabBar.isHidden = false
+    }
     
     func openWebView(url: String) {
         if let url = URL(string: url) {
@@ -185,13 +189,13 @@ final class ProfileViewController: UIViewController & ProfileViewControllerProto
     }
     
     private func profileSetText() {
-        let profileName = profileConstants.profileNameString
+        let profileName = ProfileConstants.profileNameString
         profileNameLabel.text = profileName
         
-        let profileBio = profileConstants.profileBioString
+        let profileBio = ProfileConstants.profileBioString
         profileBioTextView.text = profileBio
         
-        let profileWebLink = profileConstants.profileWebLinkString
+        let profileWebLink = ProfileConstants.profileWebLinkString
         profileLinkTextView.text = profileWebLink
     }
     

@@ -1,6 +1,6 @@
 import Foundation
 
-public protocol ProfilePresenterProtocol {
+protocol ProfilePresenterProtocol {
     var profileView: ProfileViewControllerProtocol? { get set }
     
     func openAboutDeveloper()
@@ -8,10 +8,10 @@ public protocol ProfilePresenterProtocol {
 
 final class ProfilePresenter: ProfilePresenterProtocol {
     
-    var profileView: ProfileViewControllerProtocol?
+    weak var profileView: ProfileViewControllerProtocol?
     
     func openAboutDeveloper() {
-        profileView?.openWebView(url: profileConstants.developerLink)
+        profileView?.openWebView(url: ProfileConstants.developerLink)
     }
 }
 
