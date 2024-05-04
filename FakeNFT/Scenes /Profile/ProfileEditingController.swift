@@ -1,6 +1,6 @@
 import UIKit
 
-protocol ProfileEditingViewControllerProtocol {
+protocol ProfileEditingViewControllerProtocol: AnyObject {
     func updateTitles(profileName:String, profileBio: String, profileWebLink: String)
 }
 
@@ -122,6 +122,7 @@ final class ProfileEditingViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .ypWhite
+        tabBarController?.tabBar.isHidden = true
         setupNavBar()
         addElements()
         setupConstraints()

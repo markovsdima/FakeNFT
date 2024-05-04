@@ -7,10 +7,10 @@ protocol FavouriteNFTPresenterProtocol {
     func loadNfts()
 }
 
-class FavouriteNFTPresenter: FavouriteNFTPresenterProtocol {
+final class FavouriteNFTPresenter: FavouriteNFTPresenterProtocol {
     
-    var view: FavouriteNFTViewControllerProtocol?
-
+    weak var view: FavouriteNFTViewControllerProtocol?
+    
     func loadNfts() {
         view?.refreshNfts(nfts: mockFavouriteNfts)
     }

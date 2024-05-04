@@ -1,7 +1,7 @@
 import UIKit
 import Kingfisher
 
-class ProfileFavouriteNFTCollectionCell: UICollectionViewCell {
+final class ProfileFavouriteNFTCollectionCell: UICollectionViewCell {
     
     static let reuseIdentifier: String = "FavoriteNFTCollectionCell"
     

@@ -1,7 +1,7 @@
 import UIKit
 import WebKit
 
-class  ProfileWebViewController: UIViewController, UIWebViewDelegate, WKUIDelegate {
+final class  ProfileWebViewController: UIViewController, UIWebViewDelegate, WKUIDelegate {
     
     private lazy var backButton: UIBarButtonItem = {
         let button = UIBarButtonItem()
@@ -10,7 +10,7 @@ class  ProfileWebViewController: UIViewController, UIWebViewDelegate, WKUIDelega
         button.target = self
         return button
     }()
-
+    
     var webView: WKWebView!
     
     private let url: URL
@@ -29,7 +29,7 @@ class  ProfileWebViewController: UIViewController, UIWebViewDelegate, WKUIDelega
         
         navigationItem.leftBarButtonItem = backButton
         navigationItem.leftBarButtonItem?.tintColor = .ypBlackUniversal
- 
+        
         let request = URLRequest(url: url)
         webView.load(request)
     }
