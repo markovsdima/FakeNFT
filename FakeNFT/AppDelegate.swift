@@ -6,8 +6,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         _: UIApplication,
         didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        UITabBar.appearance().unselectedItemTintColor = .ypBlack
-        UITabBar.appearance().tintColor = .ypBlueUniversal
         return true
     }
 
