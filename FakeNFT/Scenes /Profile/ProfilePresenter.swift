@@ -6,6 +6,8 @@ protocol ProfilePresenterProtocol {
     func openAboutDeveloper()
     func viewDidLoad()
     func setupProfileDetails(profile: ProfileRequest)
+    func onMyNftsClicked()
+    func onFavoriteNftsClicked()
 }
 
 final class ProfilePresenter: ProfilePresenterProtocol {
@@ -15,6 +17,8 @@ final class ProfilePresenter: ProfilePresenterProtocol {
     
     private let profileService: ProfileService
     private let profileId: String
+    private var myNftsIds: [String] = []
+    private var favoriteNftsIds: [String] = []
     
     //MARK: - Init
     init(
@@ -38,10 +42,21 @@ final class ProfilePresenter: ProfilePresenterProtocol {
         //        profileView?.updateProfileDetails(profile: profile)
     }
     
+    func onMyNftsClicked() {
+        profileView?.openMyNfts(myNftsIds)
+    }
+    
+    func onFavoriteNftsClicked() {
+        profileView?.openFavoriteNfts(favoriteNftsIds)
+    }
+    
     private func fetchProfile() {
         profileService.fetchProfile(id: profileId) { [weak self] result in
             switch result {
             case .success(let profile):
+                self?.myNftsIds = profile.nfts
+                self?.favoriteNftsIds = profile.likes
+                
                 DispatchQueue.main.async {
                     let profileUiModel = ProfileUIModel(from: profile)
                     

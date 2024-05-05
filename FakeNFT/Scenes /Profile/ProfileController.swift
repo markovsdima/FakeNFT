@@ -9,6 +9,8 @@ protocol ProfileViewControllerProtocol: AnyObject {
     func updateProfileDetails(profile: ProfileUIModel)
     func updateProfileAvatar(avatar: URL?)
     func showError(_ model: ErrorModel)
+    func openMyNfts(_ nftsIds: [String])
+    func openFavoriteNfts(_ nftsIds: [String])
 }
 
 final class ProfileViewController: UIViewController {
@@ -222,8 +224,8 @@ extension ProfileViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ProfileTableCell.reuseIdentifier, for: indexPath) as? ProfileTableCell else { return UITableViewCell() }
         var title = ""
         switch indexPath.row {
-        case 0: title = "Мои NFT (112)"
-        case 1: title = "Избранные NFT (11)"
+        case 0: title = "Мои NFT ( )"
+        case 1: title = "Избранные NFT ( )"
         case 2: title = "О разработчике"
         default:
             break
@@ -246,39 +248,50 @@ extension ProfileViewController: UITableViewDelegate {
         let index = indexPath.row
         switch index {
         case 0:
-            showMyNFT()
+            presenter?.onMyNftsClicked()
         case 1:
-            showFavouritesNFT()
+            presenter?.onFavoriteNftsClicked()
         case 2:
             presenter?.openAboutDeveloper()
         default:
             break
         }
     }
-    
-    private func showMyNFT() {
-        let myNFTVC = MyNFTViewController()
-        let presenter = MyNFTPresenter()
-        
-        myNFTVC.presenter = presenter
-        presenter.view = myNFTVC
-        
-        navigationController?.pushViewController(myNFTVC, animated: true)
-    }
-    
-    private func showFavouritesNFT() {
-        let favouriteVC = FavouriteNFTViewController()
-        let presenter = FavouriteNFTPresenter()
-        
-        favouriteVC.presenter = presenter
-        presenter.view = favouriteVC
-        
-        navigationController?.pushViewController(favouriteVC, animated: true)
-    }
 }
 
 // MARK: - ProfileViewControllerProtocol
 extension ProfileViewController: ProfileViewControllerProtocol {
+    
+    func openFavoriteNfts(_ nftsIds: [String]) {
+        let favouriteVC = FavouriteNFTViewController()
+        
+        favouriteVC.presenter = FavouriteNFTPresenter(
+            favoriteNftsIds: nftsIds,
+            view: favouriteVC,
+            profileNftService: ProfileNftServiceImpl(
+                networkClient: DefaultNetworkClient()
+            )
+        )
+        
+        navigationController?.pushViewController(favouriteVC, animated: true)
+    }
+    
+    
+    func openMyNfts(_ nftsIds: [String]) {
+        let myNFTVC = MyNFTViewController()
+        
+        myNFTVC.presenter = MyNFTPresenter(
+            myNftsIds: nftsIds,
+            view: myNFTVC,
+            nftService: NftServiceImpl(
+                networkClient: DefaultNetworkClient(),
+                storage: NftStorageImpl()
+            )
+        )
+        
+        navigationController?.pushViewController(myNFTVC, animated: true)
+    }
+    
     
     func updateProfileDetails(profile: ProfileUIModel) {
         profileNameLabel.text = profile.name

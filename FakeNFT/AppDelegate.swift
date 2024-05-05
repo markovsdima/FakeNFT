@@ -1,4 +1,5 @@
 import UIKit
+import ProgressHUD
 
 @main
 final class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -8,6 +9,11 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         UITabBar.appearance().unselectedItemTintColor = .ypBlack
         UITabBar.appearance().tintColor = .ypBlueUniversal
+        
+        ProgressHUD.animationType = .systemActivityIndicator
+        ProgressHUD.colorHUD = .white
+        ProgressHUD.colorAnimation = .black
+        
         return true
     }
 

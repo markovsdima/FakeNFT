@@ -44,6 +44,22 @@ struct FavouriteNFT {
     let name: String
     let rating: Int
     let price: Float
+    
+    init(imageUrl: String?, isLiked: Bool, name: String, rating: Int, price: Float) {
+        self.imageUrl = imageUrl
+        self.isLiked = isLiked
+        self.name = name
+        self.rating = rating
+        self.price = price
+    }
+    
+    init(_ model: NftModel) {
+        self.imageUrl = model.images.first
+        self.isLiked = true
+        self.name = model.name
+        self.rating = model.rating
+        self.price = model.price
+    }
 }
 
 //let mockFavouriteNfts: [FavouriteNFT] = []

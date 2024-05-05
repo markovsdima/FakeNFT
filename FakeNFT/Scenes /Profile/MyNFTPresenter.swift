@@ -4,7 +4,6 @@ protocol MyNFTVPresenterProtocol {
     
     var view: MyNFTViewControllerProtocol? { get set }
     
-    
     func loadNfts()
 }
 
@@ -12,13 +11,31 @@ final class MyNFTPresenter: MyNFTVPresenterProtocol {
     
     weak var view: MyNFTViewControllerProtocol?
     
-//    private let profileService: ProfileService
-//    private let nftService: NftService
+    private let nftService: NftService
     
-    private var nfts: [Nft] = []
+    private let myNftsIds: [String]
+    
+    private var nfts: [MyNFT] = []
 
+    init(
+        myNftsIds: [String],
+        view: MyNFTViewControllerProtocol,
+        nftService: NftService
+    ) {
+        self.myNftsIds = myNftsIds
+        
+        self.view = view
+        self.nftService = nftService
+    }
     
     func loadNfts() {
-        view?.refreshNfts(nfts: mockMyNfts)
+        if myNftsIds.isEmpty {
+            view?.refreshNfts(nfts: nfts)
+            
+        } else {
+            view?.setLoader(visible: true)
+            
+            view?.refreshNfts(nfts: mockMyNfts)
+        }
     }
 }

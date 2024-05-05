@@ -1,7 +1,9 @@
 import UIKit
+import ProgressHUD
 
 protocol MyNFTViewControllerProtocol: AnyObject {
     
+    func setLoader(visible: Bool)
     func refreshNfts(nfts: [MyNFT])
 }
 
@@ -68,6 +70,12 @@ final class MyNFTViewController: UIViewController {
         setupConstraints()
         
         presenter?.loadNfts()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        ProgressHUD.dismiss()
+        
+        super.viewWillDisappear(animated)
     }
     
     //MARK: - Private Methods
@@ -182,6 +190,15 @@ extension MyNFTViewController: UITableViewDelegate {
 
 //MARK: - MyNFTControllerProtocol
 extension MyNFTViewController: MyNFTViewControllerProtocol {
+    
+    func setLoader(visible: Bool) {
+        if visible {
+            ProgressHUD.show()
+        } else {
+            ProgressHUD.dismiss()
+        }
+    }
+    
     
     func refreshNfts(nfts: [MyNFT]) {
         visibleNfts = nfts
