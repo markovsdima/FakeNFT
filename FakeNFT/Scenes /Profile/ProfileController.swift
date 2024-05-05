@@ -6,7 +6,7 @@ protocol ProfileViewControllerProtocol: AnyObject {
     var profileAvatar: UIImageView { get }
     
     func setLoader(_ visible: Bool)
-    func openWebView(url: String)
+    func openWebView(url: URL?)
     func updateProfileDetails(profile: ProfileUIModel)
     func updateProfileAvatar(avatar: URL?)
     func showError(_ model: ErrorModel)
@@ -16,7 +16,7 @@ protocol ProfileViewControllerProtocol: AnyObject {
         avatarUrl: URL?,
         name: String,
         description: String,
-        link: String
+        link: URL?
     )
 }
 
@@ -143,11 +143,10 @@ final class ProfileViewController: UIViewController {
         profileAvatar.kf.indicatorType = .activity
     }
     
-    func openWebView(url: String) {
-        if let url = URL(string: url) {
+    func openWebView(url: URL?) {
+        guard let url else { return}
             let webVC = ProfileWebViewController(url: url)
             navigationController?.pushViewController(webVC, animated: true)
-        }
     }
     
     //MARK: - Private Methods
@@ -257,7 +256,7 @@ extension ProfileViewController: ProfileViewControllerProtocol {
         avatarUrl: URL?,
         name: String,
         description: String,
-        link: String
+        link: URL?
     ) {
         let editingVC = ProfileEditingViewController()
         

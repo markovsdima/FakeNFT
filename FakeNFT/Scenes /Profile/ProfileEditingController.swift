@@ -1,7 +1,7 @@
 import UIKit
 
 protocol ProfileEditingViewControllerProtocol: AnyObject {
-    func updateTitles(profileName:String, profileBio: String, profileWebLink: String, avatar: URL?)
+    func updateTitles(profileName:String, profileBio: String, profileWebLink: URL?, avatar: URL?)
 }
 
 final class ProfileEditingViewController: UIViewController {
@@ -212,10 +212,11 @@ final class ProfileEditingViewController: UIViewController {
 //MARK: - ProfileEditingViewControllerProtocol
 extension ProfileEditingViewController: ProfileEditingViewControllerProtocol {
     
-    func updateTitles(profileName: String, profileBio: String, profileWebLink: String, avatar: URL?) {
+    func updateTitles(profileName: String, profileBio: String, profileWebLink: URL?, avatar: URL?) {
         profileNameTextField.text = profileName
         profileBioTextView.text = profileBio
-        profileLinkTextField.text = profileWebLink
+        profileLinkTextField.text = profileWebLink?.absoluteString ?? ""
+
         
         guard let avatar else { return }
         

@@ -36,7 +36,8 @@ final class ProfilePresenter: ProfilePresenterProtocol {
     }
     
     func openAboutDeveloper() {
-        profileView?.openWebView(url: ProfileConstants.developerLink)
+        guard let loadedProfile else { return }
+        profileView?.openWebView(url: loadedProfile.website)
     }
     
     func onMyNftsClicked() {
@@ -54,7 +55,7 @@ final class ProfilePresenter: ProfilePresenterProtocol {
             avatarUrl: loadedProfile.avatar,
             name: loadedProfile.name,
             description: loadedProfile.description,
-            link: loadedProfile.website?.absoluteString ?? ""
+            link: loadedProfile.website
         )
     }
     

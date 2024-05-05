@@ -14,9 +14,9 @@ final class ProfileEditingPresenter: ProfileEditingPresenterProtocol {
     private let initAvatarUrl: URL?
     private let initName: String
     private let initDescription: String
-    private let initWebsite: String
+    private let initWebsite: URL?
     
-    init(view: ProfileEditingViewControllerProtocol, initAvatarUrl: URL?, initName: String, initDescription: String, website: String) {
+    init(view: ProfileEditingViewControllerProtocol, initAvatarUrl: URL?, initName: String, initDescription: String, website: URL?) {
         self.view = view
         self.initAvatarUrl = initAvatarUrl
         self.initName = initName
