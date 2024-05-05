@@ -34,6 +34,11 @@ final class TabBarController: UITabBarController {
         let profileController = ProfileViewController(
             servicesAssembly: servicesAssembly
         )
+        let profilePresenter = ProfilePresenter()
+        profileController.presenter = profilePresenter
+        profilePresenter.profileView = profileController
+        
+        let profileNavigationController = UINavigationController(rootViewController: profileController)
         
         profileController.tabBarItem = profileTabBarItem
         
@@ -55,7 +60,7 @@ final class TabBarController: UITabBarController {
         
         statisticsController.tabBarItem = statisticsTabBarItem
         
-        viewControllers = [profileController, catalogController, cartController, statisticsController]
+        viewControllers = [profileNavigationController, catalogController, cartController, statisticsController]
         
         view.backgroundColor = .systemBackground
     }
