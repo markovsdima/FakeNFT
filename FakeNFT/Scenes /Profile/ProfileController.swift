@@ -1,16 +1,23 @@
 import UIKit
+import ProgressHUD
 
 protocol ProfileViewControllerProtocol: AnyObject {
     var presenter: ProfilePresenterProtocol? { get set }
     var profileAvatar: UIImageView { get }
     
-    
+    func setLoader(_ visible: Bool)
     func openWebView(url: String)
     func updateProfileDetails(profile: ProfileUIModel)
     func updateProfileAvatar(avatar: URL?)
     func showError(_ model: ErrorModel)
-    func openMyNfts(_ nftsIds: [String])
-    func openFavoriteNfts(_ nftsIds: [String])
+    func openMyNfts(_ nftsIds: [String], likedNftsIds: [String])
+    func openFavouriteNfts(_ nftsIds: [String])
+    func openEditProfile(
+        avatarUrl: URL?,
+        name: String,
+        description: String,
+        link: String
+    )
 }
 
 final class ProfileViewController: UIViewController {
@@ -19,10 +26,7 @@ final class ProfileViewController: UIViewController {
     var presenter: ProfilePresenterProtocol?
     let servicesAssembly: ServicesAssembly
     
-    
-    
     //MARK: - Private properties
-    
     private lazy var profileEditButton: UIBarButtonItem = {
         let boldConfig = UIImage.SymbolConfiguration(weight: .bold)
         let button = UIBarButtonItem()
@@ -43,7 +47,7 @@ final class ProfileViewController: UIViewController {
     
     var profileAvatar: UIImageView = {
         let avatar = UIImageView()
-        avatar.image = UIImage(named: "profileImages/profileAvatarMock")
+        avatar.image = UIImage(named: "TabBar/profile")
         avatar.contentMode = .scaleAspectFill
         avatar.translatesAutoresizingMaskIntoConstraints = false
         avatar.heightAnchor.constraint(equalToConstant: 70).isActive = true
@@ -104,6 +108,8 @@ final class ProfileViewController: UIViewController {
         return table
     }()
     
+    private var likedNftsCount: String = ""
+    private var myNftsCount: String = ""
     
     
     //MARK: - Init
@@ -126,7 +132,6 @@ final class ProfileViewController: UIViewController {
         
         profileAddElements()
         profileSetupLayout()
-        profileSetText()
         
         presenter?.viewDidLoad()
         
@@ -154,17 +159,9 @@ final class ProfileViewController: UIViewController {
     
     @objc
     private func profileEditTapped(){
-        print("profile edit button tapped")
-        let editingVC = ProfileEditingViewController()
-        let presenter = ProfileEditingPresenter()
-        
-        editingVC.presenter = presenter
-        presenter.view = editingVC
-        
-        let navVC = UINavigationController(rootViewController: editingVC)
-        present(navVC, animated: true)
+        presenter?.onEditProfileClicked()
     }
-    
+
     private func profileAddElements() {
         [profileStackView,
          profileBioTextView,
@@ -193,24 +190,13 @@ final class ProfileViewController: UIViewController {
             
             profileLinkTextView.topAnchor.constraint(equalTo: profileBioTextView.bottomAnchor, constant: 8),
             profileLinkTextView.leadingAnchor.constraint(equalTo: profileStackView.leadingAnchor),
+            profileLinkTextView.trailingAnchor.constraint(equalTo: profileStackView.trailingAnchor),
             
             profileTableView.topAnchor.constraint(equalTo: profileLinkTextView.bottomAnchor, constant: 40),
             profileTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             profileTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
         ])
     }
-    
-    private func profileSetText() {
-        let profileName = ProfileConstants.profileNameString
-        profileNameLabel.text = profileName
-        
-        let profileBio = ProfileConstants.profileBioString
-        profileBioTextView.text = profileBio
-        
-        let profileWebLink = ProfileConstants.profileWebLinkString
-        profileLinkTextView.text = profileWebLink
-    }
-    
 }
 
 // MARK: - UITableViewDataSource
@@ -224,9 +210,15 @@ extension ProfileViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ProfileTableCell.reuseIdentifier, for: indexPath) as? ProfileTableCell else { return UITableViewCell() }
         var title = ""
         switch indexPath.row {
-        case 0: title = "Мои NFT ( )"
-        case 1: title = "Избранные NFT ( )"
-        case 2: title = "О разработчике"
+        case 0:
+            
+            title = "Мои NFT (\(myNftsCount))"
+        case 1:
+            
+            title = "Избранные NFT (\(likedNftsCount))"
+        case 2:
+            
+            title = "О разработчике"
         default:
             break
         }
@@ -250,7 +242,7 @@ extension ProfileViewController: UITableViewDelegate {
         case 0:
             presenter?.onMyNftsClicked()
         case 1:
-            presenter?.onFavoriteNftsClicked()
+            presenter?.onFavouriteNftsClicked()
         case 2:
             presenter?.openAboutDeveloper()
         default:
@@ -261,12 +253,46 @@ extension ProfileViewController: UITableViewDelegate {
 
 // MARK: - ProfileViewControllerProtocol
 extension ProfileViewController: ProfileViewControllerProtocol {
+    func openEditProfile(
+        avatarUrl: URL?,
+        name: String,
+        description: String,
+        link: String
+    ) {
+        let editingVC = ProfileEditingViewController()
+        
+        editingVC.presenter = ProfileEditingPresenter(
+            view: editingVC,
+            initAvatarUrl: avatarUrl,
+            initName: name,
+            initDescription: description,
+            website: link
+        )
+        
+        let navVC = UINavigationController(rootViewController: editingVC)
+        present(navVC, animated: true)
+    }
     
-    func openFavoriteNfts(_ nftsIds: [String]) {
+    
+    func setLoader(_ visible: Bool) {
+        profileStackView.isHidden = visible
+        profileBioTextView.isHidden = visible
+        profileLinkTextView.isHidden = visible
+        profileTableView.isHidden = visible
+        
+        if visible {
+            ProgressHUD.show()
+        } else {
+            ProgressHUD.dismiss()
+        }
+    }
+    
+    
+    func openFavouriteNfts(_ nftsIds: [String]) {
         let favouriteVC = FavouriteNFTViewController()
         
         favouriteVC.presenter = FavouriteNFTPresenter(
-            favoriteNftsIds: nftsIds,
+            favouriteNftsIds: nftsIds,
             view: favouriteVC,
             profileNftService: ProfileNftServiceImpl(
                 networkClient: DefaultNetworkClient()
@@ -277,15 +303,15 @@ extension ProfileViewController: ProfileViewControllerProtocol {
     }
     
     
-    func openMyNfts(_ nftsIds: [String]) {
+    func openMyNfts(_ nftsIds: [String], likedNftsIds: [String]) {
         let myNFTVC = MyNFTViewController()
         
         myNFTVC.presenter = MyNFTPresenter(
             myNftsIds: nftsIds,
+            likedNftsIds: likedNftsIds,
             view: myNFTVC,
-            nftService: NftServiceImpl(
-                networkClient: DefaultNetworkClient(),
-                storage: NftStorageImpl()
+            profileNftService: ProfileNftServiceImpl(
+                networkClient: DefaultNetworkClient()
             )
         )
         
@@ -302,17 +328,20 @@ extension ProfileViewController: ProfileViewControllerProtocol {
                 .link: url,
                 .font: UIFont.caption1
             ]
-
+            
             let attributedString = NSMutableAttributedString(string: url.absoluteString,
                                                              attributes: attributes)
             profileLinkTextView.attributedText = attributedString
         }
+        
+        likedNftsCount = profile.likedNftsCount
+        myNftsCount = profile.myNftsCount
+        
+        profileTableView.reloadData()
     }
     
     func updateProfileAvatar(avatar: URL?) {
         guard let avatar else { return }
-        
-        profileAvatar.kf.setImage(with: avatar)
         
         profileAvatar.kf.setImage(
             with: avatar,
@@ -322,7 +351,7 @@ extension ProfileViewController: ProfileViewControllerProtocol {
     
 }
 
-// MARK: ErrorView
+// MARK: - ErrorView
 extension ProfileViewController: ErrorView {
     
 }

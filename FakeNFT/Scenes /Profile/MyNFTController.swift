@@ -5,6 +5,8 @@ protocol MyNFTViewControllerProtocol: AnyObject {
     
     func setLoader(visible: Bool)
     func refreshNfts(nfts: [MyNFT])
+    func showError(_ model: ErrorModel)
+
 }
 
 final class MyNFTViewController: UIViewController {
@@ -148,8 +150,7 @@ final class MyNFTViewController: UIViewController {
         })
         
         self.present(alert, animated: true, completion: nil)
-    }
-    
+    }    
     
 }
 
@@ -220,4 +221,8 @@ extension MyNFTViewController: MyNFTViewControllerProtocol {
     }
 }
 
+// MARK: ErrorView
+extension MyNFTViewController: ErrorView {
+    
+}
 

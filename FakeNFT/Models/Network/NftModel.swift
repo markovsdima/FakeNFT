@@ -1,15 +1,17 @@
 import Foundation
 
 struct NftModel {
+    let createdAt: String
     let name: String
     let images: [String]
     let rating: Int
-    let description: String?//todo delete
-    let price: Float
+    let description: String
+    let price: Float    
     let author: String
     let id: String
     
-    init(name: String, images: [String], rating: Int, description: String?, price: Float, author: String, id: String) {
+    init(createdAt: String, name: String, images: [String], rating: Int, description: String, price: Float, author: String, id: String) {
+        self.createdAt = createdAt
         self.name = name
         self.images = images
         self.rating = rating
@@ -20,6 +22,7 @@ struct NftModel {
     }
     
     init(_ response: NftResponse) {
+        self.createdAt = response.createdAt
         self.name = response.name
         self.images = response.images
         self.rating = response.rating
@@ -29,3 +32,11 @@ struct NftModel {
         self.id = response.id
     }
 }
+
+extension NftModel {
+    
+    func isLiked(_ likedNfts: [String]) -> Bool {
+        likedNfts.contains(id)
+    }
+}
+

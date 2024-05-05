@@ -8,7 +8,8 @@ struct ProfileUIModel {
     var nfts: [String]
     var likes: [String]
     var id: String
-    
+    let likedNftsCount: String
+    let myNftsCount: String
     
     init(from responseModel: ProfileResponse) {
         name = responseModel.name
@@ -18,16 +19,8 @@ struct ProfileUIModel {
         nfts = responseModel.nfts
         likes = responseModel.likes
         id = responseModel.id
-    }
-    
-    init(name: String, avatar: URL, description: String, website: URL, nfts: [String], likes: [String], id: String) {
-        self.name = name
-        self.avatar = avatar
-        self.description = description
-        self.website = website
-        self.nfts = nfts
-        self.likes = likes
-        self.id = id
+        likedNftsCount = String(responseModel.likes.count)
+        myNftsCount = String(responseModel.nfts.count)
     }
 }
 

@@ -11,12 +11,26 @@ final class ProfileEditingPresenter: ProfileEditingPresenterProtocol {
     
     weak var view: ProfileEditingViewControllerProtocol?
     
+    private let initAvatarUrl: URL?
+    private let initName: String
+    private let initDescription: String
+    private let initWebsite: String
+    
+    init(view: ProfileEditingViewControllerProtocol, initAvatarUrl: URL?, initName: String, initDescription: String, website: String) {
+        self.view = view
+        self.initAvatarUrl = initAvatarUrl
+        self.initName = initName
+        self.initDescription = initDescription
+        self.initWebsite = website
+    }
+    
     func updateProfile() {
-        let profileName = ProfileConstants.profileNameString
-        let profileBio = ProfileConstants.profileBioString
-        let profileWebLink = ProfileConstants.profileWebLinkString
-        
-        view?.updateTitles(profileName: profileName, profileBio: profileBio, profileWebLink: profileWebLink)
+        view?.updateTitles(
+            profileName: initName,
+            profileBio: initDescription,
+            profileWebLink: initWebsite,
+            avatar: initAvatarUrl
+        )
     }
     
 }

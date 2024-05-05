@@ -5,9 +5,9 @@ protocol ProfilePresenterProtocol {
     
     func openAboutDeveloper()
     func viewDidLoad()
-    func setupProfileDetails(profile: ProfileRequest)
     func onMyNftsClicked()
-    func onFavoriteNftsClicked()
+    func onFavouriteNftsClicked()
+    func onEditProfileClicked()
 }
 
 final class ProfilePresenter: ProfilePresenterProtocol {
@@ -18,7 +18,8 @@ final class ProfilePresenter: ProfilePresenterProtocol {
     private let profileService: ProfileService
     private let profileId: String
     private var myNftsIds: [String] = []
-    private var favoriteNftsIds: [String] = []
+    private var favouriteNftsIds: [String] = []
+    private var loadedProfile: ProfileResponse? = nil
     
     //MARK: - Init
     init(
@@ -38,39 +39,54 @@ final class ProfilePresenter: ProfilePresenterProtocol {
         profileView?.openWebView(url: ProfileConstants.developerLink)
     }
     
-    func setupProfileDetails(profile: ProfileRequest) {
-        //        profileView?.updateProfileDetails(profile: profile)
-    }
-    
     func onMyNftsClicked() {
-        profileView?.openMyNfts(myNftsIds)
+        profileView?.openMyNfts(myNftsIds, likedNftsIds: favouriteNftsIds)
     }
     
-    func onFavoriteNftsClicked() {
-        profileView?.openFavoriteNfts(favoriteNftsIds)
+    func onFavouriteNftsClicked() {
+        profileView?.openFavouriteNfts(favouriteNftsIds)
+    }
+    
+    func onEditProfileClicked() {
+        guard let loadedProfile else { return }
+        
+        profileView?.openEditProfile(
+            avatarUrl: loadedProfile.avatar,
+            name: loadedProfile.name,
+            description: loadedProfile.description,
+            link: loadedProfile.website?.absoluteString ?? ""
+        )
     }
     
     private func fetchProfile() {
+        profileView?.setLoader(true)
+        
         profileService.fetchProfile(id: profileId) { [weak self] result in
+            guard let self else { return }
+            
             switch result {
             case .success(let profile):
-                self?.myNftsIds = profile.nfts
-                self?.favoriteNftsIds = profile.likes
+                self.myNftsIds = profile.nfts
+                self.favouriteNftsIds = profile.likes
                 
                 DispatchQueue.main.async {
+                    self.loadedProfile = profile
+                    
                     let profileUiModel = ProfileUIModel(from: profile)
                     
-                    self?.profileView?.updateProfileDetails(profile: profileUiModel)
-                    self?.profileView?.updateProfileAvatar(avatar: profile.avatar)
+                    self.profileView?.updateProfileDetails(profile: profileUiModel)
+                    self.profileView?.updateProfileAvatar(avatar: profile.avatar)
                 }
             case .failure(let error):
-                if let errorModel = self?.checkError(error) {
-                    DispatchQueue.main.async {
-                        self?.profileView?.showError(errorModel)
-                    }
+                DispatchQueue.main.async {
+                    self.profileView?.showError(self.checkError(error))
                 }
                 
                 print("Error fetching profile: \(error)")
+            }
+            
+            DispatchQueue.main.async {
+                self.profileView?.setLoader(false)
             }
         }
     }
@@ -90,6 +106,4 @@ final class ProfilePresenter: ProfilePresenterProtocol {
         }
     }
 }
-
-
 

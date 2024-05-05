@@ -1,7 +1,7 @@
 import UIKit
 
 protocol ProfileEditingViewControllerProtocol: AnyObject {
-    func updateTitles(profileName:String, profileBio: String, profileWebLink: String)
+    func updateTitles(profileName:String, profileBio: String, profileWebLink: String, avatar: URL?)
 }
 
 final class ProfileEditingViewController: UIViewController {
@@ -20,7 +20,7 @@ final class ProfileEditingViewController: UIViewController {
     
     private lazy var profileAvatar: UIImageView = {
         let avatar = UIImageView()
-        avatar.image = UIImage(named: "profileImages/profileAvatarMock")
+        avatar.image = UIImage(named: "TabBar/profile")
         avatar.contentMode = .scaleAspectFill
         avatar.translatesAutoresizingMaskIntoConstraints = false
         avatar.heightAnchor.constraint(equalToConstant: 70).isActive = true
@@ -209,12 +209,19 @@ final class ProfileEditingViewController: UIViewController {
     }
 }
 
-//MARK: - FavoriteNFTControllerProtocol
+//MARK: - ProfileEditingViewControllerProtocol
 extension ProfileEditingViewController: ProfileEditingViewControllerProtocol {
     
-    func updateTitles(profileName: String, profileBio: String, profileWebLink: String) {
+    func updateTitles(profileName: String, profileBio: String, profileWebLink: String, avatar: URL?) {
         profileNameTextField.text = profileName
         profileBioTextView.text = profileBio
         profileLinkTextField.text = profileWebLink
+        
+        guard let avatar else { return }
+        
+        profileAvatar.kf.setImage(
+            with: avatar,
+            placeholder: UIImage(named: "TabBar/profile")
+        )
     }
 }

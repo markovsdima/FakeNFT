@@ -5,6 +5,7 @@ protocol FavouriteNFTViewControllerProtocol: AnyObject {
     
     func setLoader(visible: Bool)
     func refreshNfts(nfts: [FavouriteNFT])
+    func showError(_ model: ErrorModel)
 }
 
 final class FavouriteNFTViewController: UIViewController {
@@ -124,7 +125,7 @@ extension FavouriteNFTViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-//MARK: - FavoriteNFTControllerProtocol
+//MARK: - FavouriteNFTControllerProtocol
 extension FavouriteNFTViewController: FavouriteNFTViewControllerProtocol {
     
     func setLoader(visible: Bool) {
@@ -154,6 +155,11 @@ extension FavouriteNFTViewController: FavouriteNFTViewControllerProtocol {
             navigationItem.title = "Избранные NFT"
         }
     }
+}
+
+// MARK: - ErrorView
+extension FavouriteNFTViewController: ErrorView {
+    
 }
 
 

@@ -11,8 +11,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         UITabBar.appearance().tintColor = .ypBlueUniversal
         
         ProgressHUD.animationType = .systemActivityIndicator
-        ProgressHUD.colorHUD = .white
-        ProgressHUD.colorAnimation = .black
+        ProgressHUD.colorHUD = .ypWhite ?? .white
+        ProgressHUD.colorAnimation = .ypBlack ?? .black
         
         return true
     }
