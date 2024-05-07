@@ -2,7 +2,7 @@ import UIKit
 
 final class PaymentCell: UICollectionViewCell {
     // MARK: - Properties
-    static let PaymentCellIdentifier = "PaymentCell"
+    static let paymentCellIdentifier = "PaymentCell"
     
     private lazy var paymentImage: UIImageView = {
         var image = UIImageView(image: UIImage(named: "Bitcoin"))

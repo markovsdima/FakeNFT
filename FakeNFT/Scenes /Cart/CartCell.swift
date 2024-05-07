@@ -15,7 +15,7 @@ final class CartCell: UICollectionViewCell {
         image.translatesAutoresizingMaskIntoConstraints = false
         image.layer.cornerRadius = 12
         image.clipsToBounds = true
-        image.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+//        image.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
         return image
     }()
     
@@ -155,17 +155,17 @@ final class CartCell: UICollectionViewCell {
         ])
     }
     
-    func configure(with: NFTCartModel?) {
-        guard let with = with else { return }
-        imageNFT.image = UIImage(named: with.image)
-        imageName = with.image
-        nameLabel.text = with.name
-        amountLabel.text = "\(with.price) ETH"
+    func configure(with model: NFTCartModel?) {
+        guard let model = model else { return }
+        imageNFT.image = UIImage(named: model.image)
+        imageName = model.image
+        nameLabel.text = model.name
+        amountLabel.text = "\(model.price) ETH"
         
         let starRatingImage = UIImage(named: "StarsYesCart")
 
-        if with.rating <= 5 {
-            for i in 0..<with.rating {
+        if model.rating <= 5 {
+            for i in 0..<model.rating {
                 (starStack.arrangedSubviews[i] as? UIImageView)?.image = starRatingImage
             }
         }

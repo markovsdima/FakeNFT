@@ -5,3 +5,9 @@ struct PaymentSystemModel {
     let paymentSystem: String
     let currency: String
 }
+//struct PaymentSystemModel {
+//    let title: String
+//    let name: String
+//    let image: String
+//    let id: String
+//}

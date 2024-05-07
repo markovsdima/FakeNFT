@@ -2,7 +2,6 @@ import UIKit
 
 final class PaymentViewController: UIViewController {
     // MARK: - Properties
-    private let paymentEndViewController = PaymentEndViewController()
     private var paymentPresenter: PaymentPresenter?
     
     private lazy var backwardButton: UIButton = {
@@ -28,7 +27,7 @@ final class PaymentViewController: UIViewController {
         var collection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collection.translatesAutoresizingMaskIntoConstraints = false
         collection.backgroundColor = .clear
-        collection.register(PaymentCell.self, forCellWithReuseIdentifier: PaymentCell.PaymentCellIdentifier)
+        collection.register(PaymentCell.self, forCellWithReuseIdentifier: PaymentCell.paymentCellIdentifier)
         collection.dataSource = self
         collection.delegate = self
         return collection
@@ -133,7 +132,7 @@ final class PaymentViewController: UIViewController {
             paymentPresenter?.showAlert(from: self)
             return
         }
-
+        let paymentEndViewController = PaymentEndViewController()
         paymentEndViewController.modalPresentationStyle = .fullScreen
         present(paymentEndViewController, animated: true)
     }
@@ -156,7 +155,7 @@ extension PaymentViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PaymentCell.PaymentCellIdentifier, for: indexPath) as? PaymentCell {
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PaymentCell.paymentCellIdentifier, for: indexPath) as? PaymentCell {
             if let paymentSystem = paymentPresenter?.paymentSystem[indexPath.row] {
                 cell.updatePaymentCell(paymentSystemModel: paymentSystem)
                 return cell

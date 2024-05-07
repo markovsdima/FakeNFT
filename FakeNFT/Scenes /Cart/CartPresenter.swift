@@ -47,75 +47,76 @@ final class CartPresenter {
     }
     
     func sumNFT() {
-        for i in nftData {
-            totalPrice += i.price
+        for newPrice in nftData {
+            totalPrice += newPrice.price
         }
         view?.totalPrice = String(totalPrice)
     }
     
 
     
-    func ifIsEmptyNftData(_ filterButton: UIButton, _ countNFTLabel: UILabel, _ priceNFTLabel: UILabel, _ paymentButton: UIButton, _ payBackgroundColor: UIView, _ cartIsEmpty: UILabel,_ cartCollection: UICollectionView) {
+    func ifIsEmptyNftData(_ filter: UIButton, _ countNFT: UILabel, _ priceNFT: UILabel, _ payment: UIButton, _ payBackground: UIView, _ cartIsEmpty: UILabel,_ cart: UICollectionView) {
         
         if nftData.isEmpty {
-            filterButton.isHidden = true
-            countNFTLabel.isHidden = true
-            priceNFTLabel.isHidden = true
-            paymentButton.isHidden = true
-            payBackgroundColor.isHidden = true
+            filter.isHidden = true
+            countNFT.isHidden = true
+            priceNFT.isHidden = true
+            payment.isHidden = true
+            payBackground.isHidden = true
             cartIsEmpty.isHidden = false
         } else {
-            filterButton.isHidden = false
-            countNFTLabel.isHidden = false
-            priceNFTLabel.isHidden = false
-            paymentButton.isHidden = false
-            payBackgroundColor.isHidden = false
+            filter.isHidden = false
+            countNFT.isHidden = false
+            priceNFT.isHidden = false
+            payment.isHidden = false
+            payBackground.isHidden = false
             cartIsEmpty.isHidden = true
         }
-        cartCollection.reloadData()
+        cart.reloadData()
     }
     
-    func confirmationOfDeletion(_ nftImageView: UIImageView, _ blurView: UIVisualEffectView, _ deleteButton: UIButton, _ returnButton: UIButton, _ warningsLabel: UILabel, _ cartCollection: UICollectionView) {
+    func confirmationOfDeletion(_ nftImage: UIImageView, _ blur: UIVisualEffectView, _ delete: UIButton, _ returnButton: UIButton, _ warnings: UILabel, _ cart: UICollectionView) {
         
-        nftImageView.isHidden = true
-        blurView.isHidden = true
-        deleteButton.isHidden = true
+        nftImage.isHidden = true
+        blur.isHidden = true
+        delete.isHidden = true
         returnButton.isHidden = true
-        warningsLabel.isHidden = true
+        warnings.isHidden = true
         
-        cartCollection.reloadData()
+        cart.reloadData()
     }
     
-    func confirmationOfDeletion(_ isTapped: Bool, _ nftImageView: UIImageView, _ blurView: UIVisualEffectView, _ deleteButton: UIButton, _ returnButton: UIButton, _ warningsLabel: UILabel) {
+    func confirmationOfDeletion(_ isTapped: Bool, _ nftImage: UIImageView, _ blur: UIVisualEffectView, _ delete: UIButton, _ returnButton: UIButton, _ warnings: UILabel) {
         if isTapped {
-            nftImageView.isHidden = false
-            blurView.isHidden = false
-            deleteButton.isHidden = false
+            nftImage.isHidden = false
+            blur.isHidden = false
+            delete.isHidden = false
             returnButton.isHidden = false
-            warningsLabel.isHidden = false
+            warnings.isHidden = false
         }
     }
     
     func showActionSheet() {
         let alertController = UIAlertController(title: "Сортировка", message: nil, preferredStyle: .actionSheet)
         
-        let action1 = UIAlertAction(title: "По цене", style: .default) { _ in
+        let priceAction = UIAlertAction(title: "По цене", style: .default) { _ in
             
         }
-        alertController.addAction(action1)
-        
-        let action2 = UIAlertAction(title: "По рейтингу", style: .default) { _ in
+
+        let ratingAction = UIAlertAction(title: "По рейтингу", style: .default) { _ in
             
         }
-        alertController.addAction(action2)
+       
         
-        let action3 = UIAlertAction(title: "По названию", style: .default) { _ in
+        let nameAction = UIAlertAction(title: "По названию", style: .default) { _ in
             
         }
-        alertController.addAction(action3)
-        
-        
+    
         let cancelAction = UIAlertAction(title: "Закрыть", style: .cancel, handler: nil)
+       
+        alertController.addAction(priceAction)
+        alertController.addAction(ratingAction)
+        alertController.addAction(nameAction)
         alertController.addAction(cancelAction)
         
         
