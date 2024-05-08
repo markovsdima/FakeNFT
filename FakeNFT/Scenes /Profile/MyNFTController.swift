@@ -193,11 +193,7 @@ extension MyNFTViewController: UITableViewDelegate {
 extension MyNFTViewController: MyNFTViewControllerProtocol {
     
     func setLoader(visible: Bool) {
-        if visible {
-            ProgressHUD.show()
-        } else {
-            ProgressHUD.dismiss()
-        }
+        visible ? ProgressHUD.show() : ProgressHUD.dismiss()
     }
     
     

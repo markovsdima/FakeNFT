@@ -129,11 +129,7 @@ extension FavouriteNFTViewController: UICollectionViewDelegateFlowLayout {
 extension FavouriteNFTViewController: FavouriteNFTViewControllerProtocol {
     
     func setLoader(visible: Bool) {
-        if visible {
-            ProgressHUD.show()
-        } else {
-            ProgressHUD.dismiss()
-        }
+        visible ? ProgressHUD.show() : ProgressHUD.dismiss()
     }
     
     

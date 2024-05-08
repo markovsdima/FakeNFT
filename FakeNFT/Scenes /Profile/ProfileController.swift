@@ -210,13 +210,10 @@ extension ProfileViewController: UITableViewDataSource {
         var title = ""
         switch indexPath.row {
         case 0:
-            
             title = "Мои NFT (\(myNftsCount))"
         case 1:
-            
             title = "Избранные NFT (\(likedNftsCount))"
         case 2:
-            
             title = "О разработчике"
         default:
             break
@@ -279,11 +276,7 @@ extension ProfileViewController: ProfileViewControllerProtocol {
         profileLinkTextView.isHidden = visible
         profileTableView.isHidden = visible
         
-        if visible {
-            ProgressHUD.show()
-        } else {
-            ProgressHUD.dismiss()
-        }
+        visible ? ProgressHUD.show() : ProgressHUD.dismiss()
     }
     
     
