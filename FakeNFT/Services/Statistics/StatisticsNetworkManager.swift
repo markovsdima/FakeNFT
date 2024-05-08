@@ -16,7 +16,7 @@ fileprivate enum DataSource {
 final class StatisticsNetworkManager {
     
     // MARK: - Switch between mock and server data sources
-    private let dataSource: DataSource = .mock
+    private let dataSource: DataSource = .server
     
     // MARK: - Public Properties
     static let shared = StatisticsNetworkManager()
