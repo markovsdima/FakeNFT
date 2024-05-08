@@ -164,8 +164,8 @@ final class CartCell: UICollectionViewCell {
         let starRatingImage = UIImage(named: "StarsYesCart")
         
         if model.rating <= 5 {
-            for i in 0..<model.rating {
-                (starStack.arrangedSubviews[i] as? UIImageView)?.image = starRatingImage
+            for rating in 0..<model.rating {
+                (starStack.arrangedSubviews[rating] as? UIImageView)?.image = starRatingImage
             }
         }
     }
