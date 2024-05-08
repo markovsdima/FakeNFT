@@ -15,7 +15,6 @@ final class CartCell: UICollectionViewCell {
         image.translatesAutoresizingMaskIntoConstraints = false
         image.layer.cornerRadius = 12
         image.clipsToBounds = true
-//        image.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
         return image
     }()
     
@@ -77,7 +76,7 @@ final class CartCell: UICollectionViewCell {
         return label
     }()
     
-    private lazy var PriceAndAmountStack: UIStackView = {
+    private lazy var priceAndAmountStack: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [
             priceLabel,
             amountLabel
@@ -94,7 +93,7 @@ final class CartCell: UICollectionViewCell {
     private lazy var infoStack: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [
             nameAndStarStack,
-            PriceAndAmountStack
+            priceAndAmountStack
         ])
         
         stack.translatesAutoresizingMaskIntoConstraints = false
@@ -163,7 +162,7 @@ final class CartCell: UICollectionViewCell {
         amountLabel.text = "\(model.price) ETH"
         
         let starRatingImage = UIImage(named: "StarsYesCart")
-
+        
         if model.rating <= 5 {
             for i in 0..<model.rating {
                 (starStack.arrangedSubviews[i] as? UIImageView)?.image = starRatingImage

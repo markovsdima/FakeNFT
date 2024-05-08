@@ -266,11 +266,21 @@ final class CartViewController: UIViewController {
     
     @objc private func deleteButtonDidTapped() {
         cartPresenter?.deleteNFT()
-        cartPresenter?.confirmationOfDeletion(nftImageView, blurView, deleteButton, returnButton, warningsLabel, cartCollection)
+        cartPresenter?.confirmationOfDeletion(nftImageView, 
+                                              blurView,
+                                              deleteButton,
+                                              returnButton,
+                                              warningsLabel,
+                                              cartCollection)
     }
     
     @objc private func returnButtonDidTapped() {
-        cartPresenter?.confirmationOfDeletion(nftImageView, blurView, deleteButton, returnButton, warningsLabel, cartCollection)
+        cartPresenter?.confirmationOfDeletion(nftImageView, 
+                                              blurView,
+                                              deleteButton,
+                                              returnButton,
+                                              warningsLabel,
+                                              cartCollection)
     }
     
     @objc private func payButtonDidTapped() {
@@ -310,7 +320,12 @@ extension CartViewController: UICollectionViewDataSource {
 extension CartViewController: CartCellDelete {
     func deleteNFT(_ isTapped: Bool, _ imageName: String) {
         nftImageView.image = UIImage(named: imageName)
-        cartPresenter?.confirmationOfDeletion(isTapped, nftImageView, blurView, deleteButton, returnButton, warningsLabel)
+        cartPresenter?.confirmationOfDeletion(isTapped, 
+                                              nftImageView,
+                                              blurView,
+                                              deleteButton,
+                                              returnButton,
+                                              warningsLabel)
     }
 }
 

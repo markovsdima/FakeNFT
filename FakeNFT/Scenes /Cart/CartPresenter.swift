@@ -53,9 +53,15 @@ final class CartPresenter {
         view?.totalPrice = String(totalPrice)
     }
     
-
     
-    func ifIsEmptyNftData(_ filter: UIButton, _ countNFT: UILabel, _ priceNFT: UILabel, _ payment: UIButton, _ payBackground: UIView, _ cartIsEmpty: UILabel,_ cart: UICollectionView) {
+    
+    func ifIsEmptyNftData(_ filter: UIButton,
+                          _ countNFT: UILabel,
+                          _ priceNFT: UILabel,
+                          _ payment: UIButton,
+                          _ payBackground: UIView,
+                          _ cartIsEmpty: UILabel,
+                          _ cart: UICollectionView) {
         
         if nftData.isEmpty {
             filter.isHidden = true
@@ -75,7 +81,12 @@ final class CartPresenter {
         cart.reloadData()
     }
     
-    func confirmationOfDeletion(_ nftImage: UIImageView, _ blur: UIVisualEffectView, _ delete: UIButton, _ returnButton: UIButton, _ warnings: UILabel, _ cart: UICollectionView) {
+    func confirmationOfDeletion(_ nftImage: UIImageView,
+                                _ blur: UIVisualEffectView,
+                                _ delete: UIButton,
+                                _ returnButton: UIButton,
+                                _ warnings: UILabel,
+                                _ cart: UICollectionView) {
         
         nftImage.isHidden = true
         blur.isHidden = true
@@ -86,7 +97,12 @@ final class CartPresenter {
         cart.reloadData()
     }
     
-    func confirmationOfDeletion(_ isTapped: Bool, _ nftImage: UIImageView, _ blur: UIVisualEffectView, _ delete: UIButton, _ returnButton: UIButton, _ warnings: UILabel) {
+    func confirmationOfDeletion(_ isTapped: Bool,
+                                _ nftImage: UIImageView,
+                                _ blur: UIVisualEffectView,
+                                _ delete: UIButton,
+                                _ returnButton: UIButton,
+                                _ warnings: UILabel) {
         if isTapped {
             nftImage.isHidden = false
             blur.isHidden = false
@@ -102,18 +118,18 @@ final class CartPresenter {
         let priceAction = UIAlertAction(title: "По цене", style: .default) { _ in
             
         }
-
+        
         let ratingAction = UIAlertAction(title: "По рейтингу", style: .default) { _ in
             
         }
-       
+        
         
         let nameAction = UIAlertAction(title: "По названию", style: .default) { _ in
             
         }
-    
+        
         let cancelAction = UIAlertAction(title: "Закрыть", style: .cancel, handler: nil)
-       
+        
         alertController.addAction(priceAction)
         alertController.addAction(ratingAction)
         alertController.addAction(nameAction)
