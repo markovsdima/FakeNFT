@@ -118,18 +118,24 @@ final class PaymentViewController: UIViewController {
         ])
     }
     
+    private func openURL(_ urlString: String) {
+        if let url = URL(string: urlString) {
+            UIApplication.shared.open(url)
+        }
+    }
+
     @objc func backwardButtonDidTapped() {
         dismiss(animated: true)
     }
     
     @objc func openLink() {
-        paymentPresenter?.openURL(paymentPresenter?.urlUserAgreement ?? "")
+        openURL(paymentPresenter?.urlUserAgreement ?? "")
     }
     
     @objc func payDidTapped() {
         guard let selectedIndexPaths = paymentSystemCollection.indexPathsForSelectedItems,
               !selectedIndexPaths.isEmpty else {
-            paymentPresenter?.showAlert(from: self)
+            showAlert(from: self)
             return
         }
         let paymentEndViewController = PaymentEndViewController()
@@ -182,5 +188,24 @@ extension PaymentViewController: UICollectionViewDelegate {
                 cell.layer.borderWidth = 0
             }
         }
+    }
+}
+
+
+extension PaymentViewController {
+    func showAlert(from viewController: UIViewController) {
+        let alertController = UIAlertController(title: "Не удалось произвести оплату", message: "", preferredStyle: .alert)
+        
+        let cancelAction = UIAlertAction(title: "Отмена", style: .default) { _ in
+            print("cancelAction")
+        }
+        
+        let replayAction = UIAlertAction(title: "Повторить", style: .default) { _ in
+            print("replayAction")
+        }
+        alertController.addAction(cancelAction)
+        alertController.addAction(replayAction)
+        
+        viewController.present(alertController, animated: true, completion: nil)
     }
 }

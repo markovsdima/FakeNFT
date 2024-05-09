@@ -1,4 +1,4 @@
-import UIKit
+import Foundation
 
 final class PaymentPresenter {
     // MARK: - Properties
@@ -15,26 +15,4 @@ final class PaymentPresenter {
         PaymentSystemModel(image: "ShibaInuCart", paymentSystem: "Shiba Inu", currency: "SHIB")
     ]
     
-    // MARK: - Lifecycle
-    func showAlert(from viewController: UIViewController) {
-        let alertController = UIAlertController(title: "Не удалось произвести оплату", message: "", preferredStyle: .alert)
-        
-        let cancelAction = UIAlertAction(title: "Отмена", style: .default) { _ in
-            print("cancelAction")
-        }
-        
-        let replayAction = UIAlertAction(title: "Повторить", style: .default) { _ in
-            print("replayAction")
-        }
-        alertController.addAction(cancelAction)
-        alertController.addAction(replayAction)
-        
-        viewController.present(alertController, animated: true, completion: nil)
-    }
-    
-    func openURL(_ urlString: String) {
-        if let url = URL(string: urlString) {
-            UIApplication.shared.open(url)
-        }
-    }
 }

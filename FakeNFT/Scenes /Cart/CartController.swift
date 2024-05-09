@@ -200,8 +200,7 @@ final class CartViewController: UIViewController {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        cartPresenter?.ifIsEmptyNftData(filterButton, countNFTLabel, priceNFTLabel, paymentButton, payBackgroundColor, cartIsEmpty, cartCollection)
-        
+        ifIsEmptyNftData()
         countNFTLabel.text = "\(nftDataCount) ETH"
         priceNFTLabel.text = "\(totalPrice) NFT"
     }
@@ -260,27 +259,47 @@ final class CartViewController: UIViewController {
         ])
     }
     
+   private func ifIsEmptyNftData() {
+        if (cartPresenter?.nftData ?? []).isEmpty {
+            filterButton.isHidden = true
+            countNFTLabel.isHidden = true
+            priceNFTLabel.isHidden = true
+            paymentButton.isHidden = true
+            payBackgroundColor.isHidden = true
+            cartIsEmpty.isHidden = false
+        } else {
+            filterButton.isHidden = false
+            countNFTLabel.isHidden = false
+            priceNFTLabel.isHidden = false
+            paymentButton.isHidden = false
+            payBackgroundColor.isHidden = false
+            cartIsEmpty.isHidden = true
+        }
+       cartCollection.reloadData()
+   }
+    
+    private func confirmationOfDeletion(_ isTapped: Bool) {
+        nftImageView.isHidden = isTapped
+        blurView.isHidden = isTapped
+        deleteButton.isHidden = isTapped
+        returnButton.isHidden = isTapped
+        warningsLabel.isHidden = isTapped
+        
+        cartCollection.reloadData()
+    }
+    
+    
     @objc private func filterButtonTapped() {
-        cartPresenter?.showActionSheet()
+        showActionSheet()
     }
     
     @objc private func deleteButtonDidTapped() {
         cartPresenter?.deleteNFT()
-        cartPresenter?.confirmationOfDeletion(nftImageView, 
-                                              blurView,
-                                              deleteButton,
-                                              returnButton,
-                                              warningsLabel,
-                                              cartCollection)
+        confirmationOfDeletion(true)
     }
     
     @objc private func returnButtonDidTapped() {
-        cartPresenter?.confirmationOfDeletion(nftImageView, 
-                                              blurView,
-                                              deleteButton,
-                                              returnButton,
-                                              warningsLabel,
-                                              cartCollection)
+        confirmationOfDeletion(true)
     }
     
     @objc private func payButtonDidTapped() {
@@ -317,15 +336,45 @@ extension CartViewController: UICollectionViewDataSource {
 }
 
 // MARK: - extension CartCellDelete
+extension CartViewController {
+    func showActionSheet() {
+        let alertController = UIAlertController(title: "Сортировка", message: nil, preferredStyle: .actionSheet)
+        
+        let priceAction = UIAlertAction(title: "По цене", style: .default) { _ in
+            
+        }
+        
+        let ratingAction = UIAlertAction(title: "По рейтингу", style: .default) { _ in
+            
+        }
+        
+        
+        let nameAction = UIAlertAction(title: "По названию", style: .default) { _ in
+            
+        }
+        
+        let cancelAction = UIAlertAction(title: "Закрыть", style: .cancel, handler: nil)
+        
+        alertController.addAction(priceAction)
+        alertController.addAction(ratingAction)
+        alertController.addAction(nameAction)
+        alertController.addAction(cancelAction)
+        
+        
+        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let viewController = scene.windows.first?.rootViewController {
+            viewController.present(alertController, animated: true, completion: nil)
+        }
+    }
+}
+
+
+// MARK: - extension CartCellDelete
 extension CartViewController: CartCellDelete {
-    func deleteNFT(_ isTapped: Bool, _ imageName: String) {
+    func deleteNFT(_ imageName: String) {
         nftImageView.image = UIImage(named: imageName)
-        cartPresenter?.confirmationOfDeletion(isTapped, 
-                                              nftImageView,
-                                              blurView,
-                                              deleteButton,
-                                              returnButton,
-                                              warningsLabel)
+        print(isTapped)
+        confirmationOfDeletion(false)
     }
 }
 
@@ -349,3 +398,5 @@ extension CartViewController: CartPreseterView {
         }
     }
 }
+
+

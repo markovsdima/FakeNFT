@@ -1,7 +1,8 @@
 import UIKit
 
 protocol CartCellDelete: AnyObject {
-    func deleteNFT(_ isTapped: Bool, _ imageName: String)
+//    func deleteNFT(_ isTapped: Bool, _ imageName: String)
+    func deleteNFT(_ imageName: String)
 }
 
 final class CartCell: UICollectionViewCell {
@@ -171,6 +172,6 @@ final class CartCell: UICollectionViewCell {
     }
     
     @objc func deleteButtonTapped() {
-        delegate?.deleteNFT(true, imageName)
+        delegate?.deleteNFT(imageName)
     }
 }
