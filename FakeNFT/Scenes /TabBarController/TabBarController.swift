@@ -31,13 +31,18 @@ final class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let profileController = ProfileViewController(
-            servicesAssembly: servicesAssembly
+        let networkClient = DefaultNetworkClient()
+        let profileService = ProfileServiceImpl(
+            networkClient: networkClient
         )
-        let profilePresenter = ProfilePresenter()
-        profileController.presenter = profilePresenter
-        profilePresenter.profileView = profileController
+        let profilePresenter = ProfilePresenter(
+            service: profileService,
+            profileId: ProfileConstants.profileId
+        )
         
+        let profileController = ProfileViewController(presenter: profilePresenter)
+        profilePresenter.profileView = profileController
+                
         let profileNavigationController = UINavigationController(rootViewController: profileController)
         
         profileController.tabBarItem = profileTabBarItem
