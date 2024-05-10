@@ -2,7 +2,7 @@ import UIKit
 import ProgressHUD
 
 protocol ProfileViewControllerProtocol: AnyObject {
-    var presenter: ProfilePresenterProtocol? { get set }
+    var presenter: ProfilePresenterProtocol { get set }
     var profileAvatar: UIImageView { get }
     
     func setLoader(_ visible: Bool)
@@ -23,8 +23,7 @@ protocol ProfileViewControllerProtocol: AnyObject {
 final class ProfileViewController: UIViewController {
     
     //MARK: - Properties
-    var presenter: ProfilePresenterProtocol?
-    let servicesAssembly: ServicesAssembly
+    var presenter: ProfilePresenterProtocol
     
     //MARK: - Private properties
     private lazy var profileEditButton: UIBarButtonItem = {
@@ -100,11 +99,13 @@ final class ProfileViewController: UIViewController {
         table.separatorStyle = .none
         table.register(
             ProfileTableCell.self,
-            forCellReuseIdentifier: ProfileTableCell.reuseIdentifier
+            forCellReuseIdentifier:
+            ProfileTableCell.defaultReuseIdentifier
         )
         table.delegate = self
         table.dataSource = self
         table.backgroundColor = .ypWhite
+        table.isScrollEnabled = false
         return table
     }()
     
@@ -113,8 +114,8 @@ final class ProfileViewController: UIViewController {
     
     
     //MARK: - Init
-    init(servicesAssembly: ServicesAssembly) {
-        self.servicesAssembly = servicesAssembly
+    init(presenter: ProfilePresenterProtocol) {
+        self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -133,7 +134,7 @@ final class ProfileViewController: UIViewController {
         profileAddElements()
         profileSetupLayout()
         
-        presenter?.viewDidLoad()
+        presenter.viewDidLoad()
         
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -145,8 +146,8 @@ final class ProfileViewController: UIViewController {
     
     func openWebView(url: URL?) {
         guard let url else { return}
-            let webVC = ProfileWebViewController(url: url)
-            navigationController?.pushViewController(webVC, animated: true)
+        let webVC = ProfileWebViewController(url: url)
+        navigationController?.pushViewController(webVC, animated: true)
     }
     
     //MARK: - Private Methods
@@ -158,9 +159,9 @@ final class ProfileViewController: UIViewController {
     
     @objc
     private func profileEditTapped(){
-        presenter?.onEditProfileClicked()
+        presenter.onEditProfileClicked()
     }
-
+    
     private func profileAddElements() {
         [profileStackView,
          profileBioTextView,
@@ -206,7 +207,7 @@ extension ProfileViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ProfileTableCell.reuseIdentifier, for: indexPath) as? ProfileTableCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ProfileTableCell.defaultReuseIdentifier, for: indexPath) as? ProfileTableCell else { return UITableViewCell() }
         var title = ""
         switch indexPath.row {
         case 0:
@@ -236,11 +237,11 @@ extension ProfileViewController: UITableViewDelegate {
         let index = indexPath.row
         switch index {
         case 0:
-            presenter?.onMyNftsClicked()
+            presenter.onMyNftsClicked()
         case 1:
-            presenter?.onFavouriteNftsClicked()
+            presenter.onFavouriteNftsClicked()
         case 2:
-            presenter?.openAboutDeveloper()
+            presenter.openAboutDeveloper()
         default:
             break
         }
