@@ -45,7 +45,7 @@ final class MyNFTViewController: UIViewController {
         table.dataSource = self
         table.register(
             ProfileMyNFTTableCell.self,
-            forCellReuseIdentifier: ProfileMyNFTTableCell.reuseIdentifier
+            forCellReuseIdentifier: ProfileMyNFTTableCell.defaultReuseIdentifier
         )
         table.separatorStyle = .none
         return table
@@ -167,7 +167,7 @@ extension MyNFTViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: ProfileMyNFTTableCell.reuseIdentifier,
+            withIdentifier: ProfileMyNFTTableCell.defaultReuseIdentifier,
             for: indexPath
         ) as? ProfileMyNFTTableCell else {
             return ProfileMyNFTTableCell()

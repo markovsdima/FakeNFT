@@ -6,9 +6,7 @@ protocol ProfileFavouriteNFTCollectionCellDelegate: AnyObject {
     func changeLike(id: String, isLiked: Bool)
 }
 
-final class ProfileFavouriteNFTCollectionCell: UICollectionViewCell {
-    
-    static let reuseIdentifier: String = "FavouriteNFTCollectionCell"
+final class ProfileFavouriteNFTCollectionCell: UICollectionViewCell, ReuseIdentifying {
     
     private static let totalStars = 5
     

@@ -48,6 +48,7 @@
 		4D813BCB2BEA5CED008E487D /* ProfileUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D813BCA2BEA5CED008E487D /* ProfileUpdate.swift */; };
 		5915B68E2BEE66E40079AF5C /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 5915B68D2BEE66E40079AF5C /* Kingfisher */; };
 		5915B6912BEE672D0079AF5C /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 5915B6902BEE672D0079AF5C /* ProgressHUD */; };
+		5915B6932BF001690079AF5C /* ProfileUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5915B6922BF001690079AF5C /* ProfileUnitTests.swift */; };
 		592730172BE182A900B8904D /* ProfileDecomposition.md in Resources */ = {isa = PBXBuildFile; fileRef = 592730162BE182A900B8904D /* ProfileDecomposition.md */; };
 		5927301D2BE4142300B8904D /* ProfileResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5927301C2BE4142300B8904D /* ProfileResponse.swift */; };
 		5927301F2BE4165E00B8904D /* NftResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5927301E2BE4165E00B8904D /* NftResponse.swift */; };
@@ -136,6 +137,7 @@
 		3FC8C39229D246BA0081F015 /* DateFormatters+Presets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatters+Presets.swift"; sourceTree = "<group>"; };
 		4D813BC82BEA5B38008E487D /* UpdateProfileRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateProfileRequest.swift; sourceTree = "<group>"; };
 		4D813BCA2BEA5CED008E487D /* ProfileUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUpdate.swift; sourceTree = "<group>"; };
+		5915B6922BF001690079AF5C /* ProfileUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUnitTests.swift; sourceTree = "<group>"; };
 		592730162BE182A900B8904D /* ProfileDecomposition.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = ProfileDecomposition.md; sourceTree = "<group>"; };
 		5927301C2BE4142300B8904D /* ProfileResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileResponse.swift; sourceTree = "<group>"; };
 		5927301E2BE4165E00B8904D /* NftResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftResponse.swift; sourceTree = "<group>"; };
@@ -325,6 +327,7 @@
 			isa = PBXGroup;
 			children = (
 				3F6806AD29CBBAF200B4F915 /* ExampleUnitTests.swift */,
+				5915B6922BF001690079AF5C /* ProfileUnitTests.swift */,
 			);
 			path = FakeNFTTests;
 			sourceTree = "<group>";
@@ -735,6 +738,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3F6806AE29CBBAF200B4F915 /* ExampleUnitTests.swift in Sources */,
+				5915B6932BF001690079AF5C /* ProfileUnitTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

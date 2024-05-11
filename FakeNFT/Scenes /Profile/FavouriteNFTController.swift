@@ -30,7 +30,7 @@ final class FavouriteNFTViewController: UIViewController {
         colView.delegate = self
         colView.register(
             ProfileFavouriteNFTCollectionCell.self,
-            forCellWithReuseIdentifier: ProfileFavouriteNFTCollectionCell.reuseIdentifier
+            forCellWithReuseIdentifier: ProfileFavouriteNFTCollectionCell.defaultReuseIdentifier
         )
         colView.translatesAutoresizingMaskIntoConstraints = false
         return colView
@@ -101,7 +101,7 @@ extension FavouriteNFTViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: ProfileFavouriteNFTCollectionCell.reuseIdentifier,
+            withReuseIdentifier: ProfileFavouriteNFTCollectionCell.defaultReuseIdentifier,
             for: indexPath
         ) as? ProfileFavouriteNFTCollectionCell ?? ProfileFavouriteNFTCollectionCell()
         

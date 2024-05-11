@@ -5,9 +5,7 @@ protocol ProfileMyNFTTableCellDelegate: AnyObject {
     func changeLike(id: String, isLiked: Bool)
 }
 
-final class ProfileMyNFTTableCell: UITableViewCell {
-    
-    static let reuseIdentifier = "MyNFTTableCell"
+final class ProfileMyNFTTableCell: UITableViewCell, ReuseIdentifying {
     
     private static let totalStars = 5
     
