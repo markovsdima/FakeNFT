@@ -105,6 +105,7 @@ extension FavouriteNFTViewController: UICollectionViewDataSource {
             for: indexPath
         ) as? ProfileFavouriteNFTCollectionCell ?? ProfileFavouriteNFTCollectionCell()
         
+        cell.delegate = self
         cell.configCell(visibleNfts[indexPath.row])
         
         return cell
@@ -158,4 +159,11 @@ extension FavouriteNFTViewController: ErrorView {
     
 }
 
+// MARK: ProfileFavouriteNFTCollectionCellDelegate
+extension FavouriteNFTViewController: ProfileFavouriteNFTCollectionCellDelegate {
+    
+    func changeLike(id: String, isLiked: Bool) {
+        presenter?.changeLike(id: id, isLiked: isLiked)
+    }
+}
 

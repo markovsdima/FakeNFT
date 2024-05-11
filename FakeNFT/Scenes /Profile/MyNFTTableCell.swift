@@ -1,10 +1,19 @@
 import UIKit
 
+protocol ProfileMyNFTTableCellDelegate: AnyObject {
+    
+    func changeLike(id: String, isLiked: Bool)
+}
+
 final class ProfileMyNFTTableCell: UITableViewCell {
     
     static let reuseIdentifier = "MyNFTTableCell"
     
     private static let totalStars = 5
+    
+    weak var delegate: ProfileMyNFTTableCellDelegate?
+    
+    private var model: MyNFT?
     
     private lazy var likeButton: UIButton = {
         let button: UIButton = UIButton()
@@ -97,16 +106,19 @@ final class ProfileMyNFTTableCell: UITableViewCell {
     
     
     @objc
-    private func likeButtonTapped(){
-        print("like button tapped")
+    private func likeButtonTapped() {
+        guard let model else { return }
+        
+        delegate?.changeLike(id: model.id, isLiked: !model.isLiked)
     }
-    
     
     func configCell(_ model: MyNFT) {
         backgroundColor = .ypWhite
         selectionStyle = .none
         addElements()
         setupConstraints()
+        
+        self.model = model
         
         labelName.text = model.name
         labelAuthor.text = model.author
@@ -148,7 +160,7 @@ final class ProfileMyNFTTableCell: UITableViewCell {
     
     private func addElements(){
         contentView.addSubview(viewNFTContent)
-        
+
         viewNFTContent.addSubview(imageViewNFT)
         viewNFTContent.addSubview(likeButton)
         viewNFTContent.addSubview(stackNFT)

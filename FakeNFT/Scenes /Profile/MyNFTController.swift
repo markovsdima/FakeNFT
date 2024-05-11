@@ -131,17 +131,19 @@ final class MyNFTViewController: UIViewController {
         )
         alert.addAction(UIAlertAction(title: "По цене",
                                       style: .default) { _ in
-            
+            self.presenter?.changeSort(.price)
         })
         alert.addAction(UIAlertAction(
             title: "По рейтингу",
             style: .default
         ) { _ in
+            self.presenter?.changeSort(.rating)
         })
         alert.addAction(UIAlertAction(
             title: "По названию",
             style: .default
         ) { _ in
+            self.presenter?.changeSort(.name)
         })
         alert.addAction(UIAlertAction(
             title: "Закрыть",
@@ -171,6 +173,7 @@ extension MyNFTViewController: UITableViewDataSource {
             return ProfileMyNFTTableCell()
         }
         
+        cell.delegate = self
         cell.configCell(visibleNfts[indexPath.row])
         
         return cell
@@ -219,6 +222,13 @@ extension MyNFTViewController: MyNFTViewControllerProtocol {
 
 // MARK: ErrorView
 extension MyNFTViewController: ErrorView {
-    
+
 }
 
+// MARK: ProfileMyNFTTableCellDelegate
+extension MyNFTViewController: ProfileMyNFTTableCellDelegate {
+
+    func changeLike(id: String, isLiked: Bool) {
+        presenter?.changeLike(id: id, isLiked: isLiked)
+    }
+}

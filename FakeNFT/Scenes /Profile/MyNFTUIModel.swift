@@ -8,7 +8,7 @@ struct MyNFT {
     let author: String
     let id: String
     var isLiked: Bool
-    
+
     init(name: String, imageUrl: String?, rating: Int, price: Float, author: String, id: String, isLiked: Bool ) {
         self.name = name
         self.imageUrl = imageUrl
@@ -18,7 +18,7 @@ struct MyNFT {
         self.id = id
         self.isLiked = isLiked
     }
-    
+
     init(
         _ model: NftModel,
         isLiked: Bool
@@ -32,4 +32,3 @@ struct MyNFT {
         self.isLiked = isLiked
     }
 }
-
