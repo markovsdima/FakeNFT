@@ -74,12 +74,7 @@ final class ProfileUnitTests: XCTestCase {
         
         //given
         let mockNetworkClient = MockNetworkClient()
-        let mockNftStorage = MockNftStorage()
         let mockProfileService = MockProfileService(networkClient: mockNetworkClient)
-        let servicesAssembly = ServicesAssembly(
-            networkClient: mockNetworkClient,
-            nftStorage: mockNftStorage
-        )
         let presenter = ProfilePresenter(
             service: mockProfileService,
             profileId: ProfileConstants.profileId
@@ -103,12 +98,7 @@ final class ProfileUnitTests: XCTestCase {
         
         //given
         let mockNetworkClient = MockNetworkClient()
-        let mockNftStorage = MockNftStorage()
         let mockProfileService = MockProfileService(networkClient: mockNetworkClient)
-        let servicesAssembly = ServicesAssembly(
-            networkClient: mockNetworkClient,
-            nftStorage: mockNftStorage
-        )
         let presenter = ProfilePresenter(
             service: mockProfileService,
             profileId: ProfileConstants.profileId
@@ -132,12 +122,7 @@ final class ProfileUnitTests: XCTestCase {
         
         //given
         let mockNetworkClient = MockNetworkClient()
-        let mockNftStorage = MockNftStorage()
         let mockProfileService = MockProfileService(networkClient: mockNetworkClient)
-        let servicesAssembly = ServicesAssembly(
-            networkClient: mockNetworkClient,
-            nftStorage: mockNftStorage
-        )
         let presenter = ProfilePresenter(
             service: mockProfileService,
             profileId: ProfileConstants.profileId
@@ -160,12 +145,7 @@ final class ProfileUnitTests: XCTestCase {
     func testPresenterFetchNoError() {
         //given
         let mockNetworkClient = MockNetworkClient()
-        let mockNftStorage = MockNftStorage()
         let mockProfileService = MockProfileService(networkClient: mockNetworkClient)
-        let servicesAssembly = ServicesAssembly(
-            networkClient: mockNetworkClient,
-            nftStorage: mockNftStorage
-        )
         let presenter = ProfilePresenter(
             service: mockProfileService,
             profileId: ProfileConstants.profileId
