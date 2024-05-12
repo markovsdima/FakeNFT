@@ -5,7 +5,7 @@ final class CartViewController: UIViewController {
     // MARK: - Properties
     let servicesAssembly: ServicesAssembly
     
-    private let paymentViewController = PaymentViewController()
+    private let paymentViewController: PaymentViewController
     private var cartPresenter: CartPresenter?
     private var isTapped = false
     
@@ -165,15 +165,6 @@ final class CartViewController: UIViewController {
         return stack
     }()
     
-    init(servicesAssembly: ServicesAssembly) {
-        self.servicesAssembly = servicesAssembly
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     private lazy var cartIsEmpty: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -184,13 +175,22 @@ final class CartViewController: UIViewController {
         return label
     }()
     
+    init(servicesAssembly: ServicesAssembly) {
+        self.servicesAssembly = servicesAssembly
+        self.paymentViewController = PaymentViewController()
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         viewConstraints()
         cartPresenter = CartPresenter(view: self)
         
     }
-    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
