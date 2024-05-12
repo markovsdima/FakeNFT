@@ -9,7 +9,8 @@ final class PaymentCell: UICollectionViewCell {
         image.translatesAutoresizingMaskIntoConstraints = false
         image.layer.cornerRadius = 6
         image.clipsToBounds = true
-        image.frame = CGRect(x: 0, y: 0, width: 36, height: 36)
+        image.backgroundColor = .ypBlack
+        image.layer.cornerRadius = 6
         return image
     }()
     
