@@ -3,7 +3,6 @@ import ProgressHUD
 
 protocol ProfileViewControllerProtocol: AnyObject {
     var presenter: ProfilePresenterProtocol? { get set }
-    var profileAvatar: UIImageView { get }
 
     func setLoader(_ visible: Bool)
     func openWebView(url: URL?)

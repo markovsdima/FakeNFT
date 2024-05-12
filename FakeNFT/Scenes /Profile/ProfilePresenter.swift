@@ -16,13 +16,14 @@ final class ProfilePresenter: ProfilePresenterProtocol {
     // MARK: - Properties
     weak var profileView: ProfileViewControllerProtocol?
 
+    var loadedProfile: ProfileResponse?
+    
     private let profileId: String
 
     private var profileService: ProfileService
 
     private var myNftsIds: [String] = []
     private var favouriteNftsIds: [String] = []
-    private var loadedProfile: ProfileResponse?
 
     // MARK: - Init
     init(

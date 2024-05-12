@@ -46,8 +46,6 @@
 		3FC8C39329D246BA0081F015 /* DateFormatters+Presets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8C39229D246BA0081F015 /* DateFormatters+Presets.swift */; };
 		4D813BC92BEA5B38008E487D /* UpdateProfileRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D813BC82BEA5B38008E487D /* UpdateProfileRequest.swift */; };
 		4D813BCB2BEA5CED008E487D /* ProfileUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D813BCA2BEA5CED008E487D /* ProfileUpdate.swift */; };
-		5915B68E2BEE66E40079AF5C /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 5915B68D2BEE66E40079AF5C /* Kingfisher */; };
-		5915B6912BEE672D0079AF5C /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 5915B6902BEE672D0079AF5C /* ProgressHUD */; };
 		5915B6932BF001690079AF5C /* ProfileUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5915B6922BF001690079AF5C /* ProfileUnitTests.swift */; };
 		592730172BE182A900B8904D /* ProfileDecomposition.md in Resources */ = {isa = PBXBuildFile; fileRef = 592730162BE182A900B8904D /* ProfileDecomposition.md */; };
 		5927301D2BE4142300B8904D /* ProfileResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5927301C2BE4142300B8904D /* ProfileResponse.swift */; };
@@ -58,6 +56,11 @@
 		5983609E2BE7A2C500EBBE35 /* ProfileNftService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5983609D2BE7A2C500EBBE35 /* ProfileNftService.swift */; };
 		598360A02BE7F14300EBBE35 /* MyNFTUIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5983609F2BE7F14300EBBE35 /* MyNFTUIModel.swift */; };
 		598360A22BE7F36800EBBE35 /* FavouriteNFTUIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598360A12BE7F36800EBBE35 /* FavouriteNFTUIModel.swift */; };
+		599E3A742BF1419900EA3147 /* MockNetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 599E3A732BF1419900EA3147 /* MockNetworkClient.swift */; };
+		599E3A762BF141C900EA3147 /* MockNftStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 599E3A752BF141C900EA3147 /* MockNftStorage.swift */; };
+		599E3A792BF1473000EA3147 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 599E3A782BF1473000EA3147 /* Kingfisher */; };
+		599E3A7C2BF1475C00EA3147 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 599E3A7B2BF1475C00EA3147 /* ProgressHUD */; };
+		599E3A7E2BF14C1400EA3147 /* MockProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 599E3A7D2BF14C1400EA3147 /* MockProfileService.swift */; };
 		59B9F6842BD51E3C0057AF15 /* ProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B9F6832BD51E3C0057AF15 /* ProfilePresenter.swift */; };
 		59B9F6872BD59E360057AF15 /* ProfileMockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B9F6862BD59E360057AF15 /* ProfileMockData.swift */; };
 		59B9F6892BD5B49E0057AF15 /* ProfileTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B9F6882BD5B49E0057AF15 /* ProfileTableCell.swift */; };
@@ -147,6 +150,9 @@
 		5983609D2BE7A2C500EBBE35 /* ProfileNftService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileNftService.swift; sourceTree = "<group>"; };
 		5983609F2BE7F14300EBBE35 /* MyNFTUIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyNFTUIModel.swift; sourceTree = "<group>"; };
 		598360A12BE7F36800EBBE35 /* FavouriteNFTUIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteNFTUIModel.swift; sourceTree = "<group>"; };
+		599E3A732BF1419900EA3147 /* MockNetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNetworkClient.swift; sourceTree = "<group>"; };
+		599E3A752BF141C900EA3147 /* MockNftStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNftStorage.swift; sourceTree = "<group>"; };
+		599E3A7D2BF14C1400EA3147 /* MockProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockProfileService.swift; sourceTree = "<group>"; };
 		59B9F6832BD51E3C0057AF15 /* ProfilePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePresenter.swift; sourceTree = "<group>"; };
 		59B9F6862BD59E360057AF15 /* ProfileMockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileMockData.swift; sourceTree = "<group>"; };
 		59B9F6882BD5B49E0057AF15 /* ProfileTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableCell.swift; sourceTree = "<group>"; };
@@ -172,8 +178,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5915B68E2BEE66E40079AF5C /* Kingfisher in Frameworks */,
-				5915B6912BEE672D0079AF5C /* ProgressHUD in Frameworks */,
+				599E3A792BF1473000EA3147 /* Kingfisher in Frameworks */,
+				599E3A7C2BF1475C00EA3147 /* ProgressHUD in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -328,6 +334,9 @@
 			children = (
 				3F6806AD29CBBAF200B4F915 /* ExampleUnitTests.swift */,
 				5915B6922BF001690079AF5C /* ProfileUnitTests.swift */,
+				599E3A732BF1419900EA3147 /* MockNetworkClient.swift */,
+				599E3A752BF141C900EA3147 /* MockNftStorage.swift */,
+				599E3A7D2BF14C1400EA3147 /* MockProfileService.swift */,
 			);
 			path = FakeNFTTests;
 			sourceTree = "<group>";
@@ -527,8 +536,8 @@
 			);
 			name = FakeNFT;
 			packageProductDependencies = (
-				5915B68D2BEE66E40079AF5C /* Kingfisher */,
-				5915B6902BEE672D0079AF5C /* ProgressHUD */,
+				599E3A782BF1473000EA3147 /* Kingfisher */,
+				599E3A7B2BF1475C00EA3147 /* ProgressHUD */,
 			);
 			productName = FakeNFT;
 			productReference = 3F68069329CBBAF100B4F915 /* FakeNFT.app */;
@@ -604,8 +613,8 @@
 			);
 			mainGroup = 3F68068A29CBBAF100B4F915;
 			packageReferences = (
-				5915B68C2BEE66E40079AF5C /* XCRemoteSwiftPackageReference "Kingfisher" */,
-				5915B68F2BEE672D0079AF5C /* XCRemoteSwiftPackageReference "ProgressHUD" */,
+				599E3A772BF1473000EA3147 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				599E3A7A2BF1475C00EA3147 /* XCRemoteSwiftPackageReference "ProgressHUD" */,
 			);
 			productRefGroup = 3F68069429CBBAF100B4F915 /* Products */;
 			projectDirPath = "";
@@ -737,7 +746,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				599E3A7E2BF14C1400EA3147 /* MockProfileService.swift in Sources */,
 				3F6806AE29CBBAF200B4F915 /* ExampleUnitTests.swift in Sources */,
+				599E3A742BF1419900EA3147 /* MockNetworkClient.swift in Sources */,
+				599E3A762BF141C900EA3147 /* MockNftStorage.swift in Sources */,
 				5915B6932BF001690079AF5C /* ProfileUnitTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1075,7 +1087,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		5915B68C2BEE66E40079AF5C /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+		599E3A772BF1473000EA3147 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher?ysclid=lr3vwg3giw84284263";
 			requirement = {
@@ -1083,7 +1095,7 @@
 				version = 7.6.2;
 			};
 		};
-		5915B68F2BEE672D0079AF5C /* XCRemoteSwiftPackageReference "ProgressHUD" */ = {
+		599E3A7A2BF1475C00EA3147 /* XCRemoteSwiftPackageReference "ProgressHUD" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/relatedcode/ProgressHUD";
 			requirement = {
@@ -1094,14 +1106,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		5915B68D2BEE66E40079AF5C /* Kingfisher */ = {
+		599E3A782BF1473000EA3147 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5915B68C2BEE66E40079AF5C /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			package = 599E3A772BF1473000EA3147 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
 		};
-		5915B6902BEE672D0079AF5C /* ProgressHUD */ = {
+		599E3A7B2BF1475C00EA3147 /* ProgressHUD */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5915B68F2BEE672D0079AF5C /* XCRemoteSwiftPackageReference "ProgressHUD" */;
+			package = 599E3A7A2BF1475C00EA3147 /* XCRemoteSwiftPackageReference "ProgressHUD" */;
 			productName = ProgressHUD;
 		};
 /* End XCSwiftPackageProductDependency section */
