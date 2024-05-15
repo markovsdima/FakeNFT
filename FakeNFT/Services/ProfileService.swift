@@ -38,6 +38,8 @@ final class ProfileServiceImpl: ProfileService {
         completion: (@escaping (Result<ProfileResponse, Error>) -> Void)
     ) {
         let request = UpdateProfileRequest(profile: profileUpdate)
+        
+        print("[CHANGE LIKE] Request: \(profileUpdate.likes)")
 
         networkClient.send(request: request, type: ProfileResponse.self) { result in
             switch result {

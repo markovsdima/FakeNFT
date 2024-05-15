@@ -75,9 +75,8 @@ final class MyNFTViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        ProgressHUD.dismiss()
-        
         super.viewWillDisappear(animated)
+        ProgressHUD.dismiss()
     }
     
     //MARK: - Private Methods

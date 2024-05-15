@@ -6,13 +6,11 @@ protocol MyNFTVPresenterProtocol {
 
     func loadNfts()
     func changeLike(id: String, isLiked: Bool)
-    func changeSort(_ sort: Sort)
+    func changeSort(_ sort: MyNFTSortType)
 }
 
-enum Sort {
-    case price
-    case rating
-    case name
+private enum MyNFTSortConstants {
+    static let sortingPreferenceKey = "sortingPreference"
 }
 
 final class MyNFTPresenter: MyNFTVPresenterProtocol {
@@ -21,19 +19,21 @@ final class MyNFTPresenter: MyNFTVPresenterProtocol {
 
     private let profileNftService: ProfileNftService
     private let profileService: ProfileService
+    
+    private var sortService: ProfileSortServiceProtocol
 
     private let profile: ProfileResponse
     
     private var currentNftsIds: [String]
     private var likedNftsIds: [String]
     private var loadedNfts: [MyNFT] = []
-    private var sort: Sort = .name
 
     init(
         profile: ProfileResponse,
         view: MyNFTViewControllerProtocol,
         profileNftService: ProfileNftService,
-        profileService: ProfileService
+        profileService: ProfileService,
+        sortService: ProfileSortServiceProtocol
     ) {
         self.profile = profile
         self.view = view
@@ -42,6 +42,7 @@ final class MyNFTPresenter: MyNFTVPresenterProtocol {
         
         self.currentNftsIds = profile.nfts
         self.likedNftsIds = profile.likes
+        self.sortService = sortService
     }
     
     func loadNfts() {
@@ -126,16 +127,15 @@ final class MyNFTPresenter: MyNFTVPresenterProtocol {
         }
     }
     
-    func changeSort(_ sort: Sort) {
-        self.sort = sort
+    func changeSort(_ sort: MyNFTSortType) {
+        sortService.sort = sort
         
         refreshNftsView()
     }
     
     private func refreshNftsView() {
         let sortedNfts: [MyNFT]
-        
-        switch sort {
+        switch sortService.sort {
         case .name:
             sortedNfts = self.loadedNfts.sorted(by: { $0.name < $1.name } )
         case .rating:
@@ -146,7 +146,7 @@ final class MyNFTPresenter: MyNFTVPresenterProtocol {
         
         self.view?.refreshNfts(nfts: sortedNfts)
     }
-
+    
     private func checkError(_ error: Error) -> ErrorModel {
         let message: String
         switch error {

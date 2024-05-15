@@ -61,6 +61,7 @@
 		599E3A792BF1473000EA3147 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 599E3A782BF1473000EA3147 /* Kingfisher */; };
 		599E3A7C2BF1475C00EA3147 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 599E3A7B2BF1475C00EA3147 /* ProgressHUD */; };
 		599E3A7E2BF14C1400EA3147 /* MockProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 599E3A7D2BF14C1400EA3147 /* MockProfileService.swift */; };
+		599E3A802BF49E8600EA3147 /* ProfileSortService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 599E3A7F2BF49E8600EA3147 /* ProfileSortService.swift */; };
 		59B9F6842BD51E3C0057AF15 /* ProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B9F6832BD51E3C0057AF15 /* ProfilePresenter.swift */; };
 		59B9F6872BD59E360057AF15 /* ProfileMockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B9F6862BD59E360057AF15 /* ProfileMockData.swift */; };
 		59B9F6892BD5B49E0057AF15 /* ProfileTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B9F6882BD5B49E0057AF15 /* ProfileTableCell.swift */; };
@@ -153,6 +154,7 @@
 		599E3A732BF1419900EA3147 /* MockNetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNetworkClient.swift; sourceTree = "<group>"; };
 		599E3A752BF141C900EA3147 /* MockNftStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNftStorage.swift; sourceTree = "<group>"; };
 		599E3A7D2BF14C1400EA3147 /* MockProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockProfileService.swift; sourceTree = "<group>"; };
+		599E3A7F2BF49E8600EA3147 /* ProfileSortService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSortService.swift; sourceTree = "<group>"; };
 		59B9F6832BD51E3C0057AF15 /* ProfilePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePresenter.swift; sourceTree = "<group>"; };
 		59B9F6862BD59E360057AF15 /* ProfileMockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileMockData.swift; sourceTree = "<group>"; };
 		59B9F6882BD5B49E0057AF15 /* ProfileTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableCell.swift; sourceTree = "<group>"; };
@@ -357,6 +359,7 @@
 				0C79EE6B2A76DE2E00EE90EA /* ServicesAssemly.swift */,
 				0CFCB73F2A78002A0009A829 /* NftService.swift */,
 				5983609D2BE7A2C500EBBE35 /* ProfileNftService.swift */,
+				599E3A7F2BF49E8600EA3147 /* ProfileSortService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -711,6 +714,7 @@
 				592730272BE42E2800B8904D /* FetchProfileRequest.swift in Sources */,
 				3F6806D529CBBEC700B4F915 /* NetworkTask.swift in Sources */,
 				0CF2C2DB2A783C1B00FDC837 /* LoadingView.swift in Sources */,
+				599E3A802BF49E8600EA3147 /* ProfileSortService.swift in Sources */,
 				598360A02BE7F14300EBBE35 /* MyNFTUIModel.swift in Sources */,
 				3F68069729CBBAF100B4F915 /* AppDelegate.swift in Sources */,
 				5927301F2BE4165E00B8904D /* NftResponse.swift in Sources */,

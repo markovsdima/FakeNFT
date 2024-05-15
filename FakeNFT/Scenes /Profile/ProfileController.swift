@@ -306,7 +306,8 @@ extension ProfileViewController: ProfileViewControllerProtocol {
             profileNftService: ProfileNftServiceImpl(
                 networkClient: DefaultNetworkClient()
             ),
-            profileService: servicesAssembly.profileService
+            profileService: servicesAssembly.profileService,
+            sortService: ProfileSortService.shared
         )
 
         navigationController?.pushViewController(myNFTVC, animated: true)

@@ -90,7 +90,6 @@ final class FavouriteNFTPresenter: FavouriteNFTPresenterProtocol {
             website: profile.website?.absoluteString ?? "",
             likes: newLikes
         )
-        
         profileService.updateProfile(with: profileUpdate) { [weak self] result in
             guard let self else { return }
             
@@ -105,7 +104,7 @@ final class FavouriteNFTPresenter: FavouriteNFTPresenterProtocol {
                 
                 self.loadNfts()
                 
-            case .failure(let failure):
+            case .failure(let failure): 
                 print("Change like failed: \(failure)")
             }
             
