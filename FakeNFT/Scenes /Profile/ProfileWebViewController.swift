@@ -29,6 +29,7 @@ final class  ProfileWebViewController: UIViewController, UIWebViewDelegate, WKUI
         
         navigationItem.leftBarButtonItem = backButton
         navigationItem.leftBarButtonItem?.tintColor = .ypBlackUniversal
+        tabBarController?.tabBar.isHidden = true
         
         let request = URLRequest(url: url)
         webView.load(request)
