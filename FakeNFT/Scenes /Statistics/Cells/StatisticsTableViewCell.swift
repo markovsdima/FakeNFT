@@ -46,6 +46,7 @@ final class StatisticsTableViewCell: UITableViewCell, ReuseIdentifying {
         let label = UILabel()
         label.font = .systemFont(ofSize: 22, weight: .bold)
         label.textColor = .ypBlack
+        label.textAlignment = .right
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -102,9 +103,11 @@ final class StatisticsTableViewCell: UITableViewCell, ReuseIdentifying {
             
             nameLabel.leadingAnchor.constraint(equalTo: statisticsAvatarImageView.trailingAnchor, constant: 8),
             nameLabel.centerYAnchor.constraint(equalTo: userView.centerYAnchor),
+            nameLabel.trailingAnchor.constraint(equalTo: nftAmountLabel.leadingAnchor),
             
             nftAmountLabel.trailingAnchor.constraint(equalTo: userView.trailingAnchor, constant: -16),
-            nftAmountLabel.centerYAnchor.constraint(equalTo: userView.centerYAnchor)
+            nftAmountLabel.centerYAnchor.constraint(equalTo: userView.centerYAnchor),
+            nftAmountLabel.widthAnchor.constraint(equalToConstant: 60)
         ])
     }
 }

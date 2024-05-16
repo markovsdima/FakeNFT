@@ -196,13 +196,11 @@ final class StatisticsCollectionViewCell: UICollectionViewCell, ReuseIdentifying
             let image = UIImage(named: "Statistics/cart")
             let tintedImage = image?.withRenderingMode(.alwaysTemplate)
             orderButton.setImage(tintedImage, for: .normal)
-            orderButton.tintColor = .ypBlack
             isOrdered.toggle()
         } else {
             let image = UIImage(named: "Statistics/cartRemove")
             let tintedImage = image?.withRenderingMode(.alwaysTemplate)
             orderButton.setImage(tintedImage, for: .normal)
-            orderButton.tintColor = .ypRedUniversal
             isOrdered.toggle()
         }
     }
