@@ -141,6 +141,8 @@ final class ProfileViewController: UIViewController {
         tabBarController?.tabBar.isHidden = false
 
         profileAvatar.kf.indicatorType = .activity
+        
+        presenter?.viewDidLoad()
     }
 
     func openWebView(url: URL?) {
