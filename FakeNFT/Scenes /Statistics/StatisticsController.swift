@@ -167,7 +167,6 @@ extension StatisticsViewController: UITableViewDataSource {
         
         return cell
     }
-    
 }
 
 // MARK: - UITableViewDelegate

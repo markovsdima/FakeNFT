@@ -41,6 +41,17 @@ final class StatisticsCollectionViewController: UIViewController, StatisticsColl
         return label
     }()
     
+    private lazy var emptyLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .ypBlack
+        label.font = .systemFont(ofSize: 17, weight: .bold)
+        label.text = "У пользователя еще нет NFT"
+        label.isHidden = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
+    
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewCompositionalLayout { _, _ in
             let itemSize = NSCollectionLayoutSize(
@@ -97,7 +108,16 @@ final class StatisticsCollectionViewController: UIViewController, StatisticsColl
     
     // MARK: - Public Methods
     func displayCollection(collection: ([StatisticsNFTCell])) {
+        DispatchQueue.main.async {
+            self.emptyLabel.isHidden = true
+        }
         reloadData(collection: collection)
+    }
+    
+    func displayEmptyCollection() {
+        DispatchQueue.main.async {
+            self.emptyLabel.isHidden = false
+        }
     }
     
     @MainActor
@@ -111,6 +131,8 @@ final class StatisticsCollectionViewController: UIViewController, StatisticsColl
     
     // MARK: - Private Methods
     private func setupUI() {
+        view.addSubview(emptyLabel)
+        emptyLabel.layer.zPosition = 20
         view.addSubview(topBarView)
         topBarView.addSubview(backButton)
         topBarView.addSubview(titleLabel)
@@ -134,7 +156,10 @@ final class StatisticsCollectionViewController: UIViewController, StatisticsColl
             collectionView.topAnchor.constraint(equalTo: topBarView.bottomAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            emptyLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
     
@@ -147,6 +172,8 @@ final class StatisticsCollectionViewController: UIViewController, StatisticsColl
             cell?.configureStatisticsCollectionCell(
                 nft: ItemIdentifier
             )
+            
+            cell?.delegate = self
             
             // Load cell image from url
             if let urlString = ItemIdentifier.images.first {
@@ -175,6 +202,15 @@ final class StatisticsCollectionViewController: UIViewController, StatisticsColl
     @objc private func didTapBackButton() {
         dismiss(animated: true)
     }
-    
 }
 
+// MARK: StatisticsCollectionViewCellDelegate
+extension StatisticsCollectionViewController: StatisticsCollectionViewCellDelegate {
+    func didTapLikeButton(id: String) {
+        statisticsCollectionPresenter.didTapLikeButton(id: id)
+    }
+    
+    func didTapOrderButton(id: String) {
+        statisticsCollectionPresenter.didTapOrderButton(id: id)
+    }
+}

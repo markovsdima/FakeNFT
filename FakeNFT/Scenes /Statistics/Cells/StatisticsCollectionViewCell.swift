@@ -1,5 +1,10 @@
 import UIKit
 
+protocol StatisticsCollectionViewCellDelegate: AnyObject {
+    func didTapLikeButton(id: String)
+    func didTapOrderButton(id: String)
+}
+
 final class StatisticsCollectionViewCell: UICollectionViewCell, ReuseIdentifying {
     
     // MARK: - UI Properties
@@ -16,8 +21,13 @@ final class StatisticsCollectionViewCell: UICollectionViewCell, ReuseIdentifying
     
     private lazy var likeButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "Statistics/like"), for: .normal)
+        let image = UIImage(named: "Statistics/like")
+        let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+        button.setImage(tintedImage, for: .normal)
+        button.tintColor = .ypWhiteUniversal
+        
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
         
         return button
     }()
@@ -58,12 +68,17 @@ final class StatisticsCollectionViewCell: UICollectionViewCell, ReuseIdentifying
         button.setImage(tintedImage, for: .normal)
         button.tintColor = .ypBlack
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(didTapOrderButton), for: .touchUpInside)
         
         return button
     }()
     
     private var rating: Int = 3
     private var id = String()
+    private var isLiked: Bool = false
+    private var isOrdered: Bool = false
+    
+    weak var delegate: StatisticsCollectionViewCellDelegate?
     
     // MARK: - Override Methods
     override init(frame: CGRect) {
@@ -89,13 +104,16 @@ final class StatisticsCollectionViewCell: UICollectionViewCell, ReuseIdentifying
         nameLabel.text = nft.name
         self.rating = nft.rating
         self.id = nft.id
+        self.isLiked = nft.isLiked
+        updateLike(nft.isLiked)
+        updateOrder(nft.isOrdered)
         updateStars()
     }
     
     // MARK: - Private Methods
     private func configureUI() {
         contentView.addSubview(statisticsNftImageView)
-        statisticsNftImageView.addSubview(likeButton)
+        contentView.addSubview(likeButton)
         contentView.addSubview(ratingStarsContainer)
         
         contentView.addSubview(nameLabel)
@@ -142,13 +160,50 @@ final class StatisticsCollectionViewCell: UICollectionViewCell, ReuseIdentifying
     }
     
     private func updateStars() {
-        
         ratingStarsContainer.arrangedSubviews.forEach { subviews in
             guard let starImageView = subviews as? UIImageView else { return }
             
             if starImageView.tag <= rating {
                 starImageView.tintColor = .ypYellowUniversal
             }
+        }
+    }
+    
+    private func updateLike(_ liked: Bool) {
+        if liked {
+            likeButton.tintColor = .ypRedUniversal
+        }
+    }
+    
+    private func changeLikeState() {
+        if isLiked {
+            likeButton.tintColor = .ypWhiteUniversal
+            isLiked.toggle()
+        } else {
+            likeButton.tintColor = .ypRedUniversal
+            isLiked.toggle()
+        }
+    }
+    
+    private func updateOrder(_ ordered: Bool) {
+        if ordered {
+            changeOrderState()
+        }
+    }
+    
+    private func changeOrderState() {
+        if isOrdered {
+            let image = UIImage(named: "Statistics/cart")
+            let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+            orderButton.setImage(tintedImage, for: .normal)
+            orderButton.tintColor = .ypBlack
+            isOrdered.toggle()
+        } else {
+            let image = UIImage(named: "Statistics/cartRemove")
+            let tintedImage = image?.withRenderingMode(.alwaysTemplate)
+            orderButton.setImage(tintedImage, for: .normal)
+            orderButton.tintColor = .ypRedUniversal
+            isOrdered.toggle()
         }
     }
     
@@ -161,4 +216,13 @@ final class StatisticsCollectionViewCell: UICollectionViewCell, ReuseIdentifying
         return imageView
     }
     
+    @objc private func didTapLikeButton() {
+        changeLikeState()
+        delegate?.didTapLikeButton(id: id)
+    }
+    
+    @objc private func didTapOrderButton() {
+        changeOrderState()
+        delegate?.didTapOrderButton(id: id)
+    }
 }

@@ -21,6 +21,16 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
     private var users: [StatisticsUser] = []
     private var page = 0
     private var pagesOut = false
+    private var usersSortType: StatisticsSortCases = .byName {
+        didSet {
+            page = 0
+            pagesOut = false
+            users = []
+            Task {
+                await statisticsViewOpened()
+            }
+        }
+    }
     
     weak private var view: StatisticsViewDelegate?
     
@@ -34,7 +44,7 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
             do {
                 self.view?.showLoadingIndicator(true)
                 
-                let result = try await self.networkManager.getUsersListFromResponse(page: 0)
+                let result = try await self.networkManager.getUsersListFromResponse(page: 0, sortType: usersSortType)
                 users += result
                 page += 1
                 
@@ -58,7 +68,7 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
             do {
                 self.view?.showLoadingIndicator(true)
                 
-                let result = try await self.networkManager.getUsersListFromResponse(page: page)
+                let result = try await self.networkManager.getUsersListFromResponse(page: page, sortType: usersSortType)
                 users += result
                 page += 1
                 
@@ -81,11 +91,11 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
         let actions: [StatisticsAlertActionViewModel] = [
             StatisticsAlertActionViewModel(
                 title: NSLocalizedString("Statistics.sort.byName", comment: ""),
-                action: {}
+                action: { self.usersSortType = .byName }
             ),
             StatisticsAlertActionViewModel(
                 title: NSLocalizedString("Statistics.sort.byRating", comment: ""),
-                action: {}
+                action: { self.usersSortType = .byRating }
             )
         ]
         
@@ -110,5 +120,4 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
     func checkPagesOut() -> Bool {
         return pagesOut
     }
-    
 }
