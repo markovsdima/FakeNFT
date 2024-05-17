@@ -41,7 +41,6 @@ final class StatisticsProfilePresenter: StatisticsProfilePresenterProtocol {
                 let userInfo = try await networkManager.getUserInfoFromResponse(id: userId)
                 self.user = userInfo
                 guard let user else { return }
-                
                 self.view?.displayProfileInfo(user: user)
                 
                 self.view?.showLoadingIndicator(false)

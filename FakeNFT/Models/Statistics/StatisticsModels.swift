@@ -25,6 +25,7 @@ struct StatisticsNFTCell: Hashable {
     let isLiked: Bool
     let id: String
     let images: [String]
+    let isOrdered: Bool
 }
 
 struct StatisticsAlertViewModel {
@@ -37,6 +38,11 @@ struct StatisticsAlertViewModel {
 struct StatisticsAlertActionViewModel {
     let title: String
     let action: () -> Void
+}
+
+enum StatisticsSortCases {
+    case byName
+    case byRating
 }
 
 // MARK: - Network Models
@@ -65,4 +71,12 @@ struct StatisticsNFTResponse: Decodable {
     let description: String
     let price: Float
     let id: String
+}
+
+struct StatisticsLikesResponse: Decodable {
+    let likes: [String]
+}
+
+struct StatisticsCartResponse: Decodable {
+    let nfts: [String]
 }
