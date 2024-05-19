@@ -17,7 +17,3 @@ struct OrdersRequest: NetworkRequest {
         return baseURL.appendingPathComponent("/api/v1/orders/1")
     }
 }
-
-
-//https://64858e8ba795d24810b71189.mockapi.io/api/v1/orders/1
-
