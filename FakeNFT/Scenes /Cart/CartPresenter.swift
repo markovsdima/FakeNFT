@@ -3,53 +3,62 @@ import Foundation
 //import UIKit
 
 protocol CartPreseterView: AnyObject {
-    var totalPrice: String { get set }
-    var nftDataCount: Int { get set }
+    func nftData(_ nfts: NFTCartModel)
+}
+
+enum SortOption: String {
+    case price
+    case rating
+    case name
 }
 
 final class CartPresenter {
     // MARK: - Properties
     weak var view: CartPreseterView?
     
-    var nftData: [NFTCartModel] = [NFTCartModel(name: "Apec",
-                                                image: "ApecoinCart",
-                                                rating: 1,
-                                                paymentSystem: "Apecoin",
-                                                currency: "APE",
-                                                price: 7,
-                                                id: UUID()),
-                                   NFTCartModel(name: "Bit",
-                                                image: "BitcoinCart",
-                                                rating: 3,
-                                                paymentSystem: "Bitcoin",
-                                                currency: "ВТС",
-                                                price: 2,
-                                                id: UUID())]
-    
-    var totalPrice: Double = 0
-    var nftDataCount = 0
-    
+    private var numbersNFTs = ["90", "91", "92", "93"]
     init(view: CartPreseterView) {
         self.view = view
     }
     
     // MARK: - Lifecycle
-    func nftCount() {
-        nftDataCount = 0
-        nftDataCount = nftData.count
-        view?.nftDataCount = nftDataCount
-    }
-    
     func deleteNFT() {
-        totalPrice = 0
-        nftData.removeAll()
-        view?.totalPrice = String(totalPrice)
+        
     }
-    
-    func sumNFT() {
-        for newPrice in nftData {
-            totalPrice += newPrice.price
+//    func fetchNFTCart() {
+//        CartNetworkClient.shared.fetchNftIdCart(IdNFTs: numbersNFTs) { result in
+//            switch result {
+//            case .success(let nfts):
+//                if let firstNft = nfts.first {
+//                    self.view?.nftData(firstNft)
+//                } else {
+//                    // Обработка ситуации, когда массив пуст
+//                }
+//            case .failure(let error):
+//                print("Error fetching payment systems: (error.localizedDescription)")
+//            }
+//        }
+//    }
+//
+    func fetchNFTCart() {
+        CartNetworkClient.shared.fetchNftIdCart(IdNFTs: numbersNFTs) { result in
+            switch result {
+            case .success(let nft):
+                self.view?.nftData(nft)
+            case .failure(let error):
+                print("Error fetching payment systems: \(error.localizedDescription)")
+            }
         }
-        view?.totalPrice = String(totalPrice)
+    }
+//    
+    func fetchOrdersCart() {
+//        CartNetworkClient.shared.fetchOrdersCart { result in
+//            switch result {
+//            case .success(let order):
+//                print(order)
+//            case .failure(let error):
+//                print("Error fetching payment systems: \(error.localizedDescription)")
+//            }
+//        }
     }
 }

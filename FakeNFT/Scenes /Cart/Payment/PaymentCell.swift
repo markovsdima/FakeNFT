@@ -88,7 +88,7 @@ final class PaymentCell: UICollectionViewCell {
         currencyLabel.text = paymentSystemModel.name
         
         if let imageUrl = URL(string: paymentSystemModel.image) {
-            presenter.fetchImageFromURL(url: imageUrl) { [weak self] image in
+            CartHelper().fetchImageFromURL(url: imageUrl) { [weak self] image in
                 DispatchQueue.main.async {
                     self?.paymentImage.image = image
                 }

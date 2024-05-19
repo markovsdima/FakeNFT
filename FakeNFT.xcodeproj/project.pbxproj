@@ -49,6 +49,7 @@
 		E19CD5AB2A98B56600CA39A5 /* NftImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19CD5AA2A98B56600CA39A5 /* NftImageCollectionViewCell.swift */; };
 		E1A1B9DA2AA01CE400C3AFBC /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A1B9D92AA01CE400C3AFBC /* TabBarController.swift */; };
 		E1CD40DC2A96BECC00BE7FE8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1CD40DB2A96BECC00BE7FE8 /* Localizable.strings */; };
+		E70DDCA72BF316A0008EE6BA /* CartHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70DDCA62BF316A0008EE6BA /* CartHelper.swift */; };
 		E71401582BEE29B000566501 /* CurrenciesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71401572BEE29B000566501 /* CurrenciesRequest.swift */; };
 		E714015A2BEE2A7F00566501 /* CartNetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71401592BEE2A7F00566501 /* CartNetworkClient.swift */; };
 		E73678942BE43B6B00C038E1 /* PaymentPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73678932BE43B6B00C038E1 /* PaymentPresenter.swift */; };
@@ -70,6 +71,13 @@
 			remoteInfo = FakeNFT;
 		};
 		3F6806B429CBBAF200B4F915 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3F68068B29CBBAF100B4F915 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3F68069229CBBAF100B4F915;
+			remoteInfo = FakeNFT;
+		};
+		E75E8CAA2BF96305005A78F0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3F68068B29CBBAF100B4F915 /* Project object */;
 			proxyType = 1;
@@ -123,8 +131,7 @@
 		E1CD40D92A96BE7D00BE7FE8 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		E1CD40DB2A96BECC00BE7FE8 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		E70DDCA12BEF877B008EE6BA /* FakeNFT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FakeNFT.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		E70DDCA22BEF877B008EE6BA /* FakeNFTTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = FakeNFTTests.xctest; path = "/Users/aleksejgvozdkov/Desktop/FakeNFT/build/Debug-iphoneos/FakeNFTTests.xctest"; sourceTree = "<absolute>"; };
-		E70DDCA32BEF877B008EE6BA /* FakeNFTUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = FakeNFTUITests.xctest; path = "/Users/aleksejgvozdkov/Desktop/FakeNFT/build/Debug-iphoneos/FakeNFTUITests.xctest"; sourceTree = "<absolute>"; };
+		E70DDCA62BF316A0008EE6BA /* CartHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartHelper.swift; sourceTree = "<group>"; };
 		E71401572BEE29B000566501 /* CurrenciesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrenciesRequest.swift; sourceTree = "<group>"; };
 		E71401592BEE2A7F00566501 /* CartNetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartNetworkClient.swift; sourceTree = "<group>"; };
 		E73678932BE43B6B00C038E1 /* PaymentPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentPresenter.swift; sourceTree = "<group>"; };
@@ -133,6 +140,9 @@
 		E736B6432BD8E85900CA5513 /* PaymentSystemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSystemModel.swift; sourceTree = "<group>"; };
 		E736B6452BD8E88500CA5513 /* PaymentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentCell.swift; sourceTree = "<group>"; };
 		E736B6482BD8F2A400CA5513 /* PaymentEndViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentEndViewController.swift; sourceTree = "<group>"; };
+		E78A5D802BFA4B9700FCDD93 /* FakeNFTTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FakeNFTTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E78A5D812BFA4B9700FCDD93 /* FakeNFTUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FakeNFTUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E78A5D822BFA4B9700FCDD93 /* FakeNFTUITestsCart.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FakeNFTUITestsCart.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7D01F0E2BE41F12004AE2CA /* NFTCartModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTCartModel.swift; sourceTree = "<group>"; };
 		E7D01F102BE41F3F004AE2CA /* CartPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartPresenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -155,6 +165,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		3F6806B029CBBAF200B4F915 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E75E8CA12BF96305005A78F0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -263,6 +280,9 @@
 				3F6806AC29CBBAF200B4F915 /* FakeNFTTests */,
 				3F6806B629CBBAF200B4F915 /* FakeNFTUITests */,
 				E70DDCA12BEF877B008EE6BA /* FakeNFT.app */,
+				E78A5D802BFA4B9700FCDD93 /* FakeNFTTests.xctest */,
+				E78A5D812BFA4B9700FCDD93 /* FakeNFTUITests.xctest */,
+				E78A5D822BFA4B9700FCDD93 /* FakeNFTUITestsCart.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -415,6 +435,7 @@
 			children = (
 				E736B6402BD8E81C00CA5513 /* PaymentViewController.swift */,
 				E73678932BE43B6B00C038E1 /* PaymentPresenter.swift */,
+				E70DDCA62BF316A0008EE6BA /* CartHelper.swift */,
 				E736B6452BD8E88500CA5513 /* PaymentCell.swift */,
 				E736B6482BD8F2A400CA5513 /* PaymentEndViewController.swift */,
 			);
@@ -437,6 +458,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3F6806BD29CBBAF200B4F915 /* Build configuration list for PBXNativeTarget "FakeNFT" */;
 			buildPhases = (
+				E75E8CB02BFA4B32005A78F0 /* SwiftLint */,
 				3F68068F29CBBAF100B4F915 /* Sources */,
 				3F68069029CBBAF100B4F915 /* Frameworks */,
 				3F68069129CBBAF100B4F915 /* Resources */,
@@ -469,7 +491,7 @@
 			);
 			name = FakeNFTTests;
 			productName = FakeNFTTests;
-			productReference = E70DDCA22BEF877B008EE6BA /* FakeNFTTests.xctest */;
+			productReference = E78A5D802BFA4B9700FCDD93 /* FakeNFTTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		3F6806B229CBBAF200B4F915 /* FakeNFTUITests */ = {
@@ -487,7 +509,25 @@
 			);
 			name = FakeNFTUITests;
 			productName = FakeNFTUITests;
-			productReference = E70DDCA32BEF877B008EE6BA /* FakeNFTUITests.xctest */;
+			productReference = E78A5D812BFA4B9700FCDD93 /* FakeNFTUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		E75E8CA32BF96305005A78F0 /* FakeNFTUITestsCart */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E75E8CAC2BF96305005A78F0 /* Build configuration list for PBXNativeTarget "FakeNFTUITestsCart" */;
+			buildPhases = (
+				E75E8CA02BF96305005A78F0 /* Sources */,
+				E75E8CA12BF96305005A78F0 /* Frameworks */,
+				E75E8CA22BF96305005A78F0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E75E8CAB2BF96305005A78F0 /* PBXTargetDependency */,
+			);
+			name = FakeNFTUITestsCart;
+			productName = FakeNFTUITestsCart;
+			productReference = E78A5D822BFA4B9700FCDD93 /* FakeNFTUITestsCart.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -497,7 +537,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1420;
+				LastSwiftUpdateCheck = 1520;
 				LastUpgradeCheck = 1520;
 				TargetAttributes = {
 					3F68069229CBBAF100B4F915 = {
@@ -509,6 +549,10 @@
 					};
 					3F6806B229CBBAF200B4F915 = {
 						CreatedOnToolsVersion = 14.2;
+						TestTargetID = 3F68069229CBBAF100B4F915;
+					};
+					E75E8CA32BF96305005A78F0 = {
+						CreatedOnToolsVersion = 15.2;
 						TestTargetID = 3F68069229CBBAF100B4F915;
 					};
 				};
@@ -534,6 +578,7 @@
 				3F68069229CBBAF100B4F915 /* FakeNFT */,
 				3F6806A829CBBAF200B4F915 /* FakeNFTTests */,
 				3F6806B229CBBAF200B4F915 /* FakeNFTUITests */,
+				E75E8CA32BF96305005A78F0 /* FakeNFTUITestsCart */,
 			);
 		};
 /* End PBXProject section */
@@ -564,7 +609,35 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E75E8CA22BF96305005A78F0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		E75E8CB02BFA4B32005A78F0 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "   if which swiftlint >/dev/null; then\n     swiftlint\n   else\n     echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n   fi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		3F68068F29CBBAF100B4F915 /* Sources */ = {
@@ -596,6 +669,7 @@
 				3F6806D529CBBEC700B4F915 /* NetworkTask.swift in Sources */,
 				0CF2C2DB2A783C1B00FDC837 /* LoadingView.swift in Sources */,
 				3F68069729CBBAF100B4F915 /* AppDelegate.swift in Sources */,
+				E70DDCA72BF316A0008EE6BA /* CartHelper.swift in Sources */,
 				3F68069929CBBAF100B4F915 /* SceneDelegate.swift in Sources */,
 				0C79EE6C2A76DE2E00EE90EA /* ServicesAssemly.swift in Sources */,
 				E73678942BE43B6B00C038E1 /* PaymentPresenter.swift in Sources */,
@@ -634,6 +708,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E75E8CA02BF96305005A78F0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -646,6 +727,11 @@
 			isa = PBXTargetDependency;
 			target = 3F68069229CBBAF100B4F915 /* FakeNFT */;
 			targetProxy = 3F6806B429CBBAF200B4F915 /* PBXContainerItemProxy */;
+		};
+		E75E8CAB2BF96305005A78F0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3F68069229CBBAF100B4F915 /* FakeNFT */;
+			targetProxy = E75E8CAA2BF96305005A78F0 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -919,6 +1005,50 @@
 			};
 			name = Release;
 		};
+		E75E8CAD2BF96305005A78F0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9WC35YWH6U;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = onePoint.FakeNFTUITestsCart;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = FakeNFT;
+			};
+			name = Debug;
+		};
+		E75E8CAE2BF96305005A78F0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9WC35YWH6U;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = onePoint.FakeNFTUITestsCart;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = FakeNFT;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -954,6 +1084,15 @@
 			buildConfigurations = (
 				3F6806C429CBBAF200B4F915 /* Debug */,
 				3F6806C529CBBAF200B4F915 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E75E8CAC2BF96305005A78F0 /* Build configuration list for PBXNativeTarget "FakeNFTUITestsCart" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E75E8CAD2BF96305005A78F0 /* Debug */,
+				E75E8CAE2BF96305005A78F0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

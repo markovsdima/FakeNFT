@@ -1,8 +1,7 @@
 import UIKit
 
 protocol CartCellDelete: AnyObject {
-//    func deleteNFT(_ isTapped: Bool, _ imageName: String)
-    func deleteNFT(_ imageName: String)
+    func deleteNFT(_ image: UIImage, _ idNFT: String)
 }
 
 final class CartCell: UICollectionViewCell {
@@ -114,6 +113,8 @@ final class CartCell: UICollectionViewCell {
     }()
     
     private var imageName = ""
+    private var idNFT = ""
+    private var ratingCell = 0
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -157,21 +158,37 @@ final class CartCell: UICollectionViewCell {
     
     func configure(with model: NFTCartModel?) {
         guard let model = model else { return }
-        imageNFT.image = UIImage(named: model.image)
-        imageName = model.image
+        imageName = model.images.first ?? ""
         nameLabel.text = model.name
         amountLabel.text = "\(model.price) ETH"
+        ratingCell = model.rating
+        idNFT = model.id
         
-        let starRatingImage = UIImage(named: "StarsYesCart")
+        for starImageView in starStack.arrangedSubviews as? [UIImageView] ?? [] {
+            starImageView.image = UIImage(named: "StarsNoCart")
+        }
         
         if model.rating <= 5 {
             for rating in 0..<model.rating {
-                (starStack.arrangedSubviews[rating] as? UIImageView)?.image = starRatingImage
+                if let originalImage = UIImage(named: "StarsYesCart") {
+                    if let starImageView = starStack.arrangedSubviews[rating] as? UIImageView {
+                        starImageView.image = originalImage
+                    }
+                }
+            }
+        }
+        
+        if let imageUrl = URL(string: imageName) {
+            CartHelper().fetchImageFromURL(url: imageUrl) { [weak self] image in
+                DispatchQueue.main.async {
+                    self?.imageNFT.image = image
+                }
             }
         }
     }
     
     @objc func deleteButtonTapped() {
-        delegate?.deleteNFT(imageName)
+        guard let image = imageNFT.image else { return }
+        delegate?.deleteNFT(image, idNFT)
     }
 }

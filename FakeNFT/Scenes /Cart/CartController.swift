@@ -7,6 +7,7 @@ final class CartViewController: UIViewController {
     
     private let paymentViewController: PaymentViewController
     private var cartPresenter: CartPresenter?
+    var nftData = [NFTCartModel]()
     private var isTapped = false
     
     private lazy var filterButton: UIButton = {
@@ -17,10 +18,11 @@ final class CartViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(imageButton, for: .normal)
         button.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
+        button.accessibilityIdentifier = "filterButton"
         return button
     }()
     
-    private lazy var cartCollection: UICollectionView = {
+     lazy var cartCollection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
@@ -33,6 +35,7 @@ final class CartViewController: UIViewController {
         collection.backgroundColor = .ypWhite
         collection.register(CartCell.self, forCellWithReuseIdentifier: CartCell.cartCellIdentifier)
         collection.dataSource = self
+        collection.accessibilityIdentifier = "cartCollectionView"
         return collection
     }()
     
@@ -170,9 +173,18 @@ final class CartViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         label.textAlignment = .center
-        label.text = "Корзина пуста"
+//        label.text = "Корзина пуста"
         label.isHidden = true
         return label
+    }()
+    
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView()
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.style = .medium
+        activityIndicator.color = .black
+        activityIndicator.hidesWhenStopped = true
+        return activityIndicator
     }()
     
     init(servicesAssembly: ServicesAssembly) {
@@ -189,22 +201,20 @@ final class CartViewController: UIViewController {
         super.viewDidLoad()
         viewConstraints()
         cartPresenter = CartPresenter(view: self)
-        
+        cartPresenter?.fetchNFTCart()
+        cartPresenter?.fetchOrdersCart()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        cartPresenter?.nftCount()
-        cartPresenter?.sumNFT()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        activityIndicatorStarandStop()
     }
-    
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         ifIsEmptyNftData()
-        countNFTLabel.text = "\(nftDataCount) ETH"
-        priceNFTLabel.text = "\(totalPrice) NFT"
+        
     }
-    
+  
     // MARK: - Lifecycle
     private func viewConstraints() {
         view.backgroundColor = .ypWhite
@@ -216,6 +226,7 @@ final class CartViewController: UIViewController {
         view.addSubview(blurView)
         view.addSubview(deleteStack)
         view.addSubview(cartIsEmpty)
+        view.addSubview(activityIndicator)
         
         NSLayoutConstraint.activate([
             filterButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 2),
@@ -256,11 +267,16 @@ final class CartViewController: UIViewController {
             
             cartIsEmpty.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             cartIsEmpty.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            activityIndicator.heightAnchor.constraint(equalToConstant: 25),
+            activityIndicator.widthAnchor.constraint(equalToConstant: 25)
         ])
     }
     
    private func ifIsEmptyNftData() {
-        if (cartPresenter?.nftData ?? []).isEmpty {
+        if nftData.isEmpty {
             filterButton.isHidden = true
             countNFTLabel.isHidden = true
             priceNFTLabel.isHidden = true
@@ -288,6 +304,26 @@ final class CartViewController: UIViewController {
         cartCollection.reloadData()
     }
     
+    private func activityIndicatorStarandStop() {
+        if nftData.isEmpty {
+            self.activityIndicator.startAnimating()
+        } else {
+            self.activityIndicator.stopAnimating()
+        }
+    }
+    
+    private func sumAndCountNFT() {
+        var totalPrice = 0.0
+        
+        for newPrice in nftData {
+            totalPrice += newPrice.price
+        }
+        
+        let formattedTotalPrice = String(format: "%.2f", totalPrice)
+        
+        countNFTLabel.text = "\(nftData.count) ETH"
+        priceNFTLabel.text = "\(formattedTotalPrice) NFT"
+    }
     
     @objc private func filterButtonTapped() {
         showActionSheet()
@@ -312,23 +348,20 @@ final class CartViewController: UIViewController {
 // MARK: - extension UICollectionViewDataSource
 extension CartViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        cartPresenter?.nftData.count ?? 0
+        nftData.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CartCell.cartCellIdentifier, for: indexPath) as? CartCell {
             
-            guard let nftData = cartPresenter?.nftData else {
-                return UICollectionViewCell()
-            }
-            
             guard indexPath.row < nftData.count else {
                 return UICollectionViewCell()
             }
             
-            let nftItem = cartPresenter?.nftData[indexPath.row]
+            let nftItem = nftData[indexPath.row]
             cell.configure(with: nftItem)
             cell.delegate = self
+    
             return cell
         }
         return UICollectionViewCell()
@@ -341,16 +374,19 @@ extension CartViewController {
         let alertController = UIAlertController(title: "Сортировка", message: nil, preferredStyle: .actionSheet)
         
         let priceAction = UIAlertAction(title: "По цене", style: .default) { _ in
-            
+            self.nftData = self.nftData.sorted { $0.price < $1.price }
+            self.cartCollection.reloadData()
         }
         
         let ratingAction = UIAlertAction(title: "По рейтингу", style: .default) { _ in
-            
+            self.nftData = self.nftData.sorted { $0.rating < $1.rating }
+            self.cartCollection.reloadData()
         }
         
         
         let nameAction = UIAlertAction(title: "По названию", style: .default) { _ in
-            
+            self.nftData = self.nftData.sorted { $0.name < $1.name }
+            self.cartCollection.reloadData()
         }
         
         let cancelAction = UIAlertAction(title: "Закрыть", style: .cancel, handler: nil)
@@ -368,35 +404,31 @@ extension CartViewController {
     }
 }
 
-
 // MARK: - extension CartCellDelete
 extension CartViewController: CartCellDelete {
-    func deleteNFT(_ imageName: String) {
-        nftImageView.image = UIImage(named: imageName)
-        print(isTapped)
+    func deleteNFT(_ image: UIImage, _ idNFT: String) {
+        nftImageView.image = image
+        if let index = nftData.firstIndex(where: { $0.id == idNFT }) {
+            nftData.remove(at: index)
+        }
+        sumAndCountNFT()
         confirmationOfDeletion(false)
     }
 }
 
 // MARK: - extension CartPreseterView
 extension CartViewController: CartPreseterView {
-    var nftDataCount: Int {
-        get {
-            return (cartPresenter?.nftDataCount ?? 0)
-        }
-        set {
+    func nftData(_ nft: NFTCartModel) {
+        
+        DispatchQueue.main.async {
 
-        }
-    }
-    
-    var totalPrice: String {
-        get {
-            return "\(cartPresenter?.totalPrice ?? 0)"
-        }
-        set {
-            
+            self.nftData.append(nft)
+            self.sumAndCountNFT()
         }
     }
 }
 
 
+protocol NewOrderCart: AnyObject {
+    func newOrder(_ nftData: [NFTCartModel], _ idOsrder: String)
+}

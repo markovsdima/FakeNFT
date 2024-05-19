@@ -13,19 +13,19 @@ final class TabBarController: UITabBarController {
     private let catalogTabBarItem = UITabBarItem(
         title: NSLocalizedString("Tab.catalog", comment: ""),
         image: UIImage(named: "TabBar/catalog"),
-        tag: 0
+        tag: 1
     )
     
     private let cartTabBarItem = UITabBarItem(
         title: NSLocalizedString("Tab.cart", comment: ""),
         image: UIImage(named: "TabBar/cart"),
-        tag: 0
+        tag: 2
     )
     
     private let statisticsTabBarItem = UITabBarItem(
         title: NSLocalizedString("Tab.statistics", comment: ""),
         image: UIImage(named: "TabBar/statistics"),
-        tag: 0
+        tag: 3
     )
     
     override func viewDidLoad() {
@@ -34,26 +34,26 @@ final class TabBarController: UITabBarController {
         let profileController = ProfileViewController(
             servicesAssembly: servicesAssembly
         )
-        
         profileController.tabBarItem = profileTabBarItem
+        profileController.tabBarItem.accessibilityIdentifier = "ProfileTab"
         
         let catalogController = CatalogViewController(
             servicesAssembly: servicesAssembly
         )
-        
         catalogController.tabBarItem = catalogTabBarItem
+        catalogController.tabBarItem.accessibilityIdentifier = "CatalogTab"
         
         let cartController = CartViewController(
             servicesAssembly: servicesAssembly
         )
-        
         cartController.tabBarItem = cartTabBarItem
+        cartController.tabBarItem.accessibilityIdentifier = "CartTab"
         
         let statisticsController = StatisticsViewController(
             servicesAssembly: servicesAssembly
         )
-        
         statisticsController.tabBarItem = statisticsTabBarItem
+        statisticsController.tabBarItem.accessibilityIdentifier = "StatisticsTab"
         
         viewControllers = [profileController, catalogController, cartController, statisticsController]
         

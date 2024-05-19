@@ -227,7 +227,7 @@ extension PaymentViewController {
         let alertController = UIAlertController(title: "Не удалось произвести оплату", message: "", preferredStyle: .alert)
         
         let cancelAction = UIAlertAction(title: "Отмена", style: .default) { _ in
-            print("cancelAction")
+            self.dismiss(animated: true)
         }
         
         let replayAction = UIAlertAction(title: "Повторить", style: .default) { _ in
