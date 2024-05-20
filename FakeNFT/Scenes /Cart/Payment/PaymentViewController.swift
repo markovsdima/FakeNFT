@@ -242,7 +242,7 @@ extension PaymentViewController {
 
 extension PaymentViewController: PaymentPreseterView {
     func updatePaymentData(_ data: [PaymentSystemModel]) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.sync {
             self.paymentSystem = data
             self.paymentSystemCollection.reloadData()
             self.activityIndicatorStarandStop()

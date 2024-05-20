@@ -5,111 +5,6 @@ enum NetworkError: Error {
     case invalidResponse
     case invalidData
 }
-//class CartNetworkClient {
-//    static let shared = CartNetworkClient()
-//    
-//    private let session: URLSession
-//    
-//    private init() {
-//        let config = URLSessionConfiguration.default
-//        config.timeoutIntervalForRequest = 20
-//        session = URLSession(configuration: config)
-//    }
-//    
-//    func fetchPaymentSystems(completion: @escaping (Result<[PaymentSystemModel], Error>) -> Void) {
-//        guard let url = CurrenciesRequest().endpoint else {
-//            completion(.failure(NetworkError.invalidURL))
-//            return
-//        }
-//        
-//        var urlRequest = URLRequest(url: url)
-//        urlRequest.httpMethod = "GET"
-//        urlRequest.addValue(RequestConstants.accessToken, forHTTPHeaderField: "X-Practicum-Mobile-Token")
-//        
-//        session.dataTask(with: urlRequest) { data, response, error in
-//            if let error = error {
-//                completion(.failure(error))
-//                return
-//            }
-//            
-//            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-//                completion(.failure(NetworkError.invalidResponse))
-//                return
-//            }
-//            
-//            guard let data = data else {
-//                completion(.failure(NetworkError.invalidData))
-//                return
-//            }
-//            
-//            do {
-//                let decodedData = try JSONDecoder().decode([PaymentSystemModel].self, from: data)
-//                completion(.success(decodedData))
-//            } catch {
-//                completion(.failure(error))
-//            }
-//        }.resume()
-//    }
-//    
-//    func fetchNftIdCart(IdNFTs: [String], completion: @escaping (Result<[NFTCartModel], Error>) -> Void) {
-//        let dispatchGroup = DispatchGroup()
-//        var nftCartModels: [NFTCartModel] = []
-//        var hasErrorOccurred: Bool = false
-//        
-//        for nftId in IdNFTs {
-//            dispatchGroup.enter()
-//            
-//            guard let url = URL(string: "(RequestConstants.baseURL)/api/v1/nft/(nftId)") else {
-//                completion(.failure(NetworkError.invalidURL))
-//                return
-//            }
-//            
-//            var urlRequest = URLRequest(url: url)
-//            urlRequest.httpMethod = "GET"
-//            urlRequest.addValue(RequestConstants.accessToken, forHTTPHeaderField: "X-Practicum-Mobile-Token")
-//            
-//            session.dataTask(with: urlRequest) { data, response, error in
-//                defer { dispatchGroup.leave() }
-//                
-//                if hasErrorOccurred {
-//                    return
-//                }
-//                
-//                if let error = error {
-//                    hasErrorOccurred = true
-//                    completion(.failure(error))
-//                    return
-//                }
-//                
-//                guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-//                    hasErrorOccurred = true
-//                    completion(.failure(NetworkError.invalidResponse))
-//                    return
-//                }
-//                
-//                guard let data = data else {
-//                    hasErrorOccurred = true
-//                    completion(.failure(NetworkError.invalidData))
-//                    return
-//                }
-//                
-//                do {
-//                    let decodedData = try JSONDecoder().decode(NFTCartModel.self, from: data)
-//                    nftCartModels.append(decodedData)
-//                } catch {
-//                    hasErrorOccurred = true
-//                    completion(.failure(error))
-//                }
-//            }.resume()
-//        }
-//        
-//        dispatchGroup.notify(queue: .main) {
-//            if !hasErrorOccurred {
-//                completion(.success(nftCartModels))
-//            }
-//        }
-//    }
-//}
 
 class CartNetworkClient {
     static let shared = CartNetworkClient()
@@ -156,7 +51,7 @@ class CartNetworkClient {
     }
     
     
-    func fetchOrdersCart(completion: @escaping (Result<[OrdersCartModel], Error>) -> Void) {
+    func fetchOrdersCart(completion: @escaping (Result<OrdersCartModel, Error>) -> Void) {
         let request = OrdersRequest()
         
         guard let url = request.endpoint else {
@@ -164,64 +59,133 @@ class CartNetworkClient {
             return
         }
         
-        session.dataTask(with: url) { data, response, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
+        var urlRequest = URLRequest(url: url)
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
+        urlRequest.setValue("6fe3b0b3-4795-4199-a00d-e90e16f22517", forHTTPHeaderField: "X-Practicum-Mobile-Token")
+        
+        let semaphore = DispatchSemaphore(value: 0)
+        var responseData: Data?
+        var responseError: Error?
+        
+        let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+            responseData = data
+            responseError = error
+            semaphore.signal()
+        }
+        task.resume()
+        
+        semaphore.wait()
+        
+        if let error = responseError {
+            completion(.failure(error))
+            return
+        }
+        
+        guard let httpResponse = task.response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+            completion(.failure(NetworkError.invalidResponse))
+            return
+        }
+        
+        guard let data = responseData else {
+            completion(.failure(NetworkError.invalidData))
+            return
+        }
+        
+        do {
+            let decodedData = try JSONDecoder().decode(OrdersCartModel.self, from: data)
             
-            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                completion(.failure(NetworkError.invalidResponse))
-                return
-            }
-            
-            guard let data = data else {
-                completion(.failure(NetworkError.invalidData))
-                return
-            }
-            
-            do {
-                let decodedData = try JSONDecoder().decode([OrdersCartModel].self, from: data)
-                completion(.success(decodedData))
-            } catch {
-                completion(.failure(error))
-            }
-        }.resume()
+            completion(.success(decodedData))
+        } catch {
+            completion(.failure(error))
+        }
     }
     
-    func fetchNftIdCart(IdNFTs: [String], completion: @escaping (Result<NFTCartModel, Error>) -> Void) {
+    func fetchNftIdCart(IdNFTs: [String], completion: @escaping (Result<[NFTCartModel], Error>) -> Void) {
+        var nftCarts: [NFTCartModel] = []
+        let dispatchGroup = DispatchGroup()
+        var lastError: Error?
+        
         for nftId in IdNFTs {
+            dispatchGroup.enter()
             let request = NFTRequest(id: nftId)
             
             guard let url = request.endpoint else {
-                completion(.failure(NetworkError.invalidURL))
-                return
+                lastError = NetworkError.invalidURL
+                dispatchGroup.leave()
+                continue
             }
             
-            session.dataTask(with: url) { data, response, error in
+            var urlRequest = URLRequest(url: url)
+            urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
+            urlRequest.setValue("6fe3b0b3-4795-4199-a00d-e90e16f22517", forHTTPHeaderField: "X-Practicum-Mobile-Token")
+            
+            URLSession.shared.dataTask(with: urlRequest) { data, response, error in
                 if let error = error {
-                    completion(.failure(error))
-                    return
+                    lastError = error
+                } else if let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode), let data = data {
+                    do {
+                        let decodedData = try JSONDecoder().decode(NFTCartModel.self, from: data)
+                        nftCarts.append(decodedData)
+                    } catch {
+                        lastError = error
+                    }
+                } else {
+                    lastError = NetworkError.invalidResponse
                 }
-                
-                guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                    completion(.failure(NetworkError.invalidResponse))
-                    return
-                }
-                
-                guard let data = data else {
-                    completion(.failure(NetworkError.invalidData))
-                    return
-                }
-                
-                do {
-                    let decodedData = try JSONDecoder().decode(NFTCartModel.self, from: data)
-                    
-                    completion(.success(decodedData))
-                } catch {
-                    completion(.failure(error))
-                }
+                dispatchGroup.leave()
             }.resume()
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            if let error = lastError {
+                completion(.failure(error))
+            } else {
+                completion(.success(nftCarts))
+            }
+        }
+    }
+
+    
+    func sendPutRequest(nfts: [String], id: String) {
+        let baseURL = RequestConstants.baseURL
+        let endpoint = "/api/v1/orders/1"
+        guard let url = URL(string: baseURL + endpoint) else {
+            print("Invalid URL")
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue(RequestConstants.accessToken, forHTTPHeaderField: "X-Practicum-Mobile-Token")
+
+        let ordersCartModel = OrdersCartModel(nfts: nfts, id: id)
+
+        do {
+            let jsonData = try JSONEncoder().encode(ordersCartModel)
+            request.httpBody = jsonData
+
+            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                if let error = error {
+                    print("Error: \(error.localizedDescription)")
+                    return
+                }
+
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    print("Invalid response")
+                    return
+                }
+
+                if (200...299).contains(httpResponse.statusCode) {
+                    print("PUT request successful")
+                } else {
+                    print("PUT request failed with status code: \(httpResponse.statusCode)")
+                }
+            }
+            task.resume()
+        } catch {
+            print("Error encoding request body: \(error.localizedDescription)")
         }
     }
 }
