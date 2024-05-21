@@ -69,6 +69,6 @@ final class TabBarController: UITabBarController {
         
         viewControllers = [profileNavigationController, catalogController, cartController, statisticsController]
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .ypWhite
     }
 }
