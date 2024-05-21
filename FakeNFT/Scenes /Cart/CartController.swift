@@ -202,13 +202,12 @@ final class CartViewController: UIViewController {
         viewConstraints()
         cartPresenter = CartPresenter(view: self)
         cartPresenter?.fetchOrdersCart()
-        cartPresenter?.fetchNFTCart()
-
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         ifIsEmptyNftData()
+//        cartPresenter?.fetchNFTCart()
         activityIndicatorStarandStop()
     }
   
@@ -310,16 +309,16 @@ final class CartViewController: UIViewController {
     }
     
     private func sumAndCountNFT() {
-        var totalPrice = 0.0
-        guard let nftData = cartPresenter?.nftData else { return }
-        for newPrice in nftData {
-            totalPrice += newPrice.price
-        }
-        
-        let formattedTotalPrice = String(format: "%.2f", totalPrice)
-        
-        countNFTLabel.text = "\(nftData.count) ETH"
-        priceNFTLabel.text = "\(formattedTotalPrice) NFT"
+//        var totalPrice = 0.0
+//        guard let nftData = cartPresenter?.nftData else { return }
+//        for newPrice in nftData {
+//            totalPrice += newPrice.price
+//        }
+//        
+//        let formattedTotalPrice = String(format: "%.2f", totalPrice)
+//
+        countNFTLabel.text = cartPresenter?.countNFT()
+        priceNFTLabel.text = cartPresenter?.priceNFT()
     }
     
     @objc private func filterButtonTapped() {
@@ -327,7 +326,6 @@ final class CartViewController: UIViewController {
     }
     
     @objc private func deleteButtonDidTapped() {
-       
         cartPresenter?.deleteNFT(idNFT)
         confirmationOfDeletion(true)
     }
@@ -407,8 +405,7 @@ extension CartViewController: CartCellDelete {
     func deleteNFT(_ image: UIImage, _ idNFT: String) {
         nftImageView.image = image
         self.idNFT = idNFT
-        deleteButtonDidTapped()
-        sumAndCountNFT()
+//        sumAndCountNFT()
         confirmationOfDeletion(false)
     }
 }

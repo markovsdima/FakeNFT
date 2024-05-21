@@ -25,7 +25,11 @@ class CartNetworkClient {
             return
         }
         
-        session.dataTask(with: url) { data, response, error in
+        var urlRequest = URLRequest(url: url)
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
+        urlRequest.setValue("6fe3b0b3-4795-4199-a00d-e90e16f22517", forHTTPHeaderField: "X-Practicum-Mobile-Token")
+        
+        session.dataTask(with: urlRequest) { data, response, error in
             if let error = error {
                 completion(.failure(error))
                 return
@@ -50,12 +54,11 @@ class CartNetworkClient {
         }.resume()
     }
     
-    
     func fetchOrdersCart(completion: @escaping (Result<OrdersCartModel, Error>) -> Void) {
         let request = OrdersRequest()
         
         guard let url = request.endpoint else {
-            completion(.failure(NetworkError.invalidURL))
+            completion(.failure(NetworkError.invalidURL))  // Сообщаем о неудаче
             return
         }
         
@@ -63,42 +66,32 @@ class CartNetworkClient {
         urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
         urlRequest.setValue("6fe3b0b3-4795-4199-a00d-e90e16f22517", forHTTPHeaderField: "X-Practicum-Mobile-Token")
         
-        let semaphore = DispatchSemaphore(value: 0)
-        var responseData: Data?
-        var responseError: Error?
-        
         let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
-            responseData = data
-            responseError = error
-            semaphore.signal()
+            if let error = error {
+                completion(.failure(error))  // Сообщаем об ошибке
+                return
+            }
+            
+            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+                completion(.failure(NetworkError.invalidResponse))  // Сообщаем об ошибке
+                return
+            }
+            
+            guard let data = data else {
+                completion(.failure(NetworkError.invalidData))  // Сообщаем об ошибке
+                return
+            }
+            
+            do {
+                let nftResponse = try JSONDecoder().decode(OrdersCartModel.self, from: data)
+                completion(.success(nftResponse))  // Сообщаем об успешном выполнении запроса и передаем результат
+            } catch {
+                completion(.failure(error))  // Сообщаем об ошибке при декодировании данных
+            }
         }
         task.resume()
-        
-        semaphore.wait()
-        
-        if let error = responseError {
-            completion(.failure(error))
-            return
-        }
-        
-        guard let httpResponse = task.response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-            completion(.failure(NetworkError.invalidResponse))
-            return
-        }
-        
-        guard let data = responseData else {
-            completion(.failure(NetworkError.invalidData))
-            return
-        }
-        
-        do {
-            let decodedData = try JSONDecoder().decode(OrdersCartModel.self, from: data)
-            
-            completion(.success(decodedData))
-        } catch {
-            completion(.failure(error))
-        }
     }
+
     
     func fetchNftIdCart(IdNFTs: [String], completion: @escaping (Result<[NFTCartModel], Error>) -> Void) {
         var nftCarts: [NFTCartModel] = []
