@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 protocol CartCellDelete: AnyObject {
     func deleteNFT(_ image: UIImage, _ idNFT: String)
@@ -179,11 +180,7 @@ final class CartCell: UICollectionViewCell {
         }
         
         if let imageUrl = URL(string: imageName) {
-            CartHelper().fetchImageFromURL(url: imageUrl) { [weak self] image in
-                DispatchQueue.main.async {
-                    self?.imageNFT.image = image
-                }
-            }
+            imageNFT.kf.setImage(with: imageUrl)
         }
     }
     

@@ -39,17 +39,14 @@ final class CartPresenter {
     
     func sortPriceNFTData() {
         nftData = nftData.sorted { $0.price < $1.price }
-        print(nftData)
     }
     
     func sortRatingNFTData() {
         nftData = nftData.sorted { $0.rating < $1.rating }
-        print(nftData)
     }
     
     func sortNameNFTData(){
         nftData = nftData.sorted { $0.name < $1.name }
-        print(nftData)
     }
     
     func countNFT() -> String {
@@ -76,8 +73,7 @@ final class CartPresenter {
                 print("Request completed successfully")
                 self.fetchNFTCart()
             case .failure(let error):
-                print("Error fetching orders cart: \(error.localizedDescription)")
-                print("Request failed")
+                print("there is no response from the server: \(error.localizedDescription)")
             }
         }
     }
@@ -86,9 +82,8 @@ final class CartPresenter {
         CartNetworkClient.shared.fetchNftIdCart(IdNFTs: numbersNFTs) { [weak self] result in
             switch result {
             case .success(let nfts):
-                print(nfts)
-                let sortedNfts = nfts.sorted { $0.name < $1.name }
-                self?.nftData.append(contentsOf: sortedNfts)
+                self?.nftData = nfts
+                // добавить сохраненный фильтр из памяти
                 DispatchQueue.main.async {
                     self?.view?.collection()
                 }

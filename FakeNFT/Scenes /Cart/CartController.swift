@@ -22,7 +22,7 @@ final class CartViewController: UIViewController {
         return button
     }()
     
-     lazy var cartCollection: UICollectionView = {
+     private lazy var cartCollection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
@@ -233,7 +233,7 @@ final class CartViewController: UIViewController {
             cartCollection.topAnchor.constraint(equalTo: filterButton.bottomAnchor, constant: 35),
             cartCollection.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             cartCollection.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            cartCollection.bottomAnchor.constraint(equalTo: payBackgroundColor.bottomAnchor),
+            cartCollection.bottomAnchor.constraint(equalTo: payBackgroundColor.bottomAnchor, constant: -70),
             
             payBackgroundColor.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             payBackgroundColor.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -405,7 +405,7 @@ extension CartViewController: CartCellDelete {
     func deleteNFT(_ image: UIImage, _ idNFT: String) {
         nftImageView.image = image
         self.idNFT = idNFT
-//        sumAndCountNFT()
+        sumAndCountNFT()
         confirmationOfDeletion(false)
     }
 }

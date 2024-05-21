@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 final class PaymentCell: UICollectionViewCell {
     // MARK: - Properties
@@ -88,11 +89,7 @@ final class PaymentCell: UICollectionViewCell {
         currencyLabel.text = paymentSystemModel.name
         
         if let imageUrl = URL(string: paymentSystemModel.image) {
-            CartHelper().fetchImageFromURL(url: imageUrl) { [weak self] image in
-                DispatchQueue.main.async {
-                    self?.paymentImage.image = image
-                }
-            }
+            paymentImage.kf.setImage(with: imageUrl)
         }
     }
 }
