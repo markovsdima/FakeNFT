@@ -1,11 +1,7 @@
 import Foundation
 
-//import UIKit
-
 protocol CartView: AnyObject {
     func collection()
-//    func priceNFTLabel(_ priceNFTLabel: String)
-//    func countNFTLabel(_ countNFTLabel: String)
 }
 
 enum SortOption: String {
@@ -27,26 +23,29 @@ final class CartPresenter {
     
     func deleteNFT(_ nftId: String) {
         print("DELNFT \(nftId)")
-//        let id = "b30e685d-7643-4d88-840a-e4506277661d"
-//
-//        if let index = numbersNFTs.firstIndex(of: nftId) {
-//            numbersNFTs.remove(at: index)
-//            view?.collection()
-//        }
-//        print(" NEWARRAY \(numbersNFTs)")
-//    
+        //        let id = "b30e685d-7643-4d88-840a-e4506277661d"
+        //
+        //        if let index = numbersNFTs.firstIndex(of: nftId) {
+        //            numbersNFTs.remove(at: index)
+        //            view?.collection()
+        //        }
+        //        print(" NEWARRAY \(numbersNFTs)")
+        //
     }
     
     func sortPriceNFTData() {
         nftData = nftData.sorted { $0.price < $1.price }
+        saveSortingOption("sortPriceNFTData")
     }
     
     func sortRatingNFTData() {
         nftData = nftData.sorted { $0.rating < $1.rating }
+        saveSortingOption("sortRatingNFTData")
     }
     
     func sortNameNFTData(){
         nftData = nftData.sorted { $0.name < $1.name }
+        saveSortingOption("sortNameNFTData")
     }
     
     func countNFT() -> String {
@@ -59,9 +58,9 @@ final class CartPresenter {
         for newPrice in nftData {
             totalPrice += newPrice.price
         }
-
+        
         let formattedTotalPrice = String(format: "%.2f", totalPrice)
-       
+        
         return "\(formattedTotalPrice) ETH"
     }
     
@@ -83,13 +82,32 @@ final class CartPresenter {
             switch result {
             case .success(let nfts):
                 self?.nftData = nfts
-                // добавить сохраненный фильтр из памяти
+                self?.applyLastSavedSorting()
                 DispatchQueue.main.async {
                     self?.view?.collection()
                 }
             case .failure(_):
                 print("Error fetching NFT cart: (error.localizedDescription)")
             }
+        }
+    }
+    
+    private func saveSortingOption(_ key: String) {
+        UserDefaults.standard.set(key, forKey: "lastSortingOption")
+    }
+    
+    func applyLastSavedSorting() {
+        guard let key = UserDefaults.standard.string(forKey: "lastSortingOption") else { return }
+        
+        switch key {
+        case "sortPriceNFTData":
+            sortPriceNFTData()
+        case "sortRatingNFTData":
+            sortRatingNFTData()
+        case "sortNameNFTData":
+            sortNameNFTData()
+        default:
+            break
         }
     }
 }
