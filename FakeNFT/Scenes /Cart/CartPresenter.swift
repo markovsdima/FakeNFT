@@ -2,6 +2,7 @@ import Foundation
 
 protocol CartView: AnyObject {
     func collection()
+    func activityIndicator(_ activity: Bool)
 }
 
 enum SortOption: String {
@@ -20,14 +21,64 @@ final class CartPresenter {
     }
     
     // MARK: - Lifecycle
+    private func saveSortingOption(_ key: String) {
+        UserDefaults.standard.set(key, forKey: "lastSortingOption")
+        view?.collection()
+    }
+    
+    private func applyLastSavedSorting() {
+        guard let key = UserDefaults.standard.string(forKey: "lastSortingOption") else { return }
+        
+        switch key {
+        case "sortPriceNFTData":
+            sortPriceNFTData()
+        case "sortRatingNFTData":
+            sortRatingNFTData()
+        case "sortNameNFTData":
+            sortNameNFTData()
+        default:
+            break
+        }
+    }
+    
+    func fetchOrdersCart() {
+        CartNetworkClient.shared.fetchOrdersCart() { result in
+            switch result {
+            case .success(let nfts):
+                self.view?.activityIndicator(false)
+                self.numbersNFTs = nfts.nfts
+                print("Request completed successfully")
+                self.fetchNFTCart()
+                self.view?.collection()
+                self.view?.activityIndicator(true)
+            case .failure(let error):
+                print("there is no response from the server: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    func fetchNFTCart() {
+        CartNetworkClient.shared.fetchNftIdCart(IdNFTs: numbersNFTs) { [weak self] result in
+            switch result {
+            case .success(let nfts):
+                self?.nftData = nfts
+                self?.applyLastSavedSorting()
+                DispatchQueue.main.async {
+                    self?.view?.collection()
+                }
+            case .failure(_):
+                print("Error fetching NFT cart: (error.localizedDescription)")
+            }
+        }
+    }
     
     func deleteNFT(_ nftId: String) {
         if let index = numbersNFTs.firstIndex(of: nftId) {
             numbersNFTs.remove(at: index)
         }
+        
         CartNetworkClient.shared.sendPutRequest(numbersNFTs)
         fetchNFTCart()
-
     }
     
     func sortPriceNFTData() {
@@ -59,54 +110,5 @@ final class CartPresenter {
         let formattedTotalPrice = String(format: "%.2f", totalPrice)
         
         return "\(formattedTotalPrice) ETH"
-    }
-    
-    func fetchOrdersCart() {
-        CartNetworkClient.shared.fetchOrdersCart() { result in
-            switch result {
-            case .success(let nft):
-                self.numbersNFTs = nft.nfts
-                print("Request completed successfully")
-                self.fetchNFTCart()
-                self.view?.collection()
-            case .failure(let error):
-                print("there is no response from the server: \(error.localizedDescription)")
-            }
-        }
-    }
-    
-    func fetchNFTCart() {
-        CartNetworkClient.shared.fetchNftIdCart(IdNFTs: numbersNFTs) { [weak self] result in
-            switch result {
-            case .success(let nfts):
-                self?.nftData = nfts
-                self?.applyLastSavedSorting()
-                DispatchQueue.main.async {
-                    self?.view?.collection()
-                }
-            case .failure(_):
-                print("Error fetching NFT cart: (error.localizedDescription)")
-            }
-        }
-    }
-    
-    private func saveSortingOption(_ key: String) {
-        UserDefaults.standard.set(key, forKey: "lastSortingOption")
-        view?.collection()
-    }
-    
-    func applyLastSavedSorting() {
-        guard let key = UserDefaults.standard.string(forKey: "lastSortingOption") else { return }
-        
-        switch key {
-        case "sortPriceNFTData":
-            sortPriceNFTData()
-        case "sortRatingNFTData":
-            sortRatingNFTData()
-        case "sortNameNFTData":
-            sortNameNFTData()
-        default:
-            break
-        }
     }
 }

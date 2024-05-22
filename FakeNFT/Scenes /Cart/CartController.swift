@@ -178,7 +178,7 @@ final class CartViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         label.textAlignment = .center
-        //        label.text = "Корзина пуста"
+        label.text = "Корзина пуста"
         label.isHidden = true
         return label
     }()
@@ -215,7 +215,6 @@ final class CartViewController: UIViewController {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        activityIndicatorStarandStop()
         ifIsEmptyNftData()
     }
     
@@ -305,7 +304,7 @@ final class CartViewController: UIViewController {
         warningsLabel.isHidden = isTapped
         blurView.isHidden = isTapped
         cartCollection.reloadData()
-  
+        
     }
     
     private func activityIndicatorStarandStop() {
@@ -328,12 +327,10 @@ final class CartViewController: UIViewController {
     @objc private func deleteButtonDidTapped() {
         cartPresenter?.deleteNFT(idNFT)
         confirmationOfDeletion(true)
-        blurViewDelegate?.activatingBlurView(false)
     }
     
     @objc private func returnButtonDidTapped() {
         confirmationOfDeletion(true)
-        blurViewDelegate?.activatingBlurView(false)
     }
     
     @objc private func payButtonDidTapped() {
@@ -409,12 +406,21 @@ extension CartViewController: CartCellDelete {
         self.idNFT = idNFT
         sumAndCountNFT()
         confirmationOfDeletion(false)
-        blurViewDelegate?.activatingBlurView(true)
     }
 }
 
 // MARK: - extension CartPreseterView
 extension CartViewController: CartView {
+    func activityIndicator(_ activity: Bool) {
+        DispatchQueue.main.async {
+            if activity {
+                self.activityIndicator.stopAnimating()
+            } else {
+                self.activityIndicator.startAnimating()
+            }
+        }
+    }
+    
     func collection() {
         DispatchQueue.main.async {
             self.cartCollection.reloadData()
