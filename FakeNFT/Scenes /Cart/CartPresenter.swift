@@ -1,7 +1,7 @@
 import Foundation
 
 protocol CartView: AnyObject {
-    func collection()
+    func collectionReloadData()
     func activityIndicator(_ activity: Bool)
 }
 
@@ -23,7 +23,7 @@ final class CartPresenter {
     // MARK: - Lifecycle
     private func saveSortingOption(_ key: String) {
         UserDefaults.standard.set(key, forKey: "lastSortingOption")
-        view?.collection()
+        view?.collectionReloadData()
     }
     
     private func applyLastSavedSorting() {
@@ -49,7 +49,7 @@ final class CartPresenter {
                 self.numbersNFTs = nfts.nfts
                 print("Request completed successfully")
                 self.fetchNFTCart()
-                self.view?.collection()
+                self.view?.collectionReloadData()
                 self.view?.activityIndicator(true)
             case .failure(let error):
                 print("there is no response from the server: \(error.localizedDescription)")
@@ -64,7 +64,7 @@ final class CartPresenter {
                 self?.nftData = nfts
                 self?.applyLastSavedSorting()
                 DispatchQueue.main.async {
-                    self?.view?.collection()
+                    self?.view?.collectionReloadData()
                 }
             case .failure(_):
                 print("Error fetching NFT cart: (error.localizedDescription)")

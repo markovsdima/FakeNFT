@@ -421,7 +421,7 @@ extension CartViewController: CartView {
         }
     }
     
-    func collection() {
+    func collectionReloadData() {
         DispatchQueue.main.async {
             self.cartCollection.reloadData()
             self.sumAndCountNFT()

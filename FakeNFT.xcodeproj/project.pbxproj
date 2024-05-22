@@ -137,12 +137,12 @@
 		E736B6432BD8E85900CA5513 /* PaymentSystemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSystemModel.swift; sourceTree = "<group>"; };
 		E736B6452BD8E88500CA5513 /* PaymentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentCell.swift; sourceTree = "<group>"; };
 		E736B6482BD8F2A400CA5513 /* PaymentEndViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentEndViewController.swift; sourceTree = "<group>"; };
-		E78A5D802BFA4B9700FCDD93 /* FakeNFTTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = FakeNFTTests.xctest; path = "/Users/aleksejgvozdkov/Desktop/FakeNFT/build/Debug-iphoneos/FakeNFTTests.xctest"; sourceTree = "<absolute>"; };
-		E78A5D812BFA4B9700FCDD93 /* FakeNFTUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = FakeNFTUITests.xctest; path = "/Users/aleksejgvozdkov/Desktop/FakeNFT/build/Debug-iphoneos/FakeNFTUITests.xctest"; sourceTree = "<absolute>"; };
-		E78A5D822BFA4B9700FCDD93 /* FakeNFTUITestsCart.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = FakeNFTUITestsCart.xctest; path = "/Users/aleksejgvozdkov/Desktop/FakeNFT/build/Debug-iphoneos/FakeNFTUITestsCart.xctest"; sourceTree = "<absolute>"; };
 		E7A2FAC82BFD7194002A79BC /* FakeNFT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FakeNFT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7D01F0E2BE41F12004AE2CA /* NFTCartModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTCartModel.swift; sourceTree = "<group>"; };
 		E7D01F102BE41F3F004AE2CA /* CartPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartPresenter.swift; sourceTree = "<group>"; };
+		E7DD7B722BFD73F700BBB515 /* FakeNFTTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = FakeNFTTests.xctest; path = "/Users/aleksejgvozdkov/Desktop/FakeNFT/build/Debug-iphoneos/FakeNFTTests.xctest"; sourceTree = "<absolute>"; };
+		E7DD7B732BFD73F700BBB515 /* FakeNFTUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = FakeNFTUITests.xctest; path = "/Users/aleksejgvozdkov/Desktop/FakeNFT/build/Debug-iphoneos/FakeNFTUITests.xctest"; sourceTree = "<absolute>"; };
+		E7DD7B742BFD73F700BBB515 /* FakeNFTUITestsCart.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = FakeNFTUITestsCart.xctest; path = "/Users/aleksejgvozdkov/Desktop/FakeNFT/build/Debug-iphoneos/FakeNFTUITestsCart.xctest"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -485,7 +485,7 @@
 			);
 			name = FakeNFTTests;
 			productName = FakeNFTTests;
-			productReference = E78A5D802BFA4B9700FCDD93 /* FakeNFTTests.xctest */;
+			productReference = E7DD7B722BFD73F700BBB515 /* FakeNFTTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		3F6806B229CBBAF200B4F915 /* FakeNFTUITests */ = {
@@ -503,7 +503,7 @@
 			);
 			name = FakeNFTUITests;
 			productName = FakeNFTUITests;
-			productReference = E78A5D812BFA4B9700FCDD93 /* FakeNFTUITests.xctest */;
+			productReference = E7DD7B732BFD73F700BBB515 /* FakeNFTUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 		E75E8CA32BF96305005A78F0 /* FakeNFTUITestsCart */ = {
@@ -521,7 +521,7 @@
 			);
 			name = FakeNFTUITestsCart;
 			productName = FakeNFTUITestsCart;
-			productReference = E78A5D822BFA4B9700FCDD93 /* FakeNFTUITestsCart.xctest */;
+			productReference = E7DD7B742BFD73F700BBB515 /* FakeNFTUITestsCart.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
