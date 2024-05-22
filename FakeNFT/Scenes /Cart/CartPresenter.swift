@@ -22,15 +22,12 @@ final class CartPresenter {
     // MARK: - Lifecycle
     
     func deleteNFT(_ nftId: String) {
-        print("DELNFT \(nftId)")
-        //        let id = "b30e685d-7643-4d88-840a-e4506277661d"
-        //
-        //        if let index = numbersNFTs.firstIndex(of: nftId) {
-        //            numbersNFTs.remove(at: index)
-        //            view?.collection()
-        //        }
-        //        print(" NEWARRAY \(numbersNFTs)")
-        //
+        if let index = numbersNFTs.firstIndex(of: nftId) {
+            numbersNFTs.remove(at: index)
+        }
+        CartNetworkClient.shared.sendPutRequest(numbersNFTs)
+        fetchNFTCart()
+
     }
     
     func sortPriceNFTData() {
@@ -71,6 +68,7 @@ final class CartPresenter {
                 self.numbersNFTs = nft.nfts
                 print("Request completed successfully")
                 self.fetchNFTCart()
+                self.view?.collection()
             case .failure(let error):
                 print("there is no response from the server: \(error.localizedDescription)")
             }
@@ -94,6 +92,7 @@ final class CartPresenter {
     
     private func saveSortingOption(_ key: String) {
         UserDefaults.standard.set(key, forKey: "lastSortingOption")
+        view?.collection()
     }
     
     func applyLastSavedSorting() {

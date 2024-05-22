@@ -1,9 +1,14 @@
 import UIKit
 
+protocol BlurViewDelegate: AnyObject {
+    func activatingBlurView(_ activating: Bool)
+}
+
 final class CartViewController: UIViewController {
     
     // MARK: - Properties
     let servicesAssembly: ServicesAssembly
+    weak var blurViewDelegate: BlurViewDelegate?
     
     private let paymentViewController: PaymentViewController
     private var cartPresenter: CartPresenter?
@@ -22,7 +27,7 @@ final class CartViewController: UIViewController {
         return button
     }()
     
-     private lazy var cartCollection: UICollectionView = {
+    private lazy var cartCollection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
@@ -173,7 +178,7 @@ final class CartViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         label.textAlignment = .center
-//        label.text = "Корзина пуста"
+        //        label.text = "Корзина пуста"
         label.isHidden = true
         return label
     }()
@@ -201,16 +206,19 @@ final class CartViewController: UIViewController {
         super.viewDidLoad()
         viewConstraints()
         cartPresenter = CartPresenter(view: self)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         cartPresenter?.fetchOrdersCart()
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        ifIsEmptyNftData()
-//        cartPresenter?.fetchNFTCart()
         activityIndicatorStarandStop()
+        ifIsEmptyNftData()
     }
-  
+    
     // MARK: - Lifecycle
     private func viewConstraints() {
         view.backgroundColor = .ypWhite
@@ -223,6 +231,8 @@ final class CartViewController: UIViewController {
         view.addSubview(deleteStack)
         view.addSubview(cartIsEmpty)
         view.addSubview(activityIndicator)
+        
+//        blurView.isUserInteractionEnabled = true
         
         NSLayoutConstraint.activate([
             filterButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 2),
@@ -271,8 +281,8 @@ final class CartViewController: UIViewController {
         ])
     }
     
-   private func ifIsEmptyNftData() {
-       if cartPresenter?.nftData.isEmpty ?? false {
+    private func ifIsEmptyNftData() {
+        if cartPresenter?.nftData.isEmpty ?? false {
             filterButton.isHidden = true
             countNFTLabel.isHidden = true
             priceNFTLabel.isHidden = true
@@ -287,17 +297,18 @@ final class CartViewController: UIViewController {
             payBackgroundColor.isHidden = false
             cartIsEmpty.isHidden = true
         }
-       cartCollection.reloadData()
-   }
+        cartCollection.reloadData()
+    }
     
     private func confirmationOfDeletion(_ isTapped: Bool) {
+//        blurViewDelegate?.activatingBlurView(isTapped)
         nftImageView.isHidden = isTapped
-        blurView.isHidden = isTapped
         deleteButton.isHidden = isTapped
         returnButton.isHidden = isTapped
         warningsLabel.isHidden = isTapped
-        
+        blurView.isHidden = isTapped
         cartCollection.reloadData()
+  
     }
     
     private func activityIndicatorStarandStop() {
@@ -309,14 +320,6 @@ final class CartViewController: UIViewController {
     }
     
     private func sumAndCountNFT() {
-//        var totalPrice = 0.0
-//        guard let nftData = cartPresenter?.nftData else { return }
-//        for newPrice in nftData {
-//            totalPrice += newPrice.price
-//        }
-//        
-//        let formattedTotalPrice = String(format: "%.2f", totalPrice)
-//
         countNFTLabel.text = cartPresenter?.countNFT()
         priceNFTLabel.text = cartPresenter?.priceNFT()
     }
@@ -328,10 +331,12 @@ final class CartViewController: UIViewController {
     @objc private func deleteButtonDidTapped() {
         cartPresenter?.deleteNFT(idNFT)
         confirmationOfDeletion(true)
+//        blurViewDelegate?.activatingBlurView(true)
     }
     
     @objc private func returnButtonDidTapped() {
         confirmationOfDeletion(true)
+//        blurViewDelegate?.activatingBlurView(true)
     }
     
     @objc private func payButtonDidTapped() {
@@ -357,7 +362,7 @@ extension CartViewController: UICollectionViewDataSource {
             let nftItem = cartPresenter?.nftData[indexPath.row]
             cell.configure(with: nftItem)
             cell.delegate = self
-    
+            
             return cell
         }
         return UICollectionViewCell()

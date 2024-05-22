@@ -8,7 +8,6 @@ enum NetworkError: Error {
 
 class CartNetworkClient {
     static let shared = CartNetworkClient()
-    
     private let session: URLSession
     
     private init() {
@@ -27,7 +26,7 @@ class CartNetworkClient {
         
         var urlRequest = URLRequest(url: url)
         urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
-        urlRequest.setValue("6fe3b0b3-4795-4199-a00d-e90e16f22517", forHTTPHeaderField: "X-Practicum-Mobile-Token")
+        urlRequest.setValue(RequestConstants.accessToken, forHTTPHeaderField: "X-Practicum-Mobile-Token")
         
         session.dataTask(with: urlRequest) { data, response, error in
             if let error = error {
@@ -64,34 +63,34 @@ class CartNetworkClient {
         
         var urlRequest = URLRequest(url: url)
         urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
-        urlRequest.setValue("6fe3b0b3-4795-4199-a00d-e90e16f22517", forHTTPHeaderField: "X-Practicum-Mobile-Token")
+        urlRequest.setValue(RequestConstants.accessToken, forHTTPHeaderField: "X-Practicum-Mobile-Token")
         
         let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
             if let error = error {
-                completion(.failure(error))  // Сообщаем об ошибке
+                completion(.failure(error))
                 return
             }
             
             guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                completion(.failure(NetworkError.invalidResponse))  // Сообщаем об ошибке
+                completion(.failure(NetworkError.invalidResponse))
                 return
             }
             
             guard let data = data else {
-                completion(.failure(NetworkError.invalidData))  // Сообщаем об ошибке
+                completion(.failure(NetworkError.invalidData))
                 return
             }
             
             do {
                 let nftResponse = try JSONDecoder().decode(OrdersCartModel.self, from: data)
-                completion(.success(nftResponse))  // Сообщаем об успешном выполнении запроса и передаем результат
+                completion(.success(nftResponse))
             } catch {
-                completion(.failure(error))  // Сообщаем об ошибке при декодировании данных
+                completion(.failure(error))
             }
         }
         task.resume()
     }
-
+    
     
     func fetchNftIdCart(IdNFTs: [String], completion: @escaping (Result<[NFTCartModel], Error>) -> Void) {
         var nftCarts: [NFTCartModel] = []
@@ -138,48 +137,35 @@ class CartNetworkClient {
         }
     }
 
-    
-    func sendPutRequest(nfts: [String], id: String) {
-        let baseURL = RequestConstants.baseURL
-        let endpoint = "/api/v1/orders/1"
-        guard let url = URL(string: baseURL + endpoint) else {
+    func sendPutRequest(_ nfts: [String]) {
+        guard let url = URL(string: "https://d5dn3j2ouj72b0ejucbl.apigw.yandexcloud.net/api/v1/orders/1") else {
             print("Invalid URL")
             return
         }
-
+        
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         request.setValue(RequestConstants.accessToken, forHTTPHeaderField: "X-Practicum-Mobile-Token")
-
-        let ordersCartModel = OrdersCartModel(nfts: nfts, id: id)
-
-        do {
-            let jsonData = try JSONEncoder().encode(ordersCartModel)
-            request.httpBody = jsonData
-
-            let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-                if let error = error {
-                    print("Error: \(error.localizedDescription)")
-                    return
-                }
-
-                guard let httpResponse = response as? HTTPURLResponse else {
-                    print("Invalid response")
-                    return
-                }
-
-                if (200...299).contains(httpResponse.statusCode) {
-                    print("PUT request successful")
-                } else {
-                    print("PUT request failed with status code: \(httpResponse.statusCode)")
-                }
+    
+        let nftsString = nfts.map { "nfts=\($0)" }.joined(separator: "&")
+        let bodyString = nftsString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
+        request.httpBody = bodyString.data(using: .utf8)
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error making PUT request: \(error)")
+                return
             }
-            task.resume()
-        } catch {
-            print("Error encoding request body: \(error.localizedDescription)")
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                print("PUT request response status code: \(httpResponse.statusCode)")
+            }
+            
+            if let data = data, let dataString = String(data: data, encoding: .utf8) {
+                print("Response data: \(dataString)")
+            }
         }
+        task.resume()
     }
 }
-    

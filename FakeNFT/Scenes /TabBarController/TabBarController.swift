@@ -4,25 +4,25 @@ final class TabBarController: UITabBarController {
     
     var servicesAssembly: ServicesAssembly!
     
-    private let profileTabBarItem = UITabBarItem(
+    private var profileTabBarItem = UITabBarItem(
         title: NSLocalizedString("Tab.profile", comment: ""),
         image: UIImage(named: "TabBar/profile"),
         tag: 0
     )
     
-    private let catalogTabBarItem = UITabBarItem(
+    private var catalogTabBarItem = UITabBarItem(
         title: NSLocalizedString("Tab.catalog", comment: ""),
         image: UIImage(named: "TabBar/catalog"),
         tag: 1
     )
     
-    private let cartTabBarItem = UITabBarItem(
+    private var cartTabBarItem = UITabBarItem(
         title: NSLocalizedString("Tab.cart", comment: ""),
         image: UIImage(named: "TabBar/cart"),
         tag: 2
     )
     
-    private let statisticsTabBarItem = UITabBarItem(
+    private var statisticsTabBarItem = UITabBarItem(
         title: NSLocalizedString("Tab.statistics", comment: ""),
         image: UIImage(named: "TabBar/statistics"),
         tag: 3
@@ -58,5 +58,36 @@ final class TabBarController: UITabBarController {
         viewControllers = [profileController, catalogController, cartController, statisticsController]
         
         view.backgroundColor = .systemBackground
+        
+        cartController.blurViewDelegate = self
+    }
+}
+
+
+extension TabBarController: BlurViewDelegate {
+    func activatingBlurView(_ activating: Bool) {
+        tabBar.isHidden = activating
+//        if let tabBarController = self.tabBarController {
+//            if let viewControllers = tabBarController.viewControllers {
+//                if let profileViewController = viewControllers.first(where: { $0.title == NSLocalizedString("Tab.profile", comment: "") }) {
+//                    profileViewController.tabBarItem.isEnabled = !activating
+//                    // or
+//                    if let index = viewControllers.firstIndex(of: profileViewController) {
+//                        tabBarController.tabBar.items?[index].isEnabled = !activating
+//                    }
+//                }
+//            }
+//        }
+//        if !activating {
+//            // Скрыть заголовок и изображение вкладки "Profile"
+////            profileTabBarItem.title = nil
+////            profileTabBarItem.image = nil
+//            print("NIL")
+//        } else {
+//            // Показать заголовок и изображение вкладки "Profile"
+//            print("TRUE")
+//            profileTabBarItem.title = NSLocalizedString("Tab.profile", comment: "")
+//            profileTabBarItem.image = UIImage(named: "TabBar/profile")
+//        }
     }
 }
