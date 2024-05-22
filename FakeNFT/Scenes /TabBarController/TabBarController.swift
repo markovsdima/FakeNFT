@@ -4,25 +4,25 @@ final class TabBarController: UITabBarController {
     
     var servicesAssembly: ServicesAssembly!
     
-    private var profileTabBarItem = UITabBarItem(
+    private let profileTabBarItem = UITabBarItem(
         title: NSLocalizedString("Tab.profile", comment: ""),
         image: UIImage(named: "TabBar/profile"),
         tag: 0
     )
     
-    private var catalogTabBarItem = UITabBarItem(
+    private let catalogTabBarItem = UITabBarItem(
         title: NSLocalizedString("Tab.catalog", comment: ""),
         image: UIImage(named: "TabBar/catalog"),
         tag: 1
     )
     
-    private var cartTabBarItem = UITabBarItem(
+    private let cartTabBarItem = UITabBarItem(
         title: NSLocalizedString("Tab.cart", comment: ""),
         image: UIImage(named: "TabBar/cart"),
         tag: 2
     )
     
-    private var statisticsTabBarItem = UITabBarItem(
+    private let statisticsTabBarItem = UITabBarItem(
         title: NSLocalizedString("Tab.statistics", comment: ""),
         image: UIImage(named: "TabBar/statistics"),
         tag: 3
@@ -66,28 +66,18 @@ final class TabBarController: UITabBarController {
 
 extension TabBarController: BlurViewDelegate {
     func activatingBlurView(_ activating: Bool) {
-        tabBar.isHidden = activating
-//        if let tabBarController = self.tabBarController {
-//            if let viewControllers = tabBarController.viewControllers {
-//                if let profileViewController = viewControllers.first(where: { $0.title == NSLocalizedString("Tab.profile", comment: "") }) {
-//                    profileViewController.tabBarItem.isEnabled = !activating
-//                    // or
-//                    if let index = viewControllers.firstIndex(of: profileViewController) {
-//                        tabBarController.tabBar.items?[index].isEnabled = !activating
-//                    }
-//                }
-//            }
-//        }
-//        if !activating {
-//            // Скрыть заголовок и изображение вкладки "Profile"
-////            profileTabBarItem.title = nil
-////            profileTabBarItem.image = nil
-//            print("NIL")
-//        } else {
-//            // Показать заголовок и изображение вкладки "Profile"
-//            print("TRUE")
-//            profileTabBarItem.title = NSLocalizedString("Tab.profile", comment: "")
-//            profileTabBarItem.image = UIImage(named: "TabBar/profile")
-//        }
+        if activating {
+            if let tabBarSubviews = self.tabBar.subviews as? [UIView] {
+                for subview in tabBarSubviews {
+                    subview.isHidden = true
+                }
+            }
+        } else {
+            if let tabBarSubviews = self.tabBar.subviews as? [UIView] {
+                for subview in tabBarSubviews {
+                    subview.isHidden = false
+                }
+            }
+        }
     }
 }

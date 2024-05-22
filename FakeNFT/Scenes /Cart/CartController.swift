@@ -232,8 +232,6 @@ final class CartViewController: UIViewController {
         view.addSubview(cartIsEmpty)
         view.addSubview(activityIndicator)
         
-//        blurView.isUserInteractionEnabled = true
-        
         NSLayoutConstraint.activate([
             filterButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 2),
             filterButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -9),
@@ -301,7 +299,6 @@ final class CartViewController: UIViewController {
     }
     
     private func confirmationOfDeletion(_ isTapped: Bool) {
-//        blurViewDelegate?.activatingBlurView(isTapped)
         nftImageView.isHidden = isTapped
         deleteButton.isHidden = isTapped
         returnButton.isHidden = isTapped
@@ -331,12 +328,12 @@ final class CartViewController: UIViewController {
     @objc private func deleteButtonDidTapped() {
         cartPresenter?.deleteNFT(idNFT)
         confirmationOfDeletion(true)
-//        blurViewDelegate?.activatingBlurView(true)
+        blurViewDelegate?.activatingBlurView(false)
     }
     
     @objc private func returnButtonDidTapped() {
         confirmationOfDeletion(true)
-//        blurViewDelegate?.activatingBlurView(true)
+        blurViewDelegate?.activatingBlurView(false)
     }
     
     @objc private func payButtonDidTapped() {
@@ -412,6 +409,7 @@ extension CartViewController: CartCellDelete {
         self.idNFT = idNFT
         sumAndCountNFT()
         confirmationOfDeletion(false)
+        blurViewDelegate?.activatingBlurView(true)
     }
 }
 
