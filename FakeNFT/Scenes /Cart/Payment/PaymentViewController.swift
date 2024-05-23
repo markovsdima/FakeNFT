@@ -70,16 +70,33 @@ final class PaymentViewController: UIViewController {
         return view
     }()
     
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView()
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.style = .medium
+        activityIndicator.color = .black
+        activityIndicator.hidesWhenStopped = true
+        return activityIndicator
+    }()
+    
+    private var paymentSystem: [PaymentSystemModel] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         viewConstraints()
-        paymentPresenter = PaymentPresenter()
+        paymentPresenter = PaymentPresenter(view: self)
+        paymentPresenter?.fetchCurrencies()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        activityIndicatorStarandStop()
     }
     
     // MARK: - Lifecycle
     private func viewConstraints() {
         view.backgroundColor = .ypWhite
-       
+        
         view.addSubview(payBackgroundColor)
         view.addSubview(backwardButton)
         view.addSubview(paymentMethodLabel)
@@ -87,7 +104,8 @@ final class PaymentViewController: UIViewController {
         view.addSubview(payButton)
         view.addSubview(userAgreementButton)
         view.addSubview(userAgreementLabel)
-       
+        view.addSubview(activityIndicator)
+        
         NSLayoutConstraint.activate([
             backwardButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 9),
             backwardButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 11),
@@ -115,6 +133,11 @@ final class PaymentViewController: UIViewController {
             payBackgroundColor.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             payBackgroundColor.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             payBackgroundColor.topAnchor.constraint(equalTo: userAgreementLabel.topAnchor, constant: -16),
+            
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            activityIndicator.heightAnchor.constraint(equalToConstant: 25),
+            activityIndicator.widthAnchor.constraint(equalToConstant: 25)
         ])
     }
     
@@ -123,7 +146,15 @@ final class PaymentViewController: UIViewController {
             UIApplication.shared.open(url)
         }
     }
-
+    
+    private func activityIndicatorStarandStop() {
+        if self.paymentSystem.isEmpty {
+            self.activityIndicator.startAnimating()
+        } else {
+            self.activityIndicator.stopAnimating()
+        }
+    }
+    
     @objc func backwardButtonDidTapped() {
         dismiss(animated: true)
     }
@@ -157,15 +188,15 @@ extension PaymentViewController: UICollectionViewDelegateFlowLayout {
 // MARK: - extension UICollectionViewDataSource
 extension PaymentViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        paymentPresenter?.paymentSystem.count ?? 0
+        paymentSystem.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PaymentCell.paymentCellIdentifier, for: indexPath) as? PaymentCell {
-            if let paymentSystem = paymentPresenter?.paymentSystem[indexPath.row] {
-                cell.updatePaymentCell(paymentSystemModel: paymentSystem)
-                return cell
+            if let presenter = paymentPresenter {
+                cell.updatePaymentCell(paymentSystemModel: paymentSystem[indexPath.row], presenter: presenter)
             }
+            return cell
         }
         return UICollectionViewCell()
     }
@@ -191,13 +222,12 @@ extension PaymentViewController: UICollectionViewDelegate {
     }
 }
 
-
 extension PaymentViewController {
     func showAlert(from viewController: UIViewController) {
         let alertController = UIAlertController(title: "Не удалось произвести оплату", message: "", preferredStyle: .alert)
         
         let cancelAction = UIAlertAction(title: "Отмена", style: .default) { _ in
-            print("cancelAction")
+            self.dismiss(animated: true)
         }
         
         let replayAction = UIAlertAction(title: "Повторить", style: .default) { _ in
@@ -207,5 +237,15 @@ extension PaymentViewController {
         alertController.addAction(replayAction)
         
         viewController.present(alertController, animated: true, completion: nil)
+    }
+}
+
+extension PaymentViewController: PaymentPreseterView {
+    func updatePaymentData(_ data: [PaymentSystemModel]) {
+        DispatchQueue.main.sync {
+            self.paymentSystem = data
+            self.paymentSystemCollection.reloadData()
+            self.activityIndicatorStarandStop()
+        }
     }
 }

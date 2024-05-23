@@ -51,6 +51,17 @@
                ReferencedContainer = "container:FakeNFT.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "E75E8CA32BF96305005A78F0"
+               BuildableName = "FakeNFTUITestsCart.xctest"
+               BlueprintName = "FakeNFTUITestsCart"
+               ReferencedContainer = "container:FakeNFT.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

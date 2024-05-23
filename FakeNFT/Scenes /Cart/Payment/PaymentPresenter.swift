@@ -1,18 +1,29 @@
 import Foundation
+import UIKit
+
+protocol PaymentPreseterView: AnyObject {
+    func updatePaymentData(_ data: [PaymentSystemModel])
+}
 
 final class PaymentPresenter {
+    weak var view: PaymentPreseterView?
+    
     // MARK: - Properties
     let urlUserAgreement = "https://yandex.ru/legal/practicum_termsofuse/"
     
-    let paymentSystem: [PaymentSystemModel] = [
-        PaymentSystemModel(image: "BitcoinCart", paymentSystem: "Bitcoin", currency: "ВТС"),
-        PaymentSystemModel(image: "DogecoinCart", paymentSystem: "Dogecoin", currency: "DOGE"),
-        PaymentSystemModel(image: "TetherCart", paymentSystem: "Tether", currency: "USDT"),
-        PaymentSystemModel(image: "ApecoinCart", paymentSystem: "Apecoin", currency: "APE"),
-        PaymentSystemModel(image: "SolanaCart", paymentSystem: "Solana", currency: "SOL"),
-        PaymentSystemModel(image: "EthereumCart", paymentSystem: "Ethereum", currency: "ETH"),
-        PaymentSystemModel(image: "CardanoCart", paymentSystem: "Cardano", currency: "ADA"),
-        PaymentSystemModel(image: "ShibaInuCart", paymentSystem: "Shiba Inu", currency: "SHIB")
-    ]
+    init(view: PaymentPreseterView) {
+        self.view = view
+    }
     
+    func fetchCurrencies() {
+        CartNetworkClient.shared.fetchPaymentSystems { result in
+            switch result {
+            case .success(let paymentSystems):
+                // Преобразование массива PaymentSystemModel
+                self.view?.updatePaymentData(paymentSystems)
+            case .failure(let error):
+                print("Error fetching payment systems: \(error.localizedDescription)")
+            }
+        }
+    }
 }

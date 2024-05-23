@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 final class PaymentCell: UICollectionViewCell {
     // MARK: - Properties
@@ -9,7 +10,8 @@ final class PaymentCell: UICollectionViewCell {
         image.translatesAutoresizingMaskIntoConstraints = false
         image.layer.cornerRadius = 6
         image.clipsToBounds = true
-        image.frame = CGRect(x: 0, y: 0, width: 36, height: 36)
+        image.backgroundColor = .ypBlack
+        image.layer.cornerRadius = 6
         return image
     }()
     
@@ -71,7 +73,7 @@ final class PaymentCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             contentView.heightAnchor.constraint(equalTo: heightAnchor),
             contentView.widthAnchor.constraint(equalTo: widthAnchor),
-
+            
             paymentImage.heightAnchor.constraint(equalToConstant: 36),
             paymentImage.widthAnchor.constraint(equalToConstant: 36),
             paymentImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
@@ -82,9 +84,12 @@ final class PaymentCell: UICollectionViewCell {
         ])
     }
     
-    func updatePaymentCell(paymentSystemModel: PaymentSystemModel) {
-        paymentImage.image = UIImage(named: paymentSystemModel.image)
-        paymentSystemLabel.text = paymentSystemModel.paymentSystem
-        currencyLabel.text = paymentSystemModel.currency
+    func updatePaymentCell(paymentSystemModel: PaymentSystemModel, presenter: PaymentPresenter) {
+        paymentSystemLabel.text = paymentSystemModel.title
+        currencyLabel.text = paymentSystemModel.name
+        
+        if let imageUrl = URL(string: paymentSystemModel.image) {
+            paymentImage.kf.setImage(with: imageUrl)
+        }
     }
 }

@@ -1,13 +1,8 @@
 import Foundation
 
-struct PaymentSystemModel {
+struct PaymentSystemModel: Decodable {
+    let title: String
+    let name: String
     let image: String
-    let paymentSystem: String
-    let currency: String
+    let id: String
 }
-//struct PaymentSystemModel {
-//    let title: String
-//    let name: String
-//    let image: String
-//    let id: String
-//}

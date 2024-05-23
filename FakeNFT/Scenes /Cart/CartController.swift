@@ -1,13 +1,19 @@
 import UIKit
 
+protocol BlurViewDelegate: AnyObject {
+    func activatingBlurView(_ activating: Bool)
+}
+
 final class CartViewController: UIViewController {
     
     // MARK: - Properties
     let servicesAssembly: ServicesAssembly
+    weak var blurViewDelegate: BlurViewDelegate?
     
-    private let paymentViewController = PaymentViewController()
+    private let paymentViewController: PaymentViewController
     private var cartPresenter: CartPresenter?
     private var isTapped = false
+    private var idNFT = ""
     
     private lazy var filterButton: UIButton = {
         let imageButton = UIImage(named: "SortButton")?.withTintColor(
@@ -17,6 +23,7 @@ final class CartViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(imageButton, for: .normal)
         button.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
+        button.accessibilityIdentifier = "filterButton"
         return button
     }()
     
@@ -33,6 +40,7 @@ final class CartViewController: UIViewController {
         collection.backgroundColor = .ypWhite
         collection.register(CartCell.self, forCellWithReuseIdentifier: CartCell.cartCellIdentifier)
         collection.dataSource = self
+        collection.accessibilityIdentifier = "cartCollectionView"
         return collection
     }()
     
@@ -165,15 +173,6 @@ final class CartViewController: UIViewController {
         return stack
     }()
     
-    init(servicesAssembly: ServicesAssembly) {
-        self.servicesAssembly = servicesAssembly
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     private lazy var cartIsEmpty: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -184,25 +183,39 @@ final class CartViewController: UIViewController {
         return label
     }()
     
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView()
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.style = .medium
+        activityIndicator.color = .black
+        activityIndicator.hidesWhenStopped = true
+        return activityIndicator
+    }()
+    
+    init(servicesAssembly: ServicesAssembly) {
+        self.servicesAssembly = servicesAssembly
+        self.paymentViewController = PaymentViewController()
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         viewConstraints()
         cartPresenter = CartPresenter(view: self)
-        
     }
-    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        cartPresenter?.nftCount()
-        cartPresenter?.sumNFT()
+        cartPresenter?.fetchOrdersCart()
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         ifIsEmptyNftData()
-        countNFTLabel.text = "\(nftDataCount) ETH"
-        priceNFTLabel.text = "\(totalPrice) NFT"
     }
     
     // MARK: - Lifecycle
@@ -216,6 +229,7 @@ final class CartViewController: UIViewController {
         view.addSubview(blurView)
         view.addSubview(deleteStack)
         view.addSubview(cartIsEmpty)
+        view.addSubview(activityIndicator)
         
         NSLayoutConstraint.activate([
             filterButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 2),
@@ -226,7 +240,7 @@ final class CartViewController: UIViewController {
             cartCollection.topAnchor.constraint(equalTo: filterButton.bottomAnchor, constant: 35),
             cartCollection.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             cartCollection.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            cartCollection.bottomAnchor.constraint(equalTo: payBackgroundColor.bottomAnchor),
+            cartCollection.bottomAnchor.constraint(equalTo: payBackgroundColor.bottomAnchor, constant: -70),
             
             payBackgroundColor.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             payBackgroundColor.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -256,11 +270,16 @@ final class CartViewController: UIViewController {
             
             cartIsEmpty.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             cartIsEmpty.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            activityIndicator.heightAnchor.constraint(equalToConstant: 25),
+            activityIndicator.widthAnchor.constraint(equalToConstant: 25)
         ])
     }
     
-   private func ifIsEmptyNftData() {
-        if (cartPresenter?.nftData ?? []).isEmpty {
+    private func ifIsEmptyNftData() {
+        if cartPresenter?.nftData.isEmpty ?? false {
             filterButton.isHidden = true
             countNFTLabel.isHidden = true
             priceNFTLabel.isHidden = true
@@ -275,26 +294,38 @@ final class CartViewController: UIViewController {
             payBackgroundColor.isHidden = false
             cartIsEmpty.isHidden = true
         }
-       cartCollection.reloadData()
-   }
-    
-    private func confirmationOfDeletion(_ isTapped: Bool) {
-        nftImageView.isHidden = isTapped
-        blurView.isHidden = isTapped
-        deleteButton.isHidden = isTapped
-        returnButton.isHidden = isTapped
-        warningsLabel.isHidden = isTapped
-        
         cartCollection.reloadData()
     }
     
+    private func confirmationOfDeletion(_ isTapped: Bool) {
+        nftImageView.isHidden = isTapped
+        deleteButton.isHidden = isTapped
+        returnButton.isHidden = isTapped
+        warningsLabel.isHidden = isTapped
+        blurView.isHidden = isTapped
+        cartCollection.reloadData()
+        
+    }
+    
+    private func activityIndicatorStarandStop() {
+        if cartPresenter?.nftData.isEmpty ?? false {
+            self.activityIndicator.startAnimating()
+        } else {
+            self.activityIndicator.stopAnimating()
+        }
+    }
+    
+    private func sumAndCountNFT() {
+        countNFTLabel.text = cartPresenter?.countNFT()
+        priceNFTLabel.text = cartPresenter?.priceNFT()
+    }
     
     @objc private func filterButtonTapped() {
         showActionSheet()
     }
     
     @objc private func deleteButtonDidTapped() {
-        cartPresenter?.deleteNFT()
+        cartPresenter?.deleteNFT(idNFT)
         confirmationOfDeletion(true)
     }
     
@@ -318,17 +349,14 @@ extension CartViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CartCell.cartCellIdentifier, for: indexPath) as? CartCell {
             
-            guard let nftData = cartPresenter?.nftData else {
-                return UICollectionViewCell()
-            }
-            
-            guard indexPath.row < nftData.count else {
+            guard indexPath.row < cartPresenter?.nftData.count ?? 0 else {
                 return UICollectionViewCell()
             }
             
             let nftItem = cartPresenter?.nftData[indexPath.row]
             cell.configure(with: nftItem)
             cell.delegate = self
+            
             return cell
         }
         return UICollectionViewCell()
@@ -341,16 +369,19 @@ extension CartViewController {
         let alertController = UIAlertController(title: "Сортировка", message: nil, preferredStyle: .actionSheet)
         
         let priceAction = UIAlertAction(title: "По цене", style: .default) { _ in
-            
+            self.cartPresenter?.sortPriceNFTData()
+            self.cartCollection.reloadData()
         }
         
         let ratingAction = UIAlertAction(title: "По рейтингу", style: .default) { _ in
-            
+            self.cartPresenter?.sortRatingNFTData()
+            self.cartCollection.reloadData()
         }
         
         
         let nameAction = UIAlertAction(title: "По названию", style: .default) { _ in
-            
+            self.cartPresenter?.sortNameNFTData()
+            self.cartCollection.reloadData()
         }
         
         let cancelAction = UIAlertAction(title: "Закрыть", style: .cancel, handler: nil)
@@ -368,35 +399,32 @@ extension CartViewController {
     }
 }
 
-
 // MARK: - extension CartCellDelete
 extension CartViewController: CartCellDelete {
-    func deleteNFT(_ imageName: String) {
-        nftImageView.image = UIImage(named: imageName)
-        print(isTapped)
+    func deleteNFT(_ image: UIImage, _ idNFT: String) {
+        nftImageView.image = image
+        self.idNFT = idNFT
+        sumAndCountNFT()
         confirmationOfDeletion(false)
     }
 }
 
 // MARK: - extension CartPreseterView
-extension CartViewController: CartPreseterView {
-    var nftDataCount: Int {
-        get {
-            return (cartPresenter?.nftDataCount ?? 0)
-        }
-        set {
-
+extension CartViewController: CartView {
+    func activityIndicator(_ activity: Bool) {
+        DispatchQueue.main.async {
+            if activity {
+                self.activityIndicator.stopAnimating()
+            } else {
+                self.activityIndicator.startAnimating()
+            }
         }
     }
     
-    var totalPrice: String {
-        get {
-            return "\(cartPresenter?.totalPrice ?? 0)"
-        }
-        set {
-            
+    func collectionReloadData() {
+        DispatchQueue.main.async {
+            self.cartCollection.reloadData()
+            self.sumAndCountNFT()
         }
     }
 }
-
-
