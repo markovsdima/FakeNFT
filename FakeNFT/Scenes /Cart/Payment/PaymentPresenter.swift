@@ -1,8 +1,8 @@
 import Foundation
-import UIKit
 
 protocol PaymentPreseterView: AnyObject {
     func updatePaymentData(_ data: [PaymentSystemModel])
+    func thePaymentIsCompleted(_ success: Bool)
 }
 
 final class PaymentPresenter {
@@ -31,6 +31,7 @@ final class PaymentPresenter {
         CartNetworkClient.shared.fetchPayCart(id: idPaymentSystem) { result in
             switch result {
             case .success(let payResult):
+                self.view?.thePaymentIsCompleted(payResult.success)
                 print(payResult)
             case .failure(let error):
                 print("Error fetching payment systems: \(error.localizedDescription)")

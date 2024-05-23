@@ -4,6 +4,7 @@ import WebKit
 final class PaymentViewController: UIViewController, WKNavigationDelegate {
     // MARK: - Properties
     private var paymentPresenter: PaymentPresenter?
+    private var selectedIdNFT = ""
     
     private lazy var backwardButton: UIButton = {
         let imageButton = UIImage(systemName: "chevron.backward")?.withTintColor(
@@ -216,15 +217,7 @@ final class PaymentViewController: UIViewController, WKNavigationDelegate {
     }
     
     @objc private func payDidTapped() {
-        paymentPresenter?.fetchPay("1")
-//        guard let selectedIndexPaths = paymentSystemCollection.indexPathsForSelectedItems,
-//              !selectedIndexPaths.isEmpty else {
-//            showAlert(from: self)
-//            return
-//        }
-//        let paymentEndViewController = PaymentEndViewController()
-//        paymentEndViewController.modalPresentationStyle = .fullScreen
-//        present(paymentEndViewController, animated: true)
+        paymentPresenter?.fetchPay(selectedIdNFT)
     }
 }
 
@@ -263,8 +256,8 @@ extension PaymentViewController: UICollectionViewDelegate {
                 cell.layer.borderWidth = 1
                 cell.layer.cornerRadius = 12
                 let selectedPaymentSystem = paymentSystem[indexPath.row]
-                let selectedId = selectedPaymentSystem.id
-                print(" selectedId \(selectedId)")
+                selectedIdNFT = selectedPaymentSystem.id
+                print(" selectedId \(selectedIdNFT)")
             }
         }
     }
@@ -287,7 +280,7 @@ extension PaymentViewController {
         }
         
         let replayAction = UIAlertAction(title: "Повторить", style: .default) { _ in
-            print("replayAction")
+            self.paymentPresenter?.fetchPay(self.selectedIdNFT)
         }
         alertController.addAction(cancelAction)
         alertController.addAction(replayAction)
@@ -302,6 +295,18 @@ extension PaymentViewController: PaymentPreseterView {
             self.paymentSystem = data
             self.paymentSystemCollection.reloadData()
             self.activityIndicatorStarandStop()
+        }
+    }
+    
+    func thePaymentIsCompleted(_ success: Bool) {
+        DispatchQueue.main.async {
+                if success {
+                    let paymentEndViewController = PaymentEndViewController()
+                    paymentEndViewController.modalPresentationStyle = .fullScreen
+                    self.present(paymentEndViewController, animated: true)
+                } else {
+                    self.showAlert(from: self)
+            }
         }
     }
 }
