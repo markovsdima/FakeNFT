@@ -216,14 +216,15 @@ final class PaymentViewController: UIViewController, WKNavigationDelegate {
     }
     
     @objc private func payDidTapped() {
-        guard let selectedIndexPaths = paymentSystemCollection.indexPathsForSelectedItems,
-              !selectedIndexPaths.isEmpty else {
-            showAlert(from: self)
-            return
-        }
-        let paymentEndViewController = PaymentEndViewController()
-        paymentEndViewController.modalPresentationStyle = .fullScreen
-        present(paymentEndViewController, animated: true)
+        paymentPresenter?.fetchPay("1")
+//        guard let selectedIndexPaths = paymentSystemCollection.indexPathsForSelectedItems,
+//              !selectedIndexPaths.isEmpty else {
+//            showAlert(from: self)
+//            return
+//        }
+//        let paymentEndViewController = PaymentEndViewController()
+//        paymentEndViewController.modalPresentationStyle = .fullScreen
+//        present(paymentEndViewController, animated: true)
     }
 }
 
@@ -261,6 +262,9 @@ extension PaymentViewController: UICollectionViewDelegate {
             if let cell = collectionView.cellForItem(at: indexPath) {
                 cell.layer.borderWidth = 1
                 cell.layer.cornerRadius = 12
+                let selectedPaymentSystem = paymentSystem[indexPath.row]
+                let selectedId = selectedPaymentSystem.id
+                print(" selectedId \(selectedId)")
             }
         }
     }

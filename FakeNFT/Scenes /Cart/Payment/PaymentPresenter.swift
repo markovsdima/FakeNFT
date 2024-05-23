@@ -26,4 +26,15 @@ final class PaymentPresenter {
             }
         }
     }
+    
+    func fetchPay(_ idPaymentSystem: String) {
+        CartNetworkClient.shared.fetchPayCart(id: idPaymentSystem) { result in
+            switch result {
+            case .success(let payResult):
+                print(payResult)
+            case .failure(let error):
+                print("Error fetching payment systems: \(error.localizedDescription)")
+            }
+        }
+    }
 }

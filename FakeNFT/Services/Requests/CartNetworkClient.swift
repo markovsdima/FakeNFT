@@ -57,7 +57,7 @@ class CartNetworkClient {
         let request = OrdersRequest()
         
         guard let url = request.endpoint else {
-            completion(.failure(NetworkError.invalidURL))  // Сообщаем о неудаче
+            completion(.failure(NetworkError.invalidURL))
             return
         }
         
@@ -84,6 +84,44 @@ class CartNetworkClient {
             do {
                 let nftResponse = try JSONDecoder().decode(OrdersCartModel.self, from: data)
                 completion(.success(nftResponse))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+        task.resume()
+    }
+    
+    func fetchPayCart(id: String, completion: @escaping (Result<PayCartModel, Error>) -> Void) {
+        let request = PayCartRequest(id: id)
+        
+        guard let url = request.endpoint else {
+            completion(.failure(NetworkError.invalidURL))
+            return
+        }
+        
+        var urlRequest = URLRequest(url: url)
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
+        urlRequest.setValue(RequestConstants.accessToken, forHTTPHeaderField: "X-Practicum-Mobile-Token")
+        
+        let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+                completion(.failure(NetworkError.invalidResponse))
+                return
+            }
+            
+            guard let data = data else {
+                completion(.failure(NetworkError.invalidData))
+                return
+            }
+            
+            do {
+                let payCartModel = try JSONDecoder().decode(PayCartModel.self, from: data)
+                completion(.success(payCartModel))
             } catch {
                 completion(.failure(error))
             }
