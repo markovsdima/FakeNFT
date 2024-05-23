@@ -55,15 +55,15 @@ final class StatisticsCollectionViewController: UIViewController, StatisticsColl
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewCompositionalLayout { _, _ in
             let itemSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1/3),
+                widthDimension: .fractionalWidth(1),
                 heightDimension: .fractionalHeight(1.0)
             )
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
             let groupSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
+                widthDimension: .fractionalWidth(1),
                 heightDimension: .absolute(192)
             )
-            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 3)
             group.interItemSpacing = .fixed(9)
             let section = NSCollectionLayoutSection(group: group)
             section.interGroupSpacing = 8
