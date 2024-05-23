@@ -1,6 +1,7 @@
 import UIKit
+import WebKit
 
-final class PaymentViewController: UIViewController {
+final class PaymentViewController: UIViewController, WKNavigationDelegate {
     // MARK: - Properties
     private var paymentPresenter: PaymentPresenter?
     
@@ -12,6 +13,18 @@ final class PaymentViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(imageButton, for: .normal)
         button.addTarget(self, action: #selector(backwardButtonDidTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var backwardButtonWebView: UIButton = {
+        let imageButton = UIImage(systemName: "chevron.backward")?.withTintColor(
+            .black, renderingMode: .alwaysOriginal)
+        
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(imageButton, for: .normal)
+        button.addTarget(self, action: #selector(backwardButtonWebViewDidTapped), for: .touchUpInside)
+        button.isHidden = true
         return button
     }()
     
@@ -49,6 +62,14 @@ final class PaymentViewController: UIViewController {
         button.setTitle("Пользовательского соглашения", for: .normal)
         button.addTarget(self, action: #selector(openLink), for: .touchUpInside)
         return button
+    }()
+    
+    private lazy var webView: WKWebView = {
+        let webView = WKWebView()
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        webView.navigationDelegate = self
+        webView.isHidden = true
+        return webView
     }()
     
     private lazy var payButton: UIButton = {
@@ -105,12 +126,15 @@ final class PaymentViewController: UIViewController {
         view.addSubview(userAgreementButton)
         view.addSubview(userAgreementLabel)
         view.addSubview(activityIndicator)
-        
+        view.addSubview(webView)
+        view.addSubview(backwardButtonWebView)
+
+     
         NSLayoutConstraint.activate([
-            backwardButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 9),
-            backwardButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 11),
+            backwardButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            backwardButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
             
-            paymentMethodLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 11),
+            paymentMethodLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 12),
             paymentMethodLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             paymentSystemCollection.topAnchor.constraint(equalTo: paymentMethodLabel.bottomAnchor, constant: 30),
@@ -137,13 +161,35 @@ final class PaymentViewController: UIViewController {
             activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             activityIndicator.heightAnchor.constraint(equalToConstant: 25),
-            activityIndicator.widthAnchor.constraint(equalToConstant: 25)
+            activityIndicator.widthAnchor.constraint(equalToConstant: 25),
+            
+            backwardButtonWebView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 60),
+            backwardButtonWebView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            
+            webView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            webView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            webView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            webView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            webView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
     
+    private func openWebView(_ open: Bool) {
+        payBackgroundColor.isHidden = open
+        backwardButton.isHidden = open
+        paymentMethodLabel.isHidden = open
+        paymentSystemCollection.isHidden = open
+        payButton.isHidden = open
+        userAgreementButton.isHidden = open
+        userAgreementLabel.isHidden = open
+        activityIndicator.isHidden = open
+        backwardButtonWebView.isHidden = !open
+        webView.isHidden = !open
+    }
+    
     private func openURL(_ urlString: String) {
-        if let url = URL(string: urlString) {
-            UIApplication.shared.open(url)
+        if let url = URL(string: "https://yandex.ru/legal/practicum_termsofuse/") {
+            webView.load(URLRequest(url: url))
         }
     }
     
@@ -155,15 +201,21 @@ final class PaymentViewController: UIViewController {
         }
     }
     
-    @objc func backwardButtonDidTapped() {
+    @objc private func backwardButtonWebViewDidTapped() {
+        openWebView(false)
+        activityIndicator.stopAnimating()
+    }
+    
+    @objc private func backwardButtonDidTapped() {
         dismiss(animated: true)
     }
     
-    @objc func openLink() {
+    @objc private func openLink() {
+        openWebView(true)
         openURL(paymentPresenter?.urlUserAgreement ?? "")
     }
     
-    @objc func payDidTapped() {
+    @objc private func payDidTapped() {
         guard let selectedIndexPaths = paymentSystemCollection.indexPathsForSelectedItems,
               !selectedIndexPaths.isEmpty else {
             showAlert(from: self)
