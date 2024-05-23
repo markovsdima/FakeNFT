@@ -3,6 +3,7 @@ import UIKit
 final class TabBarController: UITabBarController {
     
     var servicesAssembly: ServicesAssembly!
+    weak var returnDelegate: ReturnDelegate?
     
     private let profileTabBarItem = UITabBarItem(
         title: NSLocalizedString("Tab.profile", comment: ""),
@@ -60,6 +61,7 @@ final class TabBarController: UITabBarController {
         view.backgroundColor = .systemBackground
         
         cartController.blurViewDelegate = self
+        cartController.returnDelegate = self
     }
 }
 
@@ -78,6 +80,17 @@ extension TabBarController: BlurViewDelegate {
                     subview.isHidden = false
                 }
             }
+        }
+    }
+}
+
+extension TabBarController: ReturnDelegate {
+    func returnToTabBar() {
+        self.dismiss(animated: true)
+        guard let controllers = viewControllers, controllers.indices.contains(1) else { return }
+
+        if let catalogController = controllers[1] as? CatalogViewController {
+            self.selectedIndex = 1
         }
     }
 }

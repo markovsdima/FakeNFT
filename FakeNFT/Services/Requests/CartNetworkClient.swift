@@ -206,43 +206,4 @@ class CartNetworkClient {
         }
         task.resume()
     }
-    
-    func fetchProfileCart(completion: @escaping (Result<GETProfileNFTCartModel, Error>, Bool) -> Void) {
-        let request = GETProfileCart()
-        
-        guard let url = request.endpoint else {
-            completion(.failure(NetworkError.invalidURL), false)
-            return
-        }
-        
-        var urlRequest = URLRequest(url: url)
-        urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
-        urlRequest.setValue(RequestConstants.accessToken, forHTTPHeaderField: "X-Practicum-Mobile-Token")
-        
-        let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
-            if let error = error {
-                completion(.failure(error), false)
-                return
-            }
-            
-            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                completion(.failure(NetworkError.invalidResponse), false)
-                return
-            }
-            
-            guard let data = data else {
-                completion(.failure(NetworkError.invalidData), false)
-                return
-            }
-            
-            do {
-                let nftResponse = try JSONDecoder().decode(GETProfileNFTCartModel.self, from: data)
-                completion(.success(nftResponse), true)
-            } catch {
-                completion(.failure(error), false)
-            }
-        }
-        task.resume()
-    }
-    
 }

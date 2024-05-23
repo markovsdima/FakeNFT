@@ -3,8 +3,12 @@ import WebKit
 
 final class PaymentViewController: UIViewController, WKNavigationDelegate {
     // MARK: - Properties
+    weak var returnDelegate: ReturnDelegate?
+    
     private var paymentPresenter: PaymentPresenter?
+    let paymentEndViewController = PaymentEndViewController()
     private var selectedIdNFT = ""
+    
     
     private lazy var backwardButton: UIButton = {
         let imageButton = UIImage(systemName: "chevron.backward")?.withTintColor(
@@ -108,10 +112,8 @@ final class PaymentViewController: UIViewController, WKNavigationDelegate {
         viewConstraints()
         paymentPresenter = PaymentPresenter(view: self)
         paymentPresenter?.fetchCurrencies()
-        paymentPresenter?.fetchProfileCart()
-        
-//        paymentPresenter?.fetchOrdersCart()
-//        paymentPresenter?.creatingArrayNftsPUTCart()
+        paymentEndViewController.returnDelegate = self.returnDelegate
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -305,9 +307,9 @@ extension PaymentViewController: PaymentPreseterView {
     func thePaymentIsCompleted(_ success: Bool) {
         DispatchQueue.main.async {
                 if success {
-                    let paymentEndViewController = PaymentEndViewController()
-                    paymentEndViewController.modalPresentationStyle = .fullScreen
-                    self.present(paymentEndViewController, animated: true)
+                    self.paymentEndViewController.modalPresentationStyle = .fullScreen
+                    self.present(self.paymentEndViewController, animated: true)
+                    self.paymentPresenter?.deleteNFT()
                 } else {
                     self.showAlert(from: self)
             }
