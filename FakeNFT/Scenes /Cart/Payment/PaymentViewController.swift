@@ -108,6 +108,10 @@ final class PaymentViewController: UIViewController, WKNavigationDelegate {
         viewConstraints()
         paymentPresenter = PaymentPresenter(view: self)
         paymentPresenter?.fetchCurrencies()
+        paymentPresenter?.fetchProfileCart()
+        
+//        paymentPresenter?.fetchOrdersCart()
+//        paymentPresenter?.creatingArrayNftsPUTCart()
     }
     
     override func viewWillAppear(_ animated: Bool) {
