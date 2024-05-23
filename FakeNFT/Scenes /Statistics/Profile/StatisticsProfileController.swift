@@ -55,6 +55,7 @@ final class StatisticsProfileViewController: UIViewController, StatisticsProfile
         textView.isEditable = false
         textView.font = .systemFont(ofSize: 13)
         textView.textColor = .ypBlack
+        textView.backgroundColor = .ypWhite
         textView.text =
         """
         Дизайнер из Казани, люблю цифровое искусство
