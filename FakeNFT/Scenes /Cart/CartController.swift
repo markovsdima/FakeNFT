@@ -9,6 +9,7 @@ final class CartViewController: UIViewController {
     // MARK: - Properties
     let servicesAssembly: ServicesAssembly
     weak var blurViewDelegate: BlurViewDelegate?
+    weak var returnDelegate: ReturnDelegate?
     
     private let paymentViewController: PaymentViewController
     private var cartPresenter: CartPresenter?
@@ -206,6 +207,7 @@ final class CartViewController: UIViewController {
         super.viewDidLoad()
         viewConstraints()
         cartPresenter = CartPresenter(view: self)
+        paymentViewController.returnDelegate = self.returnDelegate
     }
     
     override func viewWillAppear(_ animated: Bool) {

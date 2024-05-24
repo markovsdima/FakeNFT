@@ -42,15 +42,19 @@ final class CartPresenter {
     }
     
     func fetchOrdersCart() {
-        CartNetworkClient.shared.fetchOrdersCart() { result in
+        CartNetworkClient.shared.fetchOrdersCart() { result, isLoaded in
             switch result {
             case .success(let nfts):
                 self.view?.activityIndicator(false)
                 self.numbersNFTs = nfts.nfts
-                print("Request completed successfully")
-                self.fetchNFTCart()
-                self.view?.collectionReloadData()
-                self.view?.activityIndicator(true)
+             
+                if isLoaded {
+                    print("Request completed successfully")
+                    self.fetchNFTCart()
+                    self.view?.collectionReloadData()
+                    self.view?.activityIndicator(true)
+                }
+          
             case .failure(let error):
                 print("there is no response from the server: \(error.localizedDescription)")
             }
