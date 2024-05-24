@@ -35,28 +35,27 @@ final class TabBarController: UITabBarController {
         let profileController = ProfileViewController(
             servicesAssembly: servicesAssembly
         )
-        profileController.tabBarItem = profileTabBarItem
-        profileController.tabBarItem.accessibilityIdentifier = "ProfileTab"
-        
-        let catalogController = CatalogViewController(
-            servicesAssembly: servicesAssembly
+      
+        let networkClient = DefaultNetworkClient()
+        let profileService = ProfileServiceImpl(
+            networkClient: networkClient
         )
-        catalogController.tabBarItem = catalogTabBarItem
-        catalogController.tabBarItem.accessibilityIdentifier = "CatalogTab"
-        
-        let cartController = CartViewController(
-            servicesAssembly: servicesAssembly
+        let profilePresenter = ProfilePresenter(
+            service: profileService,
+            profileId: ProfileConstants.profileId
         )
-        cartController.tabBarItem = cartTabBarItem
-        cartController.tabBarItem.accessibilityIdentifier = "CartTab"
-        
+        profileController.presenter = profilePresenter
+        profilePresenter.profileView = profileController
+                
+        let profileNavigationController = UINavigationController(rootViewController: profileController)
+
         let statisticsController = StatisticsViewController(
             servicesAssembly: servicesAssembly
         )
         statisticsController.tabBarItem = statisticsTabBarItem
         statisticsController.tabBarItem.accessibilityIdentifier = "StatisticsTab"
         
-        viewControllers = [profileController, catalogController, cartController, statisticsController]
+        viewControllers = [profileNavigationController, catalogController, cartController, statisticsController]
         
         view.backgroundColor = .systemBackground
         
@@ -92,5 +91,6 @@ extension TabBarController: ReturnDelegate {
         if let catalogController = controllers[1] as? CatalogViewController {
             self.selectedIndex = 1
         }
+
     }
 }
