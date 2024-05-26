@@ -250,7 +250,8 @@ final class CartViewController: UIViewController {
             payBackgroundColor.heightAnchor.constraint(equalToConstant: 76),
             
             payStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            payStack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -99),
+            payStack.bottomAnchor.constraint(equalTo: payBackgroundColor.bottomAnchor),
+            payStack.centerYAnchor.constraint(equalTo: payBackgroundColor.centerYAnchor),
             payStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             
             paymentButton.widthAnchor.constraint(equalToConstant: 244),

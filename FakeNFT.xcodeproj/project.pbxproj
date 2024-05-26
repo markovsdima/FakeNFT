@@ -71,8 +71,6 @@
 		598360A22BE7F36800EBBE35 /* FavouriteNFTUIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598360A12BE7F36800EBBE35 /* FavouriteNFTUIModel.swift */; };
 		599E3A742BF1419900EA3147 /* MockNetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 599E3A732BF1419900EA3147 /* MockNetworkClient.swift */; };
 		599E3A762BF141C900EA3147 /* MockNftStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 599E3A752BF141C900EA3147 /* MockNftStorage.swift */; };
-		599E3A792BF1473000EA3147 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 599E3A782BF1473000EA3147 /* Kingfisher */; };
-		599E3A7C2BF1475C00EA3147 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 599E3A7B2BF1475C00EA3147 /* ProgressHUD */; };
 		599E3A7E2BF14C1400EA3147 /* MockProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 599E3A7D2BF14C1400EA3147 /* MockProfileService.swift */; };
 		599E3A802BF49E8600EA3147 /* ProfileSortService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 599E3A7F2BF49E8600EA3147 /* ProfileSortService.swift */; };
 		59B9F6842BD51E3C0057AF15 /* ProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B9F6832BD51E3C0057AF15 /* ProfilePresenter.swift */; };
@@ -101,6 +99,8 @@
 		E736B6492BD8F2A400CA5513 /* PaymentEndViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E736B6482BD8F2A400CA5513 /* PaymentEndViewController.swift */; };
 		E7D01F0F2BE41F12004AE2CA /* NFTCartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D01F0E2BE41F12004AE2CA /* NFTCartModel.swift */; };
 		E7D01F112BE41F3F004AE2CA /* CartPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D01F102BE41F3F004AE2CA /* CartPresenter.swift */; };
+		E7EAF31A2C03381D0039F737 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E7EAF3192C03381D0039F737 /* Kingfisher */; };
+		E7EAF31D2C0339360039F737 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = E7EAF31C2C0339360039F737 /* ProgressHUD */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -224,9 +224,9 @@
 		E7A2FAC82BFD7194002A79BC /* FakeNFT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FakeNFT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7D01F0E2BE41F12004AE2CA /* NFTCartModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTCartModel.swift; sourceTree = "<group>"; };
 		E7D01F102BE41F3F004AE2CA /* CartPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartPresenter.swift; sourceTree = "<group>"; };
-		E7DD7B722BFD73F700BBB515 /* FakeNFTTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = FakeNFTTests.xctest; path = "/Users/aleksejgvozdkov/Desktop/FakeNFT/build/Debug-iphoneos/FakeNFTTests.xctest"; sourceTree = "<absolute>"; };
-		E7DD7B732BFD73F700BBB515 /* FakeNFTUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = FakeNFTUITests.xctest; path = "/Users/aleksejgvozdkov/Desktop/FakeNFT/build/Debug-iphoneos/FakeNFTUITests.xctest"; sourceTree = "<absolute>"; };
-		E7DD7B742BFD73F700BBB515 /* FakeNFTUITestsCart.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = FakeNFTUITestsCart.xctest; path = "/Users/aleksejgvozdkov/Desktop/FakeNFT/build/Debug-iphoneos/FakeNFTUITestsCart.xctest"; sourceTree = "<absolute>"; };
+		E7EAF30E2C032D730039F737 /* FakeNFTTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FakeNFTTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E7EAF30F2C032D730039F737 /* FakeNFTUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FakeNFTUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E7EAF3102C032D730039F737 /* FakeNFTUITestsCart.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FakeNFTUITestsCart.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -234,8 +234,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				599E3A792BF1473000EA3147 /* Kingfisher in Frameworks */,
-				599E3A7C2BF1475C00EA3147 /* ProgressHUD in Frameworks */,
+				E7EAF31A2C03381D0039F737 /* Kingfisher in Frameworks */,
+				E7EAF31D2C0339360039F737 /* ProgressHUD in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -426,6 +426,9 @@
 				3F6806AC29CBBAF200B4F915 /* FakeNFTTests */,
 				3F6806B629CBBAF200B4F915 /* FakeNFTUITests */,
 				E7A2FAC82BFD7194002A79BC /* FakeNFT.app */,
+				E7EAF30E2C032D730039F737 /* FakeNFTTests.xctest */,
+				E7EAF30F2C032D730039F737 /* FakeNFTUITests.xctest */,
+				E7EAF3102C032D730039F737 /* FakeNFTUITestsCart.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -677,8 +680,8 @@
 			);
 			name = FakeNFT;
 			packageProductDependencies = (
-				599E3A782BF1473000EA3147 /* Kingfisher */,
-				599E3A7B2BF1475C00EA3147 /* ProgressHUD */,
+				E7EAF3192C03381D0039F737 /* Kingfisher */,
+				E7EAF31C2C0339360039F737 /* ProgressHUD */,
 			);
 			productName = FakeNFT;
 			productReference = E7A2FAC82BFD7194002A79BC /* FakeNFT.app */;
@@ -699,7 +702,7 @@
 			);
 			name = FakeNFTTests;
 			productName = FakeNFTTests;
-			productReference = E7DD7B722BFD73F700BBB515 /* FakeNFTTests.xctest */;
+			productReference = E7EAF30E2C032D730039F737 /* FakeNFTTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		3F6806B229CBBAF200B4F915 /* FakeNFTUITests */ = {
@@ -717,7 +720,7 @@
 			);
 			name = FakeNFTUITests;
 			productName = FakeNFTUITests;
-			productReference = E7DD7B732BFD73F700BBB515 /* FakeNFTUITests.xctest */;
+			productReference = E7EAF30F2C032D730039F737 /* FakeNFTUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 		E75E8CA32BF96305005A78F0 /* FakeNFTUITestsCart */ = {
@@ -735,7 +738,7 @@
 			);
 			name = FakeNFTUITestsCart;
 			productName = FakeNFTUITestsCart;
-			productReference = E7DD7B742BFD73F700BBB515 /* FakeNFTUITestsCart.xctest */;
+			productReference = E7EAF3102C032D730039F737 /* FakeNFTUITestsCart.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -765,7 +768,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 3F68068E29CBBAF100B4F915 /* Build configuration list for PBXProject "FakeNFTDevelopLZ" */;
+			buildConfigurationList = 3F68068E29CBBAF100B4F915 /* Build configuration list for PBXProject "FakeNFT" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = ru;
 			hasScannedForEncodings = 0;
@@ -776,8 +779,8 @@
 			);
 			mainGroup = 3F68068A29CBBAF100B4F915;
 			packageReferences = (
-				599E3A772BF1473000EA3147 /* XCRemoteSwiftPackageReference "Kingfisher" */,
-				599E3A7A2BF1475C00EA3147 /* XCRemoteSwiftPackageReference "ProgressHUD" */,
+				E7EAF3182C03381D0039F737 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				E7EAF31B2C0339360039F737 /* XCRemoteSwiftPackageReference "ProgressHUD" */,
 			);
 			productRefGroup = 3F68068A29CBBAF100B4F915;
 			projectDirPath = "";
@@ -1304,7 +1307,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3F68068E29CBBAF100B4F915 /* Build configuration list for PBXProject "FakeNFTDevelopLZ" */ = {
+		3F68068E29CBBAF100B4F915 /* Build configuration list for PBXProject "FakeNFT" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3F6806BB29CBBAF200B4F915 /* Debug */,
@@ -1352,15 +1355,15 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		599E3A772BF1473000EA3147 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+		E7EAF3182C03381D0039F737 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/onevcat/Kingfisher?ysclid=lr3vwg3giw84284263";
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
 			requirement = {
-				kind = exactVersion;
-				version = 7.6.2;
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.11.0;
 			};
 		};
-		599E3A7A2BF1475C00EA3147 /* XCRemoteSwiftPackageReference "ProgressHUD" */ = {
+		E7EAF31B2C0339360039F737 /* XCRemoteSwiftPackageReference "ProgressHUD" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/relatedcode/ProgressHUD";
 			requirement = {
@@ -1371,14 +1374,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		599E3A782BF1473000EA3147 /* Kingfisher */ = {
+		E7EAF3192C03381D0039F737 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 599E3A772BF1473000EA3147 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			package = E7EAF3182C03381D0039F737 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
 		};
-		599E3A7B2BF1475C00EA3147 /* ProgressHUD */ = {
+		E7EAF31C2C0339360039F737 /* ProgressHUD */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 599E3A7A2BF1475C00EA3147 /* XCRemoteSwiftPackageReference "ProgressHUD" */;
+			package = E7EAF31B2C0339360039F737 /* XCRemoteSwiftPackageReference "ProgressHUD" */;
 			productName = ProgressHUD;
 		};
 /* End XCSwiftPackageProductDependency section */

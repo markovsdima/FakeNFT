@@ -68,7 +68,7 @@ final class TabBarController: UITabBarController {
         
         statisticsController.tabBarItem = statisticsTabBarItem
         
-        viewControllers = [profileNavigationController, catalogController, cartController, statistisPresenter]
+        viewControllers = [profileNavigationController, catalogController, cartController, statisticsController]
         
         view.backgroundColor = .ypWhite
         
