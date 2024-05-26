@@ -1,16 +1,21 @@
-import Foundation
-
 import UIKit
+import Kingfisher
+
+protocol CartCellDelete: AnyObject {
+    func deleteNFT(_ image: UIImage, _ idNFT: String)
+}
 
 final class CartCell: UICollectionViewCell {
+    // MARK: - Properties
     static let cartCellIdentifier = "CartCell"
     
+    weak var delegate: CartCellDelete?
+    
     private lazy var imageNFT: UIImageView = {
-        var image = UIImageView(image: UIImage(named: "AppIcon"))
+        var image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         image.layer.cornerRadius = 12
         image.clipsToBounds = true
-        image.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
         return image
     }()
     
@@ -18,15 +23,14 @@ final class CartCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
-        label.text = "April"
         return label
     }()
     
-    private var starRatingImage1 = UIImage(named: "StarsYesCart")
-    private var starRatingImage2 = UIImage(named: "StarsYesCart")
-    private var starRatingImage3 = UIImage(named: "StarsYesCart")
-    private var starRatingImage4 = UIImage(named: "StarsYesCart")
-    private var starRatingImage5 = UIImage(named: "StarsYesCart")
+    private var starRatingImage1 = UIImage(named: "StarsNoCart")
+    private var starRatingImage2 = UIImage(named: "StarsNoCart")
+    private var starRatingImage3 = UIImage(named: "StarsNoCart")
+    private var starRatingImage4 = UIImage(named: "StarsNoCart")
+    private var starRatingImage5 = UIImage(named: "StarsNoCart")
     
     private lazy var starStack: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [
@@ -70,11 +74,10 @@ final class CartCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
-        label.text = "1,78 ETH"
         return label
     }()
     
-    private lazy var PriceAndAmountStack: UIStackView = {
+    private lazy var priceAndAmountStack: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [
             priceLabel,
             amountLabel
@@ -91,7 +94,7 @@ final class CartCell: UICollectionViewCell {
     private lazy var infoStack: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [
             nameAndStarStack,
-            PriceAndAmountStack
+            priceAndAmountStack
         ])
         
         stack.translatesAutoresizingMaskIntoConstraints = false
@@ -104,11 +107,15 @@ final class CartCell: UICollectionViewCell {
     
     private lazy var deleteButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "CartDelete"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(named: "CartDelete"), for: .normal)
+        button.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
         return button
     }()
     
+    private var imageName = ""
+    private var idNFT = ""
+    private var ratingCell = 0
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -125,6 +132,7 @@ final class CartCell: UICollectionViewCell {
         
     }
     
+    // MARK: - Lifecycle
     private func viewConstraints() {
         contentView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -147,5 +155,37 @@ final class CartCell: UICollectionViewCell {
             deleteButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             deleteButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
         ])
+    }
+    
+    func configure(with model: NFTCartModel?) {
+        guard let model = model else { return }
+        imageName = model.images.first ?? ""
+        nameLabel.text = model.name
+        amountLabel.text = "\(model.price) ETH"
+        ratingCell = model.rating
+        idNFT = model.id
+        
+        for starImageView in starStack.arrangedSubviews as? [UIImageView] ?? [] {
+            starImageView.image = UIImage(named: "StarsNoCart")
+        }
+        
+        if model.rating <= 5 {
+            for rating in 0..<model.rating {
+                if let originalImage = UIImage(named: "StarsYesCart") {
+                    if let starImageView = starStack.arrangedSubviews[rating] as? UIImageView {
+                        starImageView.image = originalImage
+                    }
+                }
+            }
+        }
+        
+        if let imageUrl = URL(string: imageName) {
+            imageNFT.kf.setImage(with: imageUrl)
+        }
+    }
+    
+    @objc func deleteButtonTapped() {
+        guard let image = imageNFT.image else { return }
+        delegate?.deleteNFT(image, idNFT)
     }
 }

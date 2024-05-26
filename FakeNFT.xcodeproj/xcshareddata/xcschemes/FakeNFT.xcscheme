@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1430"
+   LastUpgradeVersion = "1520"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -48,6 +48,17 @@
                BlueprintIdentifier = "3F6806B229CBBAF200B4F915"
                BuildableName = "FakeNFTUITests.xctest"
                BlueprintName = "FakeNFTUITests"
+               ReferencedContainer = "container:FakeNFT.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "E75E8CA32BF96305005A78F0"
+               BuildableName = "FakeNFTUITestsCart.xctest"
+               BlueprintName = "FakeNFTUITestsCart"
                ReferencedContainer = "container:FakeNFT.xcodeproj">
             </BuildableReference>
          </TestableReference>

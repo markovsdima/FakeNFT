@@ -1,14 +1,17 @@
 import UIKit
+import Kingfisher
 
 final class PaymentCell: UICollectionViewCell {
-    static let PaymentCellIdentifier = "PaymentCell"
+    // MARK: - Properties
+    static let paymentCellIdentifier = "PaymentCell"
     
     private lazy var paymentImage: UIImageView = {
         var image = UIImageView(image: UIImage(named: "Bitcoin"))
         image.translatesAutoresizingMaskIntoConstraints = false
         image.layer.cornerRadius = 6
         image.clipsToBounds = true
-        image.frame = CGRect(x: 0, y: 0, width: 36, height: 36)
+        image.backgroundColor = .ypBlack
+        image.layer.cornerRadius = 6
         return image
     }()
     
@@ -57,7 +60,8 @@ final class PaymentCell: UICollectionViewCell {
         super.prepareForReuse()
         
     }
-
+    
+    // MARK: - Lifecycle
     private func viewConstraints() {
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.backgroundColor = .ypLightGrey
@@ -67,9 +71,9 @@ final class PaymentCell: UICollectionViewCell {
         contentView.addSubview(paymentSystemStack)
         
         NSLayoutConstraint.activate([
-            contentView.heightAnchor.constraint(equalToConstant: 46),
-            contentView.widthAnchor.constraint(equalToConstant: 168),
-
+            contentView.heightAnchor.constraint(equalTo: heightAnchor),
+            contentView.widthAnchor.constraint(equalTo: widthAnchor),
+            
             paymentImage.heightAnchor.constraint(equalToConstant: 36),
             paymentImage.widthAnchor.constraint(equalToConstant: 36),
             paymentImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
@@ -80,9 +84,12 @@ final class PaymentCell: UICollectionViewCell {
         ])
     }
     
-    func updatePaymentCell(paymentSystemModel: PaymentSystemModel) {
-        paymentImage.image = UIImage(named: paymentSystemModel.image)
-        paymentSystemLabel.text = paymentSystemModel.paymentSystem
-        currencyLabel.text = paymentSystemModel.currency
+    func updatePaymentCell(paymentSystemModel: PaymentSystemModel, presenter: PaymentPresenter) {
+        paymentSystemLabel.text = paymentSystemModel.title
+        currencyLabel.text = paymentSystemModel.name
+        
+        if let imageUrl = URL(string: paymentSystemModel.image) {
+            paymentImage.kf.setImage(with: imageUrl)
+        }
     }
 }
