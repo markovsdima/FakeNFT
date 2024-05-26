@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1430"
+   LastUpgradeVersion = "1520"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -51,6 +51,17 @@
                ReferencedContainer = "container:FakeNFT.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "E75E8CA32BF96305005A78F0"
+               BuildableName = "FakeNFTUITestsCart.xctest"
+               BlueprintName = "FakeNFTUITestsCart"
+               ReferencedContainer = "container:FakeNFT.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -70,18 +81,9 @@
             BlueprintIdentifier = "3F68069229CBBAF100B4F915"
             BuildableName = "FakeNFT.app"
             BlueprintName = "FakeNFT"
-            ReferencedContainer = "container:FakeNFTDevelopLZ.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3F68069229CBBAF100B4F915"
-            BuildableName = "FakeNFT.app"
-            BlueprintName = "FakeNFT"
             ReferencedContainer = "container:FakeNFT.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -99,15 +101,6 @@
             ReferencedContainer = "container:FakeNFT.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3F68069229CBBAF100B4F915"
-            BuildableName = "FakeNFT.app"
-            BlueprintName = "FakeNFT"
-            ReferencedContainer = "container:FakeNFT.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

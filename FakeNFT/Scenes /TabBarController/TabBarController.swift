@@ -3,6 +3,7 @@ import UIKit
 final class TabBarController: UITabBarController {
     
     var servicesAssembly: ServicesAssembly!
+    weak var returnDelegate: ReturnDelegate?
     
     private let profileTabBarItem = UITabBarItem(
         title: NSLocalizedString("Tab.profile", comment: ""),
@@ -13,19 +14,19 @@ final class TabBarController: UITabBarController {
     private let catalogTabBarItem = UITabBarItem(
         title: NSLocalizedString("Tab.catalog", comment: ""),
         image: UIImage(named: "TabBar/catalog"),
-        tag: 0
+        tag: 1
     )
     
     private let cartTabBarItem = UITabBarItem(
         title: NSLocalizedString("Tab.cart", comment: ""),
         image: UIImage(named: "TabBar/cart"),
-        tag: 0
+        tag: 2
     )
     
     private let statisticsTabBarItem = UITabBarItem(
         title: NSLocalizedString("Tab.statistics", comment: ""),
         image: UIImage(named: "TabBar/statistics"),
-        tag: 0
+        tag: 3
     )
     
     override func viewDidLoad() {
@@ -70,5 +71,37 @@ final class TabBarController: UITabBarController {
         viewControllers = [profileNavigationController, catalogController, cartController, statisticsController]
         
         view.backgroundColor = .ypWhite
+        
+        cartController.returnDelegate = self
+    }
+}
+
+
+extension TabBarController: BlurViewDelegate {
+    func activatingBlurView(_ activating: Bool) {
+        if activating {
+            if let tabBarSubviews = self.tabBar.subviews as? [UIView] {
+                for subview in tabBarSubviews {
+                    subview.isHidden = true
+                }
+            }
+        } else {
+            if let tabBarSubviews = self.tabBar.subviews as? [UIView] {
+                for subview in tabBarSubviews {
+                    subview.isHidden = false
+                }
+            }
+        }
+    }
+}
+
+extension TabBarController: ReturnDelegate {
+    func returnToTabBar() {
+        self.dismiss(animated: true)
+        guard let controllers = viewControllers, controllers.indices.contains(1) else { return }
+
+        if let catalogController = controllers[1] as? CatalogViewController {
+            self.selectedIndex = 1
+        }
     }
 }
