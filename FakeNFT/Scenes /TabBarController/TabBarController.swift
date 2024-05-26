@@ -35,7 +35,6 @@ final class TabBarController: UITabBarController {
         let profileController = ProfileViewController(
             servicesAssembly: servicesAssembly
         )
-      
         let networkClient = DefaultNetworkClient()
         let profileService = ProfileServiceImpl(
             networkClient: networkClient
@@ -48,18 +47,31 @@ final class TabBarController: UITabBarController {
         profilePresenter.profileView = profileController
                 
         let profileNavigationController = UINavigationController(rootViewController: profileController)
-
-        let statisticsController = StatisticsViewController(
+        
+        profileController.tabBarItem = profileTabBarItem
+        
+        let catalogController = CatalogViewController(
             servicesAssembly: servicesAssembly
         )
+        
+        catalogController.tabBarItem = catalogTabBarItem
+        
+        let cartController = CartViewController(
+            servicesAssembly: servicesAssembly
+        )
+        
+        cartController.tabBarItem = cartTabBarItem
+        
+        let statistisPresenter = StatisticsPresenter()
+        let statisticsController = StatisticsViewController(presenter: statistisPresenter)
+        statistisPresenter.setViewDelegate(statisticsViewDelegate: statisticsController)
+        
         statisticsController.tabBarItem = statisticsTabBarItem
-        statisticsController.tabBarItem.accessibilityIdentifier = "StatisticsTab"
         
-        viewControllers = [profileNavigationController, catalogController, cartController, statisticsController]
+        viewControllers = [profileNavigationController, catalogController, cartController, statistisPresenter]
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .ypWhite
         
-        cartController.blurViewDelegate = self
         cartController.returnDelegate = self
     }
 }
@@ -91,6 +103,5 @@ extension TabBarController: ReturnDelegate {
         if let catalogController = controllers[1] as? CatalogViewController {
             self.selectedIndex = 1
         }
-
     }
 }
